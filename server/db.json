@@ -1,0 +1,165 @@
+{
+  "projects": [
+    {
+      "id": "1",
+      "title": "Brand Identity Design",
+      "titleAr": "تصميم هوية العلامة التجارية",
+      "description": "A complete brand identity design for a tech startup including logo, color palette, typography, and brand guidelines.",
+      "descriptionAr": "تصميم هوية كاملة للعلامة التجارية لشركة ناشئة في مجال التكنولوجيا بما في ذلك الشعار والألوان والطباعة وإرشادات العلامة التجارية.",
+      "category": "branding",
+      "image": "https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+        "https://images.unsplash.com/photo-1600508774634-4e11d34730e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+        "https://images.unsplash.com/photo-1634942536790-29fac3b6b522?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+      ],
+      "client": "TechVision",
+      "date": "2025-01-15",
+      "featured": true
+    },
+    {
+      "id": "2",
+      "title": "Social Media Campaign",
+      "titleAr": "حملة وسائل التواصل الاجتماعي",
+      "description": "A series of social media posts and stories designed for a fashion brand's summer collection launch.",
+      "descriptionAr": "سلسلة من المنشورات والقصص على وسائل التواصل الاجتماعي مصممة لإطلاق مجموعة الصيف لعلامة تجارية للأزياء.",
+      "category": "social-media",
+      "image": "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+        "https://images.unsplash.com/photo-1611162618071-b39a2ec055fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+        "https://images.unsplash.com/photo-1611162616305-c69b3396004b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+      ],
+      "client": "Elegance Fashion",
+      "date": "2025-02-20",
+      "featured": true
+    },
+    {
+      "id": "3",
+      "title": "Website UI Design",
+      "titleAr": "تصميم واجهة مستخدم الموقع",
+      "description": "A modern and responsive website design for a luxury real estate company, focusing on user experience and visual appeal.",
+      "descriptionAr": "تصميم موقع ويب حديث ومتجاوب لشركة عقارات فاخرة، مع التركيز على تجربة المستخدم والجاذبية البصرية.",
+      "category": "ui-design",
+      "image": "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+        "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+        "https://images.unsplash.com/photo-1581291519195-ef11c7b656c9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+      ],
+      "client": "Prestige Properties",
+      "date": "2025-03-10",
+      "featured": false
+    },
+    {
+      "id": "4",
+      "title": "Packaging Design",
+      "titleAr": "تصميم العبوات",
+      "description": "Creative packaging design for an organic skincare product line, emphasizing sustainability and natural elements.",
+      "descriptionAr": "تصميم عبوات إبداعي لخط منتجات العناية بالبشرة العضوية، مع التركيز على الاستدامة والعناصر الطبيعية.",
+      "category": "packaging",
+      "image": "https://images.unsplash.com/photo-1636622433525-127afdf3662d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1636622433525-127afdf3662d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+        "https://images.unsplash.com/photo-1627384113743-6bd5a479fffd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+        "https://images.unsplash.com/photo-1627384113972-f4c0392fe5aa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+      ],
+      "client": "Pure Essence",
+      "date": "2025-04-05",
+      "featured": true
+    },
+    {
+      "id": "5",
+      "title": "Motion Graphics",
+      "titleAr": "رسومات متحركة",
+      "description": "Animated explainer video for a financial technology app, simplifying complex concepts through engaging visuals.",
+      "descriptionAr": "فيديو توضيحي متحرك لتطبيق تكنولوجيا مالية، يبسط المفاهيم المعقدة من خلال صور مرئية جذابة.",
+      "category": "motion",
+      "image": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+        "https://images.unsplash.com/photo-1550745165-3bc6d5a12fcc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+        "https://images.unsplash.com/photo-1550745165-a4cee9cf4efc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+      ],
+      "client": "FinTech Solutions",
+      "date": "2025-05-12",
+      "featured": false
+    },
+    {
+      "id": "6",
+      "title": "Print Advertisement",
+      "titleAr": "إعلان مطبوع",
+      "description": "A series of print advertisements for a luxury watch brand, showcasing craftsmanship and elegance.",
+      "descriptionAr": "سلسلة من الإعلانات المطبوعة لعلامة تجارية للساعات الفاخرة، تعرض الحرفية والأناقة.",
+      "category": "print",
+      "image": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+        "https://images.unsplash.com/photo-1622434641406-a158123450f9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+        "https://images.unsplash.com/photo-1547996160-81dfa63595aa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+      ],
+      "client": "Chronos Watches",
+      "date": "2025-06-18",
+      "featured": false
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "username": "admin",
+      "password": "admin123",
+      "email": "admin@example.com",
+      "role": "admin",
+      "name": "Admin User"
+    },
+    {
+      "id": "80a2",
+      "username": "ayman",
+      "password": "123654789",
+      "email": "ayman@gmail.com",
+      "name": "ayman samir",
+      "role": "admin"
+    },
+    {
+      "id": "c951",
+      "username": "Ahmed Abdallah",
+      "password": "123654789",
+      "email": "ahmed@gmail.com",
+      "name": "Ahmed Abdallah Khalil",
+      "role": "admin"
+    }
+  ],
+  "categories": [
+    {
+      "id": "1",
+      "name": "branding",
+      "nameAr": "تصميم الهوية"
+    },
+    {
+      "id": "2",
+      "name": "ui-design",
+      "nameAr": "تصميم واجهة المستخدم"
+    },
+    {
+      "id": "3",
+      "name": "social-media",
+      "nameAr": "وسائل التواصل الاجتماعي"
+    },
+    {
+      "id": "4",
+      "name": "packaging",
+      "nameAr": "تصميم العبوات"
+    },
+    {
+      "id": "5",
+      "name": "print",
+      "nameAr": "تصميم مطبوع"
+    },
+    {
+      "id": "6",
+      "name": "motion",
+      "nameAr": "رسومات متحركة"
+    }
+  ],
+  "contact": []
+}

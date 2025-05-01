@@ -1,0 +1,149 @@
+.project-card {
+  height: 100%;
+  border: none;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: inherit;
+  background-color: #ffffff;
+}
+
+.project-card.dark-mode {
+  background-color: #2a2a2a;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  color: #f8f9fa;
+}
+
+.project-card:hover {
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.dark-mode .project-card:hover {
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+
+.card-img-wrapper {
+  overflow: hidden;
+  position: relative;
+  height: 200px;
+}
+
+.project-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.project-card:hover .project-image {
+  transform: scale(1.1);
+}
+
+.card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(74, 0, 224, 0.1), rgba(74, 0, 224, 0.7));
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.project-card:hover .card-overlay {
+  opacity: 1;
+}
+
+.view-project {
+  color: white;
+  font-weight: 600;
+  padding: 0.5rem 1.5rem;
+  border: 2px solid white;
+  border-radius: 50px;
+  transform: translateY(20px);
+  opacity: 0;
+  transition: all 0.3s ease 0.1s;
+}
+
+.project-card:hover .view-project {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+.card-title {
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  font-size: 1.25rem;
+}
+
+.card-text {
+  color: #6c757d;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.dark-mode .card-text {
+  color: #adb5bd;
+}
+
+.project-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.project-category {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  background-color: rgba(74, 0, 224, 0.1);
+  color: #4a00e0;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.dark-mode .project-category {
+  background-color: rgba(142, 45, 226, 0.2);
+  color: #8e2de2;
+}
+
+.project-client {
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+
+.dark-mode .project-client {
+  color: #adb5bd;
+}
+
+.meta-label {
+  font-weight: 600;
+}
+
+/* RTL Support */
+[dir="rtl"] .card-text,
+[dir="rtl"] .card-title,
+[dir="rtl"] .project-meta {
+  text-align: right;
+}
+
+/* Responsive */
+@media (max-width: 767.98px) {
+  .card-title {
+    font-size: 1.1rem;
+  }
+  
+  .card-text {
+    font-size: 0.85rem;
+  }
+}

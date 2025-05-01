@@ -1,0 +1,193 @@
+.users-list-page {
+  width: 100%;
+}
+
+.page-header {
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.page-header h1 {
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  font-size: 1.75rem;
+}
+
+.page-header p {
+  color: #6c757d;
+  margin-bottom: 0;
+}
+
+.dark-mode .page-header p {
+  color: #adb5bd;
+}
+
+.add-btn {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  background: linear-gradient(45deg, #4a00e0, #8e2de2);
+  border: none;
+  box-shadow: 0 4px 10px rgba(74, 0, 224, 0.3);
+  transition: all 0.3s ease;
+}
+
+.add-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(74, 0, 224, 0.4);
+  background: linear-gradient(45deg, #5f00ff, #a64dff);
+}
+
+.list-card {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.dark-mode .list-card {
+  background-color: #333;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.list-card .card-header {
+  background-color: transparent;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 1.25rem 1.5rem;
+}
+
+.dark-mode .list-card .card-header {
+  border-bottom-color: rgba(255, 255, 255, 0.05);
+}
+
+.list-card .card-header h5 {
+  font-weight: 600;
+}
+
+.search-input {
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  border: 1px solid #ced4da;
+  transition: all 0.3s ease;
+}
+
+.dark-mode .search-input {
+  background-color: #444;
+  border-color: #555;
+  color: #f8f9fa;
+}
+
+.search-input:focus {
+  box-shadow: 0 0 0 0.25rem rgba(74, 0, 224, 0.25);
+  border-color: #4a00e0;
+}
+
+.dark-mode .search-input:focus {
+  box-shadow: 0 0 0 0.25rem rgba(142, 45, 226, 0.25);
+  border-color: #8e2de2;
+}
+
+.table {
+  margin-bottom: 0;
+}
+
+.dark-mode .table {
+  color: #f8f9fa;
+}
+
+.table thead th {
+  border-top: none;
+  border-bottom-width: 1px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+.dark-mode .table thead th {
+  color: #adb5bd;
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.table td {
+  vertical-align: middle;
+  padding: 0.75rem 1.5rem;
+  border-color: rgba(0, 0, 0, 0.05);
+}
+
+.dark-mode .table td {
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+.role-badge {
+  font-weight: 500;
+  font-size: 0.75rem;
+  padding: 0.35rem 0.65rem;
+  border-radius: 50px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.action-btn {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+}
+
+/* Modal Dark Mode */
+.modal.dark-mode .modal-content {
+  background-color: #333;
+  color: #f8f9fa;
+}
+
+.modal.dark-mode .modal-header {
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.modal.dark-mode .modal-footer {
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+.modal.dark-mode .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+/* RTL Support */
+[dir="rtl"] .page-header h1,
+[dir="rtl"] .page-header p,
+[dir="rtl"] .list-card .card-header h5 {
+  text-align: right;
+}
+
+[dir="rtl"] .action-buttons {
+  flex-direction: row-reverse;
+}
+
+/* Responsive */
+@media (max-width: 767.98px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .page-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .add-btn {
+    margin-top: 1rem;
+  }
+  
+  .table {
+    min-width: 700px;
+  }
+}

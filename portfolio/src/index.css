@@ -1,0 +1,84 @@
+@import './styles/theme.css';
+
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: var(--primary-light);
+  text-decoration: inherit;
+  transition: color var(--transition-fast);
+}
+a:hover {
+  color: var(--primary-dark);
+}
+
+.dark-mode a {
+  color: var(--primary-dark-mode-light);
+}
+.dark-mode a:hover {
+  color: var(--primary-dark-mode-dark);
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: var(--bg-secondary-dark);
+  color: var(--text-primary-light);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+button:hover {
+  border-color: var(--primary-light);
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+.dark-mode button {
+  background-color: var(--bg-secondary-dark);
+  color: var(--text-primary-dark);
+}
+.dark-mode button:hover {
+  border-color: var(--primary-dark-mode-light);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: var(--text-primary-light);
+    background-color: var(--bg-primary-light);
+  }
+  a:hover {
+    color: var(--primary-light);
+  }
+  button {
+    background-color: var(--bg-secondary-light);
+  }
+}

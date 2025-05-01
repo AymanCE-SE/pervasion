@@ -1,0 +1,58 @@
+.home-page {
+  overflow: hidden;
+}
+
+/* Smooth scrolling for the entire page */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Scroll down indicator animation */
+.scroll-indicator {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 0.8rem;
+  z-index: 10;
+  cursor: pointer;
+}
+
+.dark-mode .scroll-indicator {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.scroll-arrow {
+  width: 20px;
+  height: 20px;
+  border-right: 2px solid;
+  border-bottom: 2px solid;
+  transform: rotate(45deg);
+  margin-bottom: 5px;
+  animation: scrollArrow 2s infinite;
+}
+
+@keyframes scrollArrow {
+  0% {
+    opacity: 0;
+    transform: rotate(45deg) translate(-5px, -5px);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+}
+
+/* RTL Support */
+[dir="rtl"] .scroll-indicator {
+  right: 50%;
+  left: auto;
+  transform: translateX(50%);
+}

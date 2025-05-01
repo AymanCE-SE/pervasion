@@ -1,0 +1,52 @@
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  transition: all var(--transition-normal);
+}
+
+.main-content {
+  flex: 1;
+  padding-top: 76px; /* Height of the navbar */
+  transition: all var(--transition-normal);
+}
+
+/* Dark Mode Styles */
+.app-container.dark-mode {
+  background-color: var(--bg-dark);
+  color: var(--text-primary-dark);
+}
+
+/* Light Mode Styles */
+.app-container:not(.dark-mode) {
+  background-color: var(--bg-light);
+  color: var(--text-primary-light);
+}
+
+/* RTL Support */
+[dir="rtl"] .app-container {
+  text-align: right;
+}
+
+/* Animation for page transitions */
+.page-transition-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.page-transition-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity var(--transition-normal), transform var(--transition-normal);
+}
+
+.page-transition-exit {
+  opacity: 1;
+}
+
+.page-transition-exit-active {
+  opacity: 0;
+  transition: opacity var(--transition-normal);
+}
+
+/* Custom scrollbar - moved to theme.css */

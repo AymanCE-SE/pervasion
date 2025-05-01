@@ -1,0 +1,272 @@
+.about-page {
+  padding: 6rem 0;
+  min-height: 100vh;
+  background-color: #ffffff;
+  transition: all 0.3s ease;
+}
+
+.about-page.dark-mode {
+  background-color: #1a1a1a;
+}
+
+.page-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  position: relative;
+  display: inline-block;
+}
+
+.page-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(45deg, #4a00e0, #8e2de2);
+  border-radius: 3px;
+}
+
+.page-subtitle {
+  font-size: 1.1rem;
+  color: #6c757d;
+  max-width: 600px;
+  margin: 0 auto 2rem;
+}
+
+.dark-mode .page-subtitle {
+  color: #adb5bd;
+}
+
+.about-content {
+  margin-top: 3rem;
+}
+
+.about-image {
+  position: relative;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.dark-mode .about-image {
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+.about-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: all 0.5s ease;
+}
+
+.about-image:hover img {
+  transform: scale(1.05);
+}
+
+.about-text {
+  padding: 1rem;
+}
+
+.about-text h2 {
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  position: relative;
+  display: inline-block;
+}
+
+.about-text h2::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 40px;
+  height: 3px;
+  background: linear-gradient(45deg, #4a00e0, #8e2de2);
+  border-radius: 3px;
+}
+
+.about-text p {
+  line-height: 1.8;
+  color: #6c757d;
+  margin-bottom: 1.5rem;
+}
+
+.dark-mode .about-text p {
+  color: #adb5bd;
+}
+
+.skills-section,
+.stats-section {
+  margin-top: 4rem;
+}
+
+.section-subtitle {
+  font-weight: 600;
+  margin-bottom: 2rem;
+  font-size: 1.75rem;
+  position: relative;
+  display: inline-block;
+}
+
+.section-subtitle::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 30px;
+  height: 3px;
+  background: linear-gradient(45deg, #4a00e0, #8e2de2);
+  border-radius: 3px;
+}
+
+.skill-item {
+  margin-bottom: 1.5rem;
+}
+
+.skill-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.skill-info h5 {
+  font-weight: 600;
+  margin-bottom: 0;
+  font-size: 1rem;
+}
+
+.skill-info span {
+  font-weight: 600;
+  color: #4a00e0;
+}
+
+.dark-mode .skill-info span {
+  color: #8e2de2;
+}
+
+.skill-progress {
+  height: 8px;
+  border-radius: 4px;
+  background-color: #f1f1f1;
+}
+
+.skill-progress.dark-mode {
+  background-color: #333;
+}
+
+.skill-progress .progress-bar {
+  background: linear-gradient(45deg, #4a00e0, #8e2de2);
+  border-radius: 4px;
+}
+
+.stat-item {
+  padding: 2rem;
+  background-color: #f8f9fa;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.dark-mode .stat-item {
+  background-color: #2a2a2a;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.stat-item:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode .stat-item:hover {
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+.stat-value {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(45deg, #4a00e0, #8e2de2);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.stat-name {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #6c757d;
+}
+
+.dark-mode .stat-name {
+  color: #adb5bd;
+}
+
+/* RTL Support */
+[dir="rtl"] .page-title::after {
+  left: auto;
+  right: 50%;
+  transform: translateX(50%);
+}
+
+[dir="rtl"] .about-text h2::after,
+[dir="rtl"] .section-subtitle::after {
+  left: auto;
+  right: 0;
+}
+
+[dir="rtl"] .about-text p,
+[dir="rtl"] .about-text h2,
+[dir="rtl"] .section-subtitle,
+[dir="rtl"] .skill-info {
+  text-align: right;
+}
+
+/* Responsive */
+@media (max-width: 991.98px) {
+  .about-page {
+    padding: 4rem 0;
+  }
+  
+  .page-title {
+    font-size: 2rem;
+  }
+  
+  .about-text h2 {
+    font-size: 1.75rem;
+  }
+  
+  .section-subtitle {
+    font-size: 1.5rem;
+  }
+  
+  .stat-value {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .page-title {
+    font-size: 1.75rem;
+  }
+  
+  .page-subtitle {
+    font-size: 1rem;
+  }
+  
+  .about-text h2 {
+    font-size: 1.5rem;
+  }
+  
+  .section-subtitle {
+    font-size: 1.25rem;
+  }
+  
+  .stat-item {
+    margin-bottom: 1.5rem;
+  }
+}

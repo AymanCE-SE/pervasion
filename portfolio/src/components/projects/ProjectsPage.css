@@ -1,0 +1,144 @@
+.projects-page {
+  padding: 6rem 0;
+  min-height: 100vh;
+  background-color: #ffffff;
+  transition: all 0.3s ease;
+}
+
+.projects-page.dark-mode {
+  background-color: #1a1a1a;
+}
+
+.page-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  position: relative;
+  display: inline-block;
+}
+
+.page-title::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(45deg, #4a00e0, #8e2de2);
+  border-radius: 3px;
+}
+
+.page-subtitle {
+  font-size: 1.1rem;
+  color: #6c757d;
+  max-width: 600px;
+  margin: 0 auto 2rem;
+}
+
+.dark-mode .page-subtitle {
+  color: #adb5bd;
+}
+
+.filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 3rem;
+}
+
+.filter-btn {
+  border-radius: 50px;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.filter-btn.active {
+  background: linear-gradient(45deg, #4a00e0, #8e2de2);
+  border-color: transparent;
+  box-shadow: 0 4px 10px rgba(74, 0, 224, 0.3);
+}
+
+.filter-btn:not(.active) {
+  background-color: transparent;
+  color: #4a00e0;
+  border-color: #4a00e0;
+}
+
+.dark-mode .filter-btn:not(.active) {
+  color: #8e2de2;
+  border-color: #8e2de2;
+}
+
+.filter-btn:hover {
+  transform: translateY(-2px);
+}
+
+.projects-grid {
+  margin-top: 2rem;
+}
+
+/* Animation for project cards */
+.project-card-enter {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+.project-card-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.project-card-exit {
+  opacity: 1;
+}
+
+.project-card-exit-active {
+  opacity: 0;
+  transition: opacity 300ms;
+}
+
+/* RTL Support */
+[dir="rtl"] .page-title::after {
+  left: auto;
+  right: 50%;
+  transform: translateX(50%);
+}
+
+/* Responsive */
+@media (max-width: 991.98px) {
+  .projects-page {
+    padding: 4rem 0;
+  }
+  
+  .page-title {
+    font-size: 2rem;
+  }
+  
+  .filter-buttons {
+    margin-bottom: 2rem;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .page-title {
+    font-size: 1.75rem;
+  }
+  
+  .page-subtitle {
+    font-size: 1rem;
+  }
+  
+  .filter-buttons {
+    gap: 0.3rem;
+  }
+  
+  .filter-btn {
+    font-size: 0.8rem;
+    padding: 0.4rem 1rem;
+  }
+}
