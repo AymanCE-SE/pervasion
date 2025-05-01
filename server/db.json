@@ -127,6 +127,23 @@
       "email": "ahmed@gmail.com",
       "name": "Ahmed Abdallah Khalil",
       "role": "admin"
+    },
+    {
+      "id": null,
+      "username": "ayman.samir",
+      "email": "good_boy_20102003@yahoo.com",
+      "password": "123456789",
+      "role": "user",
+      "createdAt": "2025-05-01T22:49:45.258Z"
+    },
+    {
+      "id": "b6c2",
+      "username": "test",
+      "password": "123654789",
+      "email": "admin@AliPaPa.com",
+      "name": "newuser",
+      "role": "user",
+      "createdAt": "2025-05-01T23:02:50.108Z"
     }
   ],
   "categories": [
@@ -161,5 +178,41 @@
       "nameAr": "رسومات متحركة"
     }
   ],
-  "contact": []
+  "contact": [
+    {
+      "id": "7799",
+      "name": "ali",
+      "email": "aykalam@yahoo.com",
+      "message": "i love Your UI design and i need a similar project, please contact me",
+      "userId": "",
+      "status": "new",
+      "createdAt": "2025-05-01T23:11:54.341Z"
+    }
+  ],
+  "comments": [
+    {
+      "id": "1",
+      "projectId": "1",
+      "userId": "1",
+      "username": "Admin User",
+      "content": "This is an example comment on the brand identity project.",
+      "createdAt": "2025-04-28T10:30:00.000Z"
+    },
+    {
+      "id": "2",
+      "projectId": "2",
+      "userId": "80a2",
+      "username": "ayman samir",
+      "content": "Great social media campaign design!",
+      "createdAt": "2025-04-29T15:45:00.000Z"
+    },
+    {
+      "id": "735e",
+      "projectId": "1",
+      "userId": null,
+      "username": "ayman.samir",
+      "content": "i admire this!!",
+      "createdAt": "2025-05-01T23:15:22.745Z"
+    }
+  ]
 }

@@ -7,6 +7,53 @@ const API_URL = 'http://localhost:5000';
 const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null;
 const token = localStorage.getItem('token') || null;
 
+// Async thunk for registration
+export const register = createAsyncThunk(
+  'auth/register',
+  async (userData, { rejectWithValue }) => {
+    try {
+      // Check if username already exists
+      const usernameCheck = await axios.get(`${API_URL}/users?username=${userData.username}`);
+      if (usernameCheck.data.length > 0) {
+        return rejectWithValue('Username already exists');
+      }
+      
+      // Check if email already exists
+      const emailCheck = await axios.get(`${API_URL}/users?email=${userData.email}`);
+      if (emailCheck.data.length > 0) {
+        return rejectWithValue('Email already exists');
+      }
+      
+      // Create new user with id and name
+      // Note: JSON Server will automatically assign an ID if we don't provide one
+      const newUser = {
+        username: userData.username,
+        password: userData.password,
+        email: userData.email,
+        name: userData.name,
+        role: userData.role || 'user',
+        createdAt: new Date().toISOString()
+      };
+      
+      const response = await axios.post(`${API_URL}/users`, newUser);
+      
+      // Create a token (this is just a simulation - in a real app, the server would generate this)
+      const token = btoa(`${userData.username}:${userData.password}`);
+      
+      // Remove password from user object before storing
+      const { password: _, ...userWithoutPassword } = response.data;
+      
+      // Store user and token in localStorage
+      localStorage.setItem('user', JSON.stringify(userWithoutPassword));
+      localStorage.setItem('token', token);
+      
+      return { user: userWithoutPassword, token };
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
 // Async thunk for login
 export const login = createAsyncThunk(
   'auth/login',
@@ -71,6 +118,21 @@ export const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // Registration
+      .addCase(register.pending, (state) => {
+        state.status = 'loading';
+        state.error = null;
+      })
+      .addCase(register.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.user = action.payload.user;
+        state.token = action.payload.token;
+        state.isAuthenticated = true;
+      })
+      .addCase(register.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload || 'Registration failed';
+      })
       // Login
       .addCase(login.pending, (state) => {
         state.status = 'loading';
@@ -103,5 +165,6 @@ export const selectToken = (state) => state.auth.token;
 export const selectIsAuthenticated = (state) => state.auth.isAuthenticated;
 export const selectAuthStatus = (state) => state.auth.status;
 export const selectAuthError = (state) => state.auth.error;
+export const selectUserRole = (state) => state.auth.user?.role;
 
 export default authSlice.reducer;

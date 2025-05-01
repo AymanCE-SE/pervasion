@@ -16,14 +16,15 @@ html {
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: rgba(0, 0, 0, 0.5);
+  color: var(--text-secondary-light);
   font-size: 0.8rem;
   z-index: 10;
   cursor: pointer;
+  transition: color var(--transition-normal);
 }
 
 .dark-mode .scroll-indicator {
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--text-secondary-dark);
 }
 
 .scroll-arrow {

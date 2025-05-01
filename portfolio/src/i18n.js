@@ -14,6 +14,7 @@ const enTranslations = {
     about: 'About',
     contact: 'Contact',
     admin: 'Admin',
+    dashboard: 'Dashboard',
   },
   home: {
     hero: {
@@ -167,6 +168,7 @@ const arTranslations = {
     about: 'من أنا',
     contact: 'اتصل بي',
     admin: 'الإدارة',
+    dashboard: 'لوحة المستخدم',
   },
   home: {
     hero: {

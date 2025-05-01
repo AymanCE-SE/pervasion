@@ -5,10 +5,11 @@
   },
   "nav": {
     "home": "Home",
-    "projects": "Projects",
+    "services": "Services",
     "about": "About",
     "contact": "Contact",
-    "admin": "Admin"
+    "admin": "Admin",
+    "dashboard": "Dashboard"
   },
   "hero": {
     "title": "Creative Design Solutions",
@@ -32,7 +33,15 @@
     "client": "Client",
     "date": "Date",
     "category": "Category",
-    "relatedProjects": "Related Projects"
+    "location": "Location",
+    "award": "Award",
+    "website": "Website",
+    "visitWebsite": "Visit Website",
+    "relatedProjects": "Related Projects",
+    "similarCategory": "Projects in the same category",
+    "moreProjects": "More Projects",
+    "exploreMore": "Explore other categories",
+    "projectDescription": "Project Description"
   },
   "about": {
     "title": "About Me",
@@ -64,13 +73,68 @@
     "success": "Your message has been sent successfully!",
     "error": "There was an error sending your message. Please try again.",
     "required": "This field is required",
-    "invalidEmail": "Please enter a valid email address"
+    "invalidEmail": "Please enter a valid email address",
+    "loggedInAs": "You are logged in as",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "submit": "Send Message"
+    },
+    "validation": {
+      "required": "This field is required",
+      "invalidEmail": "Please enter a valid email address"
+    },
+    "info": {
+      "title": "Contact Information",
+      "address": "Address",
+      "phone": "Phone",
+      "email": "Email",
+      "hours": "Working Hours"
+    }
+  },
+  "comments": {
+    "title": "Comments",
+    "submit": "Post Comment",
+    "placeholder": "Write your comment here...",
+    "loginRequired": "You must be logged in to post a comment",
+    "loginPrompt": "Please log in to leave a comment",
+    "addError": "Failed to add comment",
+    "delete": "Delete comment",
+    "noComments": "No comments yet. Be the first to comment!"
+  },
+  "auth": {
+    "login": "Login",
+    "signup": "Sign Up",
+    "logout": "Logout",
+    "username": "Username",
+    "email": "Email",
+    "name": "Full Name",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "welcomeBack": "Welcome back",
+    "createAccount": "Create a new account",
+    "alreadyHaveAccount": "Already have an account?",
+    "noAccount": "Don't have an account?",
+    "forgotPassword": "Forgot password?",
+    "resetPassword": "Reset Password",
+    "loginSuccess": "Login successful",
+    "signupSuccess": "Account created successfully",
+    "loginError": "Invalid username or password",
+    "signupError": "Error creating account"
+  },
+  "validation": {
+    "required": "This field is required",
+    "emailInvalid": "Please enter a valid email address",
+    "passwordLength": "Password must be at least 6 characters",
+    "usernameLength": "Username must be at least 3 characters",
+    "passwordMatch": "Passwords do not match"
   },
   "admin": {
     "dashboard": "Dashboard",
     "projects": "Projects",
     "users": "Users",
-    "login": "Login",
+    "login": "Admin Login",
     "logout": "Logout",
     "welcome": "Welcome",
     "addNew": "Add New",
@@ -121,6 +185,7 @@
     "error": "An error occurred",
     "retry": "Retry",
     "readMore": "Read More",
-    "backToHome": "Back to Home"
+    "backToHome": "Back to Home",
+    "backToProjects": "Back to Projects"
   }
 }

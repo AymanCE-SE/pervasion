@@ -1,0 +1,221 @@
+import React, { useState, useEffect } from 'react';
+import { Form, Button, Alert, Card } from 'react-bootstrap';
+import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FiSend, FiTrash, FiMessageCircle } from 'react-icons/fi';
+import { 
+  fetchCommentsByProjectId, 
+  addComment, 
+  deleteComment,
+  selectAllComments,
+  selectCommentsStatus,
+  selectCommentsError
+} from '../../redux/slices/commentsSlice';
+import { 
+  selectIsAuthenticated, 
+  selectUser,
+  selectUserRole
+} from '../../redux/slices/authSlice';
+import { selectDarkMode } from '../../redux/slices/themeSlice';
+import './ProjectComments.css';
+
+const ProjectComments = ({ projectId }) => {
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const [commentText, setCommentText] = useState('');
+  const [error, setError] = useState('');
+
+  const comments = useSelector(selectAllComments);
+  const commentsStatus = useSelector(selectCommentsStatus);
+  const commentsError = useSelector(selectCommentsError);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const currentUser = useSelector(selectUser);
+  const userRole = useSelector(selectUserRole);
+  const darkMode = useSelector(selectDarkMode);
+
+  useEffect(() => {
+    if (projectId) {
+      dispatch(fetchCommentsByProjectId(projectId));
+    }
+  }, [dispatch, projectId]);
+
+  const handleCommentSubmit = (e) => {
+    e.preventDefault();
+    
+    if (!commentText.trim()) {
+      setError(t('validation.required'));
+      return;
+    }
+
+    if (!isAuthenticated) {
+      setError(t('comments.loginRequired'));
+      return;
+    }
+
+    const commentData = {
+      projectId,
+      userId: currentUser.id,
+      username: currentUser.name || currentUser.username,
+      content: commentText.trim()
+    };
+
+    dispatch(addComment(commentData))
+      .unwrap()
+      .then(() => {
+        setCommentText('');
+        setError('');
+      })
+      .catch((err) => {
+        setError(err.message || t('comments.addError'));
+      });
+  };
+
+  const handleDeleteComment = (commentId) => {
+    dispatch(deleteComment(commentId));
+  };
+
+  const formatDate = (dateString) => {
+    const options = { 
+      year: 'numeric', 
+      month: 'short', 
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { duration: 0.4 }
+    },
+    exit: {
+      opacity: 0,
+      y: -20,
+      transition: { duration: 0.3 }
+    }
+  };
+
+  return (
+    <div className={`project-comments ${darkMode ? 'dark-mode' : ''}`}>
+      <h3 className="comments-title">
+        <FiMessageCircle className="me-2" />
+        {t('comments.title')}
+      </h3>
+      
+      {isAuthenticated ? (
+        <Form onSubmit={handleCommentSubmit} className="comment-form">
+          <Form.Group controlId="commentText">
+            <Form.Control
+              as="textarea"
+              rows={3}
+              value={commentText}
+              onChange={(e) => setCommentText(e.target.value)}
+              placeholder={t('comments.placeholder')}
+              isInvalid={!!error}
+            />
+            <Form.Control.Feedback type="invalid">
+              {error}
+            </Form.Control.Feedback>
+          </Form.Group>
+          <Button 
+            variant="primary" 
+            type="submit" 
+            className="comment-submit-btn mt-2"
+            disabled={commentsStatus === 'loading'}
+          >
+            {commentsStatus === 'loading' ? (
+              <>
+                <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                {t('common.loading')}
+              </>
+            ) : (
+              <>
+                <FiSend className="me-2" />
+                {t('comments.submit')}
+              </>
+            )}
+          </Button>
+        </Form>
+      ) : (
+        <Alert variant="info" className="login-prompt">
+          <p>{t('comments.loginPrompt')}</p>
+          <Button 
+            variant="outline-primary" 
+            href="/login" 
+            size="sm"
+          >
+            {t('auth.login')}
+          </Button>
+        </Alert>
+      )}
+
+      {commentsError && (
+        <Alert variant="danger" className="mt-3">
+          {commentsError}
+        </Alert>
+      )}
+
+      <motion.div 
+        className="comments-list mt-4"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        {comments.length === 0 ? (
+          <p className="no-comments">{t('comments.noComments')}</p>
+        ) : (
+          <AnimatePresence>
+            {comments.map(comment => (
+              <motion.div 
+                key={comment.id}
+                variants={itemVariants}
+                exit="exit"
+                layout
+              >
+                <Card className="comment-card mb-3">
+                  <Card.Body>
+                    <div className="comment-header">
+                      <div>
+                        <h5 className="comment-author">{comment.username}</h5>
+                        <small className="comment-date">{formatDate(comment.createdAt)}</small>
+                      </div>
+                      {(isAuthenticated && (currentUser.id === comment.userId || userRole === 'admin')) && (
+                        <Button 
+                          variant="link" 
+                          className="delete-comment-btn"
+                          onClick={() => handleDeleteComment(comment.id)}
+                          aria-label={t('comments.delete')}
+                        >
+                          <FiTrash />
+                        </Button>
+                      )}
+                    </div>
+                    <p className="comment-content">{comment.content}</p>
+                  </Card.Body>
+                </Card>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        )}
+      </motion.div>
+    </div>
+  );
+};
+
+export default ProjectComments;

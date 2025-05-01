@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Form, Button, Alert, Card } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { login, selectAuthStatus, selectAuthError, selectIsAuthenticated, clearError } from '../../redux/slices/authSlice';
 import { selectDarkMode } from '../../redux/slices/themeSlice';
 import { FaUser, FaLock, FaSignInAlt } from 'react-icons/fa';
-import './LoginPage.css';
+import './AuthPages.css';
 
 const LoginPage = () => {
   const { t } = useTranslation();
@@ -49,17 +49,17 @@ const LoginPage = () => {
   // Redirect if already authenticated
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/admin/dashboard');
+      navigate('/');
     }
   }, [isAuthenticated, navigate]);
 
   return (
     <>
       <Helmet>
-        <title>{t('app.title')} - {t('admin.login')}</title>
+        <title>{t('app.title')} - {t('auth.login')}</title>
       </Helmet>
 
-      <section className={`login-page ${darkMode ? 'dark-mode' : ''}`}>
+      <section className={`auth-page ${darkMode ? 'dark-mode' : ''}`}>
         <Container>
           <Row className="justify-content-center">
             <Col md={6} lg={5}>
@@ -68,7 +68,7 @@ const LoginPage = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
               >
-                <Card className={`login-card ${darkMode ? 'dark-mode' : ''}`}>
+                <Card className={`auth-card ${darkMode ? 'dark-mode' : ''}`}>
                   <Card.Body className="p-4 p-md-5">
                     <div className="text-center mb-4">
                       <motion.div
@@ -76,11 +76,11 @@ const LoginPage = () => {
                         animate={{ scale: 1 }}
                         transition={{ duration: 0.5 }}
                       >
-                        <div className="login-icon mb-3">
+                        <div className="auth-icon mb-3">
                           <FaSignInAlt size={40} className="icon-gradient" />
                         </div>
-                        <h2 className="login-title">{t('admin.login')}</h2>
-                        <p className="login-subtitle">{t('app.title')}</p>
+                        <h2 className="auth-title">{t('auth.login')}</h2>
+                        <p className="auth-subtitle">{t('auth.welcomeBack')}</p>
                       </motion.div>
                     </div>
                     
@@ -98,7 +98,7 @@ const LoginPage = () => {
                     
                     <Form onSubmit={handleSubmit}>
                       <Form.Group className="mb-4" controlId="loginUsername">
-                        <Form.Label>{t('admin.username')}</Form.Label>
+                        <Form.Label>{t('auth.username')}</Form.Label>
                         <div className="input-group">
                           <div className="input-group-text">
                             <FaUser />
@@ -109,13 +109,13 @@ const LoginPage = () => {
                             value={formData.username}
                             onChange={handleInputChange}
                             required
-                            placeholder={t('admin.username')}
+                            placeholder={t('auth.username')}
                           />
                         </div>
                       </Form.Group>
 
                       <Form.Group className="mb-4" controlId="loginPassword">
-                        <Form.Label>{t('admin.password')}</Form.Label>
+                        <Form.Label>{t('auth.password')}</Form.Label>
                         <div className="input-group">
                           <div className="input-group-text">
                             <FaLock />
@@ -126,7 +126,7 @@ const LoginPage = () => {
                             value={formData.password}
                             onChange={handleInputChange}
                             required
-                            placeholder={t('admin.password')}
+                            placeholder={t('auth.password')}
                           />
                         </div>
                       </Form.Group>
@@ -138,7 +138,7 @@ const LoginPage = () => {
                         <Button 
                           variant="primary" 
                           type="submit" 
-                          className="login-btn w-100"
+                          className="auth-btn w-100"
                           disabled={status === 'loading'}
                         >
                           {status === 'loading' ? (
@@ -149,7 +149,7 @@ const LoginPage = () => {
                           ) : (
                             <>
                               <FaSignInAlt className="me-2" />
-                              {t('admin.login')}
+                              {t('auth.login')}
                             </>
                           )}
                         </Button>
@@ -158,14 +158,12 @@ const LoginPage = () => {
                     
                     <div className="text-center mt-4">
                       <motion.p 
-                        className="login-info"
+                        className="auth-link"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.5, duration: 0.5 }}
                       >
-                        <small>
-                          Demo credentials: admin / admin123
-                        </small>
+                        {t('auth.noAccount')} <Link to="/signup">{t('auth.signup')}</Link>
                       </motion.p>
                     </div>
                   </Card.Body>

@@ -1,35 +1,60 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Form, Button, Alert } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { selectDarkMode } from '../../redux/slices/themeSlice';
-import { FaMapMarkerAlt, FaPhone, FaEnvelope } from 'react-icons/fa';
-import axios from 'axios';
+import { selectIsAuthenticated, selectUser } from '../../redux/slices/authSlice';
+import { 
+  submitContactForm, 
+  clearContactStatus,
+  selectContactStatus, 
+  selectContactError, 
+  selectContactSuccessMessage 
+} from '../../redux/slices/contactSlice';
+import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaUser } from 'react-icons/fa';
 import './ContactPage.css';
 
 const ContactPage = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const darkMode = useSelector(selectDarkMode);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const currentUser = useSelector(selectUser);
+  const contactStatus = useSelector(selectContactStatus);
+  const contactError = useSelector(selectContactError);
+  const successMessage = useSelector(selectContactSuccessMessage);
   
   // Form state
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    message: ''
+    message: '',
+    userId: ''
   });
   
   // Form validation state
   const [validated, setValidated] = useState(false);
   
-  // Form submission state
-  const [submitting, setSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState({
-    success: false,
-    error: false,
-    message: ''
-  });
+  // Pre-fill form data if user is authenticated
+  useEffect(() => {
+    if (isAuthenticated && currentUser) {
+      setFormData(prevState => ({
+        ...prevState,
+        name: currentUser.name || '',
+        email: currentUser.email || '',
+        userId: currentUser.id || ''
+      }));
+    }
+  }, [isAuthenticated, currentUser]);
+  
+  // Clear contact status when component unmounts
+  useEffect(() => {
+    return () => {
+      dispatch(clearContactStatus());
+    };
+  }, [dispatch]);
 
   // Handle form input changes
   const handleInputChange = (e) => {
@@ -53,45 +78,30 @@ const ContactPage = () => {
     }
     
     setValidated(true);
-    setSubmitting(true);
     
-    try {
-      // Send data to JSON Server
-      await axios.post('http://localhost:5000/contact', formData);
-      
-      // Success message
-      setSubmitStatus({
-        success: true,
-        error: false,
-        message: t('contact.success')
-      });
-      
-      // Reset form
-      setFormData({
-        name: '',
-        email: '',
-        message: ''
-      });
-      setValidated(false);
-    } catch (error) {
-      // Error message
-      setSubmitStatus({
-        success: false,
-        error: true,
-        message: t('contact.error')
-      });
-    } finally {
-      setSubmitting(false);
-      
-      // Clear status after 5 seconds
-      setTimeout(() => {
-        setSubmitStatus({
-          success: false,
-          error: false,
-          message: ''
+    // Add timestamp and status to form data
+    const contactData = {
+      ...formData,
+      status: 'new'
+    };
+    
+    dispatch(submitContactForm(contactData))
+      .unwrap()
+      .then(() => {
+        // Reset form on success
+        setFormData({
+          name: isAuthenticated ? (currentUser.name || '') : '',
+          email: isAuthenticated ? (currentUser.email || '') : '',
+          message: '',
+          userId: isAuthenticated ? (currentUser.id || '') : ''
         });
-      }, 5000);
-    }
+        setValidated(false);
+        
+        // Clear status after 5 seconds
+        setTimeout(() => {
+          dispatch(clearContactStatus());
+        }, 5000);
+      });
   };
 
   // Animation variants
@@ -152,7 +162,7 @@ const ContactPage = () => {
                     </div>
                     <div className="info-text">
                       <h5>{t('contact.info.address')}</h5>
-                      <p>{t('contact.info.addressValue')}</p>
+                      <p>123 Design Street, Creative City, 10001</p>
                     </div>
                   </div>
                   
@@ -162,7 +172,7 @@ const ContactPage = () => {
                     </div>
                     <div className="info-text">
                       <h5>{t('contact.info.phone')}</h5>
-                      <p>{t('contact.info.phoneValue')}</p>
+                      <p>+1 (555) 123-4567</p>
                     </div>
                   </div>
                   
@@ -172,23 +182,13 @@ const ContactPage = () => {
                     </div>
                     <div className="info-text">
                       <h5>{t('contact.info.email')}</h5>
-                      <p>{t('contact.info.emailValue')}</p>
-                    </div>
-                  </div>
-                  
-                  <div className="info-item">
-                    <div className="icon-box">
-                      <i className="far fa-clock"></i>
-                    </div>
-                    <div className="info-text">
-                      <h5>{t('contact.info.hours')}</h5>
-                      <p>{t('contact.info.hoursValue')}</p>
+                      <p>info@pervasion.com</p>
                     </div>
                   </div>
                   
                   <div className="map-container">
                     <iframe
-                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3023.9503398796587!2d-73.9988097!3d40.7193213!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a47df06b185%3A0xc80da61087762802!2sNew%20York%2C%20NY%2010012!5e0!3m2!1sen!2sus!4v1651234567890!5m2!1sen!2sus"
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387193.30596552044!2d-74.25986548248684!3d40.69714941932609!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2s!4v1612345678901!5m2!1sen!2s"
                       width="100%"
                       height="200"
                       style={{ border: 0 }}
@@ -203,12 +203,28 @@ const ContactPage = () => {
               
               <Col lg={7}>
                 <motion.div variants={itemVariants} className="contact-form">
-                  {(submitStatus.success || submitStatus.error) && (
+                  {(contactStatus === 'succeeded' && successMessage) && (
                     <Alert 
-                      variant={submitStatus.success ? 'success' : 'danger'}
+                      variant="success"
                       className="mb-4"
                     >
-                      {submitStatus.message}
+                      {successMessage}
+                    </Alert>
+                  )}
+                  
+                  {(contactStatus === 'failed' && contactError) && (
+                    <Alert 
+                      variant="danger"
+                      className="mb-4"
+                    >
+                      {contactError}
+                    </Alert>
+                  )}
+                  
+                  {isAuthenticated && (
+                    <Alert variant="info" className="mb-4">
+                      <FaUser className="me-2" />
+                      {t('contact.loggedInAs')} <strong>{currentUser.name || currentUser.username}</strong>
                     </Alert>
                   )}
                   
@@ -222,6 +238,7 @@ const ContactPage = () => {
                         onChange={handleInputChange}
                         required
                         placeholder={t('contact.form.name')}
+                        disabled={isAuthenticated && currentUser.name}
                       />
                       <Form.Control.Feedback type="invalid">
                         {t('contact.validation.required')}
@@ -237,6 +254,7 @@ const ContactPage = () => {
                         onChange={handleInputChange}
                         required
                         placeholder={t('contact.form.email')}
+                        disabled={isAuthenticated && currentUser.email}
                       />
                       <Form.Control.Feedback type="invalid">
                         {t('contact.validation.invalidEmail')}
@@ -263,9 +281,9 @@ const ContactPage = () => {
                       variant="primary" 
                       type="submit" 
                       className="submit-btn"
-                      disabled={submitting}
+                      disabled={contactStatus === 'loading'}
                     >
-                      {submitting ? (
+                      {contactStatus === 'loading' ? (
                         <>
                           <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
                           {t('common.loading')}

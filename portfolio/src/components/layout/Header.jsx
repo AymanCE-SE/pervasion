@@ -11,10 +11,10 @@ import {
   toggleLanguage,
   selectLanguage,
 } from "../../redux/slices/languageSlice";
-import { selectIsAuthenticated, logout } from "../../redux/slices/authSlice";
+import { selectIsAuthenticated, selectUserRole, logout } from "../../redux/slices/authSlice";
 import { BsSun, BsMoon, BsGlobe } from "react-icons/bs";
-import { FiLogOut } from "react-icons/fi";
-import { RiStackLine } from "react-icons/ri";
+import { FiLogOut, FiLogIn } from "react-icons/fi";
+import { RiStackLine, RiUserAddLine } from "react-icons/ri";
 import "./Header.css";
 
 const Header = () => {
@@ -23,6 +23,7 @@ const Header = () => {
   const darkMode = useSelector(selectDarkMode);
   const language = useSelector(selectLanguage);
   const isAuthenticated = useSelector(selectIsAuthenticated);
+  const userRole = useSelector(selectUserRole);
   const [scrolled, setScrolled] = useState(false);
   const [expanded, setExpanded] = useState(false);
 
@@ -143,19 +144,19 @@ const Header = () => {
                 </Nav.Link>
               </motion.div>
 
-              <motion.div
+              {/* <motion.div
                 custom={2}
                 variants={navItemVariants}
                 initial="hidden"
                 animate="visible">
                 <Nav.Link
                   as={NavLink}
-                  to="/projects"
+                  to="/services"
                   onClick={() => setExpanded(false)}
                   className={({ isActive }) => (isActive ? "active" : "")}>
-                  {t("nav.projects")}
+                  {t("nav.services")}
                 </Nav.Link>
-              </motion.div>
+              </motion.div> */}
 
               <motion.div
                 custom={3}
@@ -185,7 +186,7 @@ const Header = () => {
                 </Nav.Link>
               </motion.div>
 
-              {isAuthenticated && (
+              {isAuthenticated && userRole === 'admin' && (
                 <motion.div
                   custom={5}
                   variants={navItemVariants}
@@ -197,6 +198,22 @@ const Header = () => {
                     onClick={() => setExpanded(false)}
                     className={({ isActive }) => (isActive ? "active" : "")}>
                     {t("nav.admin")}
+                  </Nav.Link>
+                </motion.div>
+              )}
+              
+              {isAuthenticated && userRole === 'user' && (
+                <motion.div
+                  custom={5}
+                  variants={navItemVariants}
+                  initial="hidden"
+                  animate="visible">
+                  <Nav.Link
+                    as={NavLink}
+                    to="/dashboard"
+                    onClick={() => setExpanded(false)}
+                    className={({ isActive }) => (isActive ? "active" : "")}>
+                    {t("nav.dashboard")}
                   </Nav.Link>
                 </motion.div>
               )}
@@ -248,7 +265,7 @@ const Header = () => {
                 </Button>
               </motion.div>
 
-              {isAuthenticated && (
+              {isAuthenticated ? (
                 <motion.div
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}>
@@ -256,10 +273,44 @@ const Header = () => {
                     variant="danger"
                     className="logout-btn"
                     onClick={handleLogout}
-                    aria-label={t("admin.logout")}>
+                    aria-label={t("auth.logout")}>
                     <FiLogOut />
                   </Button>
                 </motion.div>
+              ) : (
+                <>
+                  <motion.div
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="ms-2">
+                    <Button
+                      as={Link}
+                      to="/login"
+                      variant="outline-primary"
+                      className="login-btn"
+                      onClick={() => setExpanded(false)}
+                      aria-label={t("auth.login")}>
+                      <FiLogIn className="me-1" />
+                      <span className="btn-text">{t("auth.login")}</span>
+                    </Button>
+                  </motion.div>
+                  
+                  <motion.div
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="ms-2">
+                    <Button
+                      as={Link}
+                      to="/signup"
+                      variant="primary"
+                      className="signup-btn"
+                      onClick={() => setExpanded(false)}
+                      aria-label={t("auth.signup")}>
+                      <RiUserAddLine className="me-1" />
+                      <span className="btn-text">{t("auth.signup")}</span>
+                    </Button>
+                  </motion.div>
+                </>
               )}
             </div>
           </Navbar.Collapse>

@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { useSelector } from 'react-redux';
 import { selectDarkMode } from '../../redux/slices/themeSlice';
 import { selectLanguage } from '../../redux/slices/languageSlice';
+import { FiArrowRight, FiEye, FiCalendar, FiUser } from 'react-icons/fi';
 import './ProjectCard.css';
 
 const ProjectCard = ({ project }) => {
@@ -15,8 +16,14 @@ const ProjectCard = ({ project }) => {
 
   return (
     <motion.div
-      whileHover={{ y: -10 }}
-      transition={{ duration: 0.3 }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      whileHover={{ 
+        y: -15,
+        transition: { duration: 0.3, ease: "easeOut" }
+      }}
+      className="project-card-container"
     >
       <Card 
         className={`project-card ${darkMode ? 'dark-mode' : ''}`}
@@ -31,7 +38,20 @@ const ProjectCard = ({ project }) => {
             className="project-image"
           />
           <div className="card-overlay">
-            <span className="view-project">{t('projects.viewProject')}</span>
+            <motion.div 
+              className="overlay-content"
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileHover={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.3 }}
+            >
+              <span className="view-project">
+                {t('projects.viewProject')}
+                <FiEye className="icon-right" />
+              </span>
+            </motion.div>
+          </div>
+          <div className="card-badge">
+            {t(`projects.categories.${project.category}`)}
           </div>
         </div>
         <Card.Body>
@@ -44,13 +64,23 @@ const ProjectCard = ({ project }) => {
               : project.descriptionAr.substring(0, 100) + '...'}
           </Card.Text>
           <div className="project-meta">
-            <div className="project-category">
-              {t(`projects.categories.${project.category}`)}
+            <div className="meta-item">
+              <FiCalendar className="meta-icon" />
+              <span>{project.date}</span>
             </div>
-            <div className="project-client">
-              <span className="meta-label">{t('projects.client')}:</span> {project.client}
+            <div className="meta-item">
+              <FiUser className="meta-icon" />
+              <span>{project.client}</span>
             </div>
           </div>
+          <motion.div 
+            className="card-footer"
+            whileHover={{ x: 5 }}
+            transition={{ duration: 0.2 }}
+          >
+            <span className="view-details">{t('projects.viewDetails')}</span>
+            <FiArrowRight className="arrow-icon" />
+          </motion.div>
         </Card.Body>
       </Card>
     </motion.div>

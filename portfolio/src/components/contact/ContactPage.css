@@ -1,12 +1,12 @@
 .contact-page {
   padding: 6rem 0;
   min-height: 100vh;
-  background-color: #ffffff;
-  transition: all 0.3s ease;
+  background-color: var(--bg-light);
+  transition: all var(--transition-normal);
 }
 
 .contact-page.dark-mode {
-  background-color: #1a1a1a;
+  background-color: var(--bg-dark);
 }
 
 .page-title {
@@ -25,19 +25,19 @@
   transform: translateX(-50%);
   width: 50px;
   height: 3px;
-  background: linear-gradient(45deg, #4a00e0, #8e2de2);
+  background: var(--primary-gradient);
   border-radius: 3px;
 }
 
 .page-subtitle {
   font-size: 1.1rem;
-  color: #6c757d;
+  color: var(--text-secondary-light);
   max-width: 600px;
   margin: 0 auto 2rem;
 }
 
 .dark-mode .page-subtitle {
-  color: #adb5bd;
+  color: var(--text-secondary-dark);
 }
 
 .contact-content {
@@ -46,15 +46,15 @@
 
 .contact-info {
   padding: 2rem;
-  background-color: #f8f9fa;
+  background-color: var(--bg-secondary-light);
   border-radius: 15px;
   height: 100%;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 30px var(--shadow-light);
 }
 
 .dark-mode .contact-info {
-  background-color: #2a2a2a;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  background-color: var(--bg-secondary-dark);
+  box-shadow: 0 10px 30px var(--shadow-dark);
 }
 
 .contact-info h3 {
@@ -72,17 +72,17 @@
   left: 0;
   width: 30px;
   height: 3px;
-  background: linear-gradient(45deg, #4a00e0, #8e2de2);
+  background: var(--primary-gradient);
   border-radius: 3px;
 }
 
 .contact-info > p {
   margin-bottom: 2rem;
-  color: #6c757d;
+  color: var(--text-secondary-light);
 }
 
 .dark-mode .contact-info > p {
-  color: #adb5bd;
+  color: var(--text-secondary-dark);
 }
 
 .info-item {
@@ -95,7 +95,7 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: linear-gradient(45deg, #4a00e0, #8e2de2);
+  background: var(--primary-gradient);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -112,34 +112,34 @@
 
 .info-text p {
   margin-bottom: 0;
-  color: #6c757d;
+  color: var(--text-secondary-light);
 }
 
 .dark-mode .info-text p {
-  color: #adb5bd;
+  color: var(--text-secondary-dark);
 }
 
 .contact-map {
   margin-top: 2rem;
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 5px 15px var(--shadow-light);
 }
 
 .dark-mode .contact-map {
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 5px 15px var(--shadow-dark);
 }
 
 .contact-form {
   padding: 2rem;
-  background-color: #ffffff;
+  background-color: var(--card-bg-light);
   border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 30px var(--shadow-light);
 }
 
 .dark-mode .contact-form {
-  background-color: #2a2a2a;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  background-color: var(--card-bg-dark);
+  box-shadow: 0 10px 30px var(--shadow-dark);
 }
 
 .form-label {
@@ -149,44 +149,44 @@
 .form-control {
   padding: 0.75rem 1rem;
   border-radius: 10px;
-  border: 1px solid #ced4da;
-  transition: all 0.3s ease;
+  border: 1px solid var(--input-border-light);
+  transition: all var(--transition-normal);
 }
 
 .dark-mode .form-control {
-  background-color: #333;
-  border-color: #444;
-  color: #f8f9fa;
+  background-color: var(--input-bg-dark);
+  border-color: var(--input-border-dark);
+  color: var(--text-primary-dark);
 }
 
 .form-control:focus {
-  box-shadow: 0 0 0 0.25rem rgba(74, 0, 224, 0.25);
-  border-color: #4a00e0;
+  box-shadow: 0 0 0 0.25rem var(--input-focus-light);
+  border-color: var(--primary-light);
 }
 
 .dark-mode .form-control:focus {
-  box-shadow: 0 0 0 0.25rem rgba(142, 45, 226, 0.25);
-  border-color: #8e2de2;
+  box-shadow: 0 0 0 0.25rem var(--input-focus-dark);
+  border-color: var(--primary-dark-mode-light);
 }
 
 .submit-btn {
   padding: 0.75rem 2rem;
   border-radius: 50px;
   font-weight: 600;
-  background: linear-gradient(45deg, #4a00e0, #8e2de2);
+  background: var(--btn-primary-bg);
   border: none;
-  box-shadow: 0 4px 15px rgba(74, 0, 224, 0.3);
-  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px var(--shadow-primary-light);
+  transition: all var(--transition-normal);
 }
 
 .submit-btn:hover:not(:disabled) {
   transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(74, 0, 224, 0.4);
-  background: linear-gradient(45deg, #5f00ff, #a64dff);
+  box-shadow: 0 8px 20px var(--shadow-primary-dark);
+  background: var(--btn-primary-dark-mode-bg);
 }
 
 .submit-btn:disabled {
-  background: linear-gradient(45deg, #4a00e0, #8e2de2);
+  background: var(--btn-primary-bg);
   opacity: 0.7;
 }
 

@@ -4,7 +4,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import { useSelector } from 'react-redux';
 import { selectDarkMode } from './redux/slices/themeSlice';
 import { selectLanguage } from './redux/slices/languageSlice';
-import { selectIsAuthenticated } from './redux/slices/authSlice';
+import { selectIsAuthenticated, selectUserRole } from './redux/slices/authSlice';
 
 // Layout Components
 import Layout from './components/layout/Layout';
@@ -17,8 +17,12 @@ import ProjectDetails from './components/projects/ProjectDetails';
 import AboutPage from './components/about/AboutPage';
 import ContactPage from './components/contact/ContactPage';
 
+// Auth Pages
+import UserLoginPage from './components/auth/LoginPage';
+import SignupPage from './components/auth/SignupPage';
+
 // Admin Pages
-import LoginPage from './components/admin/LoginPage';
+import AdminLoginPage from './components/admin/LoginPage';
 import LogoutPage from './components/admin/LogoutPage';
 import Dashboard from './components/admin/Dashboard';
 import ProjectsList from './components/admin/ProjectsList';
@@ -37,11 +41,20 @@ const App = () => {
   const darkMode = useSelector(selectDarkMode);
   const language = useSelector(selectLanguage);
   const isAuthenticated = useSelector(selectIsAuthenticated);
+  const userRole = useSelector(selectUserRole);
   
-  // Protected route component
-  const ProtectedRoute = ({ children }) => {
-    if (!isAuthenticated) {
+  // Protected route component for admin
+  const AdminProtectedRoute = ({ children }) => {
+    if (!isAuthenticated || userRole !== 'admin') {
       return <Navigate to="/admin/login" />;
+    }
+    return children;
+  };
+  
+  // Protected route component for users
+  const UserProtectedRoute = ({ children }) => {
+    if (!isAuthenticated) {
+      return <Navigate to="/login" />;
     }
     return children;
   };
@@ -57,16 +70,27 @@ const App = () => {
             <Route path="projects/:id" element={<ProjectDetails />} />
             <Route path="about" element={<AboutPage />} />
             <Route path="contact" element={<ContactPage />} />
+            
+            {/* User Auth Routes */}
+            <Route path="login" element={<UserLoginPage />} />
+            <Route path="signup" element={<SignupPage />} />
+            
+            {/* User Dashboard (protected) */}
+            <Route path="dashboard" element={
+              <UserProtectedRoute>
+                <div>User Dashboard (Coming Soon)</div>
+              </UserProtectedRoute>
+            } />
           </Route>
           
           {/* Admin Routes */}
-          <Route path="/admin/login" element={<LoginPage />} />
+          <Route path="/admin/login" element={<AdminLoginPage />} />
           <Route path="/admin/logout" element={<LogoutPage />} />
           
           <Route path="/admin" element={
-            <ProtectedRoute>
+            <AdminProtectedRoute>
               <AdminLayout />
-            </ProtectedRoute>
+            </AdminProtectedRoute>
           }>
             <Route index element={<Dashboard />} />
             
