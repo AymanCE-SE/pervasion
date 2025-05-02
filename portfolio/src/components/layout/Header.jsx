@@ -1,6 +1,8 @@
 /** @format */
 
 import React, { useState, useEffect } from "react";
+import LogoLight from "../../assets/logo-light.png";
+import LogoDark from "../../assets/logo-dark.png";
 import { Navbar, Container, Nav, Button } from "react-bootstrap";
 import { Link, NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,7 +13,11 @@ import {
   toggleLanguage,
   selectLanguage,
 } from "../../redux/slices/languageSlice";
-import { selectIsAuthenticated, selectUserRole, logout } from "../../redux/slices/authSlice";
+import {
+  selectIsAuthenticated,
+  selectUserRole,
+  logout,
+} from "../../redux/slices/authSlice";
 import { BsSun, BsMoon, BsGlobe } from "react-icons/bs";
 import { FiLogOut, FiLogIn } from "react-icons/fi";
 import { RiStackLine, RiUserAddLine } from "react-icons/ri";
@@ -117,10 +123,23 @@ const Header = () => {
               whileHover="hover"
               className="logo-container">
               <div className="logo-wrapper">
-                <RiStackLine className="logo-icon" />
-                <div className="brand-text">
-                  <span className="brand-name">Pervasion</span>
-                  <span className="brand-slogan">Expanding Your Reach</span>
+                <div
+                  className={`logo-shine-wrapper ${
+                    darkMode ? "dark" : "light"
+                  }`}>
+                  <AnimatePresence mode="wait">
+                    <motion.img
+                      key={darkMode ? "dark" : "light"}
+                      src={darkMode ? LogoDark : LogoLight}
+                      alt="Pervasion Logo"
+                      className="logo-image"
+                      initial={{ opacity: 0, y: -20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 20 }}
+                      transition={{ duration: 0.3 }}
+                    />
+                  </AnimatePresence>
+                  <div className="logo-overlay"></div>
                 </div>
               </div>
             </motion.div>
@@ -186,7 +205,7 @@ const Header = () => {
                 </Nav.Link>
               </motion.div>
 
-              {isAuthenticated && userRole === 'admin' && (
+              {isAuthenticated && userRole === "admin" && (
                 <motion.div
                   custom={5}
                   variants={navItemVariants}
@@ -201,8 +220,8 @@ const Header = () => {
                   </Nav.Link>
                 </motion.div>
               )}
-              
-              {isAuthenticated && userRole === 'user' && (
+
+              {isAuthenticated && userRole === "user" && (
                 <motion.div
                   custom={5}
                   variants={navItemVariants}
@@ -220,96 +239,73 @@ const Header = () => {
             </Nav>
 
             <div className="nav-buttons">
-              <motion.div
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}>
-                <Button
-                  variant={darkMode ? "outline-light" : "outline-dark"}
-                  className="theme-toggle"
-                  onClick={handleThemeToggle}
-                  aria-label={darkMode ? t("theme.light") : t("theme.dark")}>
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={darkMode ? "moon" : "sun"}
-                      initial={{ opacity: 0, rotate: -90 }}
-                      animate={{ opacity: 1, rotate: 0 }}
-                      exit={{ opacity: 0, rotate: 90 }}
-                      transition={{ duration: 0.3 }}>
-                      {darkMode ? <BsSun /> : <BsMoon />}
-                    </motion.div>
-                  </AnimatePresence>
-                </Button>
-              </motion.div>
+              <Button
+                variant={darkMode ? "outline-light" : "outline-dark"}
+                className="theme-toggle"
+                onClick={handleThemeToggle}
+                aria-label={darkMode ? t("theme.light") : t("theme.dark")}>
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={darkMode ? "moon" : "sun"}
+                    initial={{ opacity: 0, rotate: -90 }}
+                    animate={{ opacity: 1, rotate: 0 }}
+                    exit={{ opacity: 0, rotate: 90 }}
+                    transition={{ duration: 0.3 }}>
+                    {darkMode ? <BsSun /> : <BsMoon />}
+                  </motion.div>
+                </AnimatePresence>
+              </Button>
 
-              <motion.div
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}>
-                <Button
-                  variant={darkMode ? "outline-light" : "outline-dark"}
-                  className="language-toggle"
-                  onClick={handleLanguageToggle}
-                  aria-label={
-                    language === "en" ? t("language.ar") : t("language.en")
-                  }>
-                  <BsGlobe className="me-1" />
-                  <AnimatePresence mode="wait">
-                    <motion.span
-                      key={language}
-                      initial={{ opacity: 0, y: 5 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -5 }}
-                      transition={{ duration: 0.3 }}>
-                      {language === "en" ? "AR" : "EN"}
-                    </motion.span>
-                  </AnimatePresence>
-                </Button>
-              </motion.div>
+              <Button
+                variant={darkMode ? "outline-light" : "outline-dark"}
+                className="language-toggle"
+                onClick={handleLanguageToggle}
+                aria-label={
+                  language === "en" ? t("language.ar") : t("language.en")
+                }>
+                <BsGlobe className="me-1" />
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={language}
+                    initial={{ opacity: 0, y: 5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -5 }}
+                    transition={{ duration: 0.3 }}>
+                    {language === "en" ? "AR" : "EN"}
+                  </motion.span>
+                </AnimatePresence>
+              </Button>
 
               {isAuthenticated ? (
-                <motion.div
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}>
-                  <Button
-                    variant="danger"
-                    className="logout-btn"
-                    onClick={handleLogout}
-                    aria-label={t("auth.logout")}>
-                    <FiLogOut />
-                  </Button>
-                </motion.div>
+                <Button
+                  variant="danger"
+                  className="logout-btn"
+                  onClick={handleLogout}
+                  aria-label={t("auth.logout")}>
+                  <FiLogOut />
+                </Button>
               ) : (
                 <>
-                  <motion.div
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="ms-2">
-                    <Button
-                      as={Link}
-                      to="/login"
-                      variant="outline-primary"
-                      className="login-btn"
-                      onClick={() => setExpanded(false)}
-                      aria-label={t("auth.login")}>
-                      <FiLogIn className="me-1" />
-                      <span className="btn-text">{t("auth.login")}</span>
-                    </Button>
-                  </motion.div>
-                  
-                  <motion.div
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="ms-2">
-                    <Button
-                      as={Link}
-                      to="/signup"
-                      variant="primary"
-                      className="signup-btn"
-                      onClick={() => setExpanded(false)}
-                      aria-label={t("auth.signup")}>
-                      <RiUserAddLine className="me-1" />
-                      <span className="btn-text">{t("auth.signup")}</span>
-                    </Button>
-                  </motion.div>
+                  <Button
+                    as={Link}
+                    to="/login"
+                    className="login-btn"
+                    onClick={() => setExpanded(false)}
+                    aria-label={t("auth.login")}>
+                    <FiLogIn className="me-1" />
+                    <span className="btn-text">{t("auth.login")}</span>
+                  </Button>
+
+                  <Button
+                    as={Link}
+                    to="/signup"
+                    variant="primary"
+                    className="signup-btn"
+                    onClick={() => setExpanded(false)}
+                    aria-label={t("auth.signup")}>
+                    <RiUserAddLine className="me-1" />
+                    <span className="btn-text">{t("auth.signup")}</span>
+                  </Button>
                 </>
               )}
             </div>

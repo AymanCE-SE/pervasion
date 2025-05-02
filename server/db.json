@@ -101,6 +101,23 @@
       "client": "Chronos Watches",
       "date": "2025-06-18",
       "featured": false
+    },
+    {
+      "id": "9a0e",
+      "title": "new",
+      "titleAr": "جديد",
+      "description": "project",
+      "descriptionAr": "مشروع",
+      "category": "social-media",
+      "image": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+        "https://images.unsplash.com/photo-1622434641406-a158123450f9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+        "https://images.unsplash.com/photo-1547996160-81dfa63595aa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+      ],
+      "client": "Chronos Watches",
+      "date": "2024-02-05",
+      "featured": true
     }
   ],
   "users": [
@@ -187,6 +204,15 @@
       "userId": "",
       "status": "new",
       "createdAt": "2025-05-01T23:11:54.341Z"
+    },
+    {
+      "id": "9ab1",
+      "name": "ayman samir",
+      "email": "ayman@gmail.com",
+      "message": "NEW CONTACT!!",
+      "userId": "80a2",
+      "status": "new",
+      "createdAt": "2025-05-02T00:38:30.476Z"
     }
   ],
   "comments": [

@@ -1,142 +1,38 @@
 :root {
-  /* Primary Colors */
-  --primary-light: #4a00e0;
-  --primary-dark: #8e2de2;
-  --primary-gradient: linear-gradient(45deg, var(--primary-light), var(--primary-dark));
-  --primary-dark-mode-light: #5f00ff;
-  --primary-dark-mode-dark: #a64dff;
-  --primary-dark-mode-gradient: linear-gradient(45deg, var(--primary-dark-mode-light), var(--primary-dark-mode-dark));
-  
-  /* Secondary Colors */
-  --secondary-light: #00c6ff;
-  --secondary-dark: #0072ff;
-  --secondary-gradient: linear-gradient(45deg, var(--secondary-light), var(--secondary-dark));
-  --secondary-dark-mode-light: #00e1ff;
-  --secondary-dark-mode-dark: #0095ff;
-  --secondary-dark-mode-gradient: linear-gradient(45deg, var(--secondary-dark-mode-light), var(--secondary-dark-mode-dark));
-  
-  /* Accent Colors */
-  --accent1-light: #f857a6;
-  --accent1-dark: #ff5858;
-  --accent1-gradient: linear-gradient(45deg, var(--accent1-light), var(--accent1-dark));
-  --accent1-dark-mode-light: #ff6eb4;
-  --accent1-dark-mode-dark: #ff7676;
-  --accent1-dark-mode-gradient: linear-gradient(45deg, var(--accent1-dark-mode-light), var(--accent1-dark-mode-dark));
-  
-  --accent2-light: #ffcc33;
-  --accent2-dark: #ff9900;
-  --accent2-gradient: linear-gradient(45deg, var(--accent2-light), var(--accent2-dark));
-  --accent2-dark-mode-light: #ffdd44;
-  --accent2-dark-mode-dark: #ffaa22;
-  --accent2-dark-mode-gradient: linear-gradient(45deg, var(--accent2-dark-mode-light), var(--accent2-dark-mode-dark));
-  
-  /* Background Colors */
-  --bg-light: #ffffff;
-  --bg-dark: #121212;
-  --bg-secondary-light: #f8f9fa;
-  --bg-secondary-dark: #2b3035;
-  
-  /* Text Colors */
-  --text-primary-light: #212529;
-  --text-secondary-light: #6c757d;
-  --text-primary-dark: #f8f9fa;
-  --text-secondary-dark: #e9ecef;
-  
-  /* Border Colors */
-  --border-light: rgba(0, 0, 0, 0.1);
-  --border-dark: rgba(255, 255, 255, 0.1);
-  
-  /* Shadow Colors */
-  --shadow-light: rgba(0, 0, 0, 0.1);
+  /* Brand Colors */
+  --primary: #4a00e0;
+  --primary-light: #818cf8;
+  --primary-dark: #3600a6;
+  --secondary: #0ea5e9;
+  --accent: #a78bfa;
+
+  /* Light Theme */
+  --bg-primary-light: rgba(255, 255, 255, 0.98);
+  --bg-secondary-light: rgba(255, 255, 255, 0.95);
+  --bg-overlay-light: rgba(255, 255, 255, 0.85);
+  --text-primary-light: #1e293b;
+  --text-secondary-light: #64748b;
+  --border-light: rgba(226, 232, 240, 0.8);
+  --shadow-light: rgba(0, 0, 0, 0.05);
+  --overlay-light: rgba(74, 0, 224, 0.08);
+
+  /* Dark Theme */
+  --bg-primary-dark: rgba(17, 24, 39, 0.98);
+  --bg-secondary-dark: rgba(31, 41, 55, 0.95);
+  --bg-overlay-dark: rgba(15, 23, 42, 0.85);
+  --text-primary-dark: #f3f4f6;
+  --text-secondary-dark: #d1d5db;
+  --border-dark: rgba(55, 65, 81, 0.5);
   --shadow-dark: rgba(0, 0, 0, 0.3);
-  --shadow-primary-light: rgba(74, 0, 224, 0.3);
-  --shadow-primary-dark: rgba(74, 0, 224, 0.4);
-  --shadow-primary-dark-mode: rgba(95, 0, 255, 0.4);
-  
-  /* Overlay Colors */
-  --overlay-light: rgba(74, 0, 224, 0.1);
-  --overlay-dark: rgba(95, 0, 255, 0.1);
-  --overlay-border-light: rgba(74, 0, 224, 0.2);
-  --overlay-border-dark: rgba(95, 0, 255, 0.2);
-  
-  /* Scrollbar Colors */
-  --scrollbar-thumb-light: rgba(0, 0, 0, 0.2);
-  --scrollbar-thumb-hover-light: rgba(0, 0, 0, 0.3);
-  --scrollbar-thumb-dark: rgba(255, 255, 255, 0.2);
-  --scrollbar-thumb-hover-dark: rgba(255, 255, 255, 0.3);
-  
-  /* Form Controls */
-  --input-bg-light: #ffffff;
-  --input-bg-dark: #343a40;
-  --input-border-light: #ced4da;
-  --input-border-dark: #495057;
-  --input-focus-light: rgba(74, 0, 224, 0.25);
-  --input-focus-dark: rgba(95, 0, 255, 0.25);
-  
-  /* Button Colors */
-  --btn-primary-bg: var(--primary-gradient);
-  --btn-primary-bg-hover: linear-gradient(45deg, var(--primary-dark), var(--primary-light));
-  --btn-primary-dark-mode-bg: var(--primary-dark-mode-gradient);
-  --btn-primary-dark-mode-bg-hover: linear-gradient(45deg, var(--primary-dark-mode-dark), var(--primary-dark-mode-light));
-  
-  /* Card Colors */
-  --card-bg-light: #ffffff;
-  --card-bg-dark: #2b3035;
-  --card-border-light: rgba(0, 0, 0, 0.125);
-  --card-border-dark: rgba(255, 255, 255, 0.125);
-  
-  /* Animation Durations */
-  --transition-fast: 0.2s;
-  --transition-normal: 0.3s;
-  --transition-slow: 0.5s;
-}
+  --overlay-dark: rgba(95, 0, 255, 0.12);
 
-/* Apply theme variables to body based on theme class */
-body {
-  background-color: var(--bg-light);
-  color: var(--text-primary-light);
-  transition: background-color var(--transition-normal), color var(--transition-normal);
-}
+  /* Gradients */
+  --primary-gradient: linear-gradient(45deg, var(--primary), var(--primary-light));
+  --primary-dark-gradient: linear-gradient(135deg, var(--primary-light), var(--accent));
 
-body.dark-mode {
-  background-color: var(--bg-dark);
-  color: var(--text-primary-dark);
-}
-
-/* Apply theme to app container */
-.app-container {
-  background-color: var(--bg-light);
-  color: var(--text-primary-light);
-  transition: background-color var(--transition-normal), color var(--transition-normal);
-}
-
-.app-container.dark-mode {
-  background-color: var(--bg-dark);
-  color: var(--text-primary-dark);
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: var(--scrollbar-thumb-light);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background-color: var(--scrollbar-thumb-hover-light);
-}
-
-.dark-mode ::-webkit-scrollbar-thumb {
-  background-color: var(--scrollbar-thumb-dark);
-}
-
-.dark-mode ::-webkit-scrollbar-thumb:hover {
-  background-color: var(--scrollbar-thumb-hover-dark);
+  /* Effects */
+  --glass-blur: 12px;
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
 }
