@@ -2,6 +2,17 @@ import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 
+// Helper function to safely access localStorage
+const getSavedLanguage = () => {
+  if (typeof window === 'undefined') return 'en';
+  const savedLang = localStorage.getItem('i18nextLng');
+  if (savedLang) return savedLang;
+  
+  // Fallback to browser language if no saved language
+  const browserLang = navigator.language.split('-')[0];
+  return ['en', 'ar'].includes(browserLang) ? browserLang : 'en';
+};
+
 // English translations
 const enTranslations = {
   app: {
@@ -423,27 +434,55 @@ const arTranslations = {
 };
 
 // Configure i18next
-i18n
-  .use(LanguageDetector)
-  .use(initReactI18next)
-  .init({
-    resources: {
-      en: {
-        translation: enTranslations,
-      },
-      ar: {
-        translation: arTranslations,
-      },
-    },
-    fallbackLng: 'en',
-    debug: process.env.NODE_ENV === 'development',
-    interpolation: {
-      escapeValue: false, // React already escapes values
-    },
-    detection: {
-      order: ['localStorage', 'navigator'],
-      caches: ['localStorage'],
-    },
-  });
+const i18nInstance = i18n.createInstance();
 
-export default i18n;
+// Initialize i18n
+const initI18n = async () => {
+  try {
+    await i18nInstance
+      .use(LanguageDetector)
+      .use(initReactI18next)
+      .init({
+        lng: getSavedLanguage(),
+        fallbackLng: 'en',
+        supportedLngs: ['en', 'ar'],
+        debug: process.env.NODE_ENV === 'development',
+        interpolation: {
+          escapeValue: false, // React already escapes values
+        },
+        resources: {
+          en: {
+            translation: enTranslations,
+          },
+          ar: {
+            translation: arTranslations,
+          },
+        },
+        detection: {
+          order: ['localStorage', 'navigator', 'htmlTag'],
+          caches: ['localStorage'],
+          lookupLocalStorage: 'i18nextLng',
+          lookupFromPathIndex: 0,
+          htmlTag: document.documentElement,
+          checkWhitelist: true,
+        },
+        react: {
+          useSuspense: true,
+          bindI18n: 'languageChanged',
+          bindI18nStore: '',
+          transEmptyNodeValue: '',
+          transSupportBasicHtmlNodes: true,
+          transKeepBasicHtmlNodesFor: ['br', 'strong', 'i', 'p', 'b', 'em'],
+        },
+      });
+    
+    console.log('i18n initialized successfully');
+  } catch (error) {
+    console.error('Failed to initialize i18n:', error);
+  }
+};
+
+// Initialize i18n
+initI18n();
+
+export default i18nInstance;

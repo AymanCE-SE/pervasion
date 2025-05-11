@@ -14,9 +14,16 @@ const apiClient = axios.create({
 // Add request interceptor to include auth token if available
 apiClient.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
+    // Get the token from Redux store if available
+    try {
+      const store = window.store;
+      const token = store?.getState?.()?.auth?.token || localStorage.getItem('token');
+      
+      if (token) {
+        config.headers['Authorization'] = `Bearer ${token}`;
+      }
+    } catch (error) {
+      console.error('Error in request interceptor:', error);
     }
     return config;
   },

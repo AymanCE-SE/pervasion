@@ -1,29 +1,15 @@
-import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import React from 'react';
 import { Outlet } from 'react-router-dom';
-import { selectDarkMode } from '../../redux/slices/themeSlice';
-import { selectLanguage } from '../../redux/slices/languageSlice';
+import { useAppSettings } from '../../hooks/useAppSettings';
 import Header from './Header';
 import Footer from './Footer';
 import './Layout.css';
 
 const Layout = () => {
-  const darkMode = useSelector(selectDarkMode);
-  const language = useSelector(selectLanguage);
-
-  // Apply theme and language classes to the body
-  useEffect(() => {
-    if (darkMode) {
-      document.body.classList.add('dark-mode');
-    } else {
-      document.body.classList.remove('dark-mode');
-    }
-
-    document.documentElement.lang = language;
-  }, [darkMode, language]);
+  const { darkMode, isRTL } = useAppSettings();
 
   return (
-    <div className={`app-container ${darkMode ? 'dark-mode' : ''}`} dir={language === 'ar' ? 'rtl' : 'ltr'}>
+    <div className={`app-container ${darkMode ? 'dark-mode' : ''}`} dir={isRTL ? 'rtl' : 'ltr'}>
       <Header />
       <main className="main-content">
         <Outlet />

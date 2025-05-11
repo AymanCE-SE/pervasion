@@ -1,0 +1,46 @@
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.loading-spinner.full-page {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  z-index: 9999;
+}
+
+.loading-spinner.dark.full-page {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.loading-message {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+.loading-spinner.dark .loading-message {
+  color: #adb5bd;
+}
+
+/* Animation for the spinner */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Override Bootstrap spinner animation */
+.spinner-border {
+  animation: spin 0.75s linear infinite;
+}

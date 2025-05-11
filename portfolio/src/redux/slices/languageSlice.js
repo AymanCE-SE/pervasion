@@ -1,7 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+// Get language from localStorage or browser language
+const getInitialLanguage = () => {
+  const savedLang = localStorage.getItem('language');
+  if (savedLang) {
+    return savedLang;
+  }
+  
+  // Default to browser language if available, otherwise 'en'
+  const browserLang = navigator.language.split('-')[0];
+  return ['ar', 'en'].includes(browserLang) ? browserLang : 'en';
+};
+
 const initialState = {
-  language: 'en', // 'en' for English, 'ar' for Arabic
+  language: getInitialLanguage(),
 };
 
 export const languageSlice = createSlice({
@@ -9,10 +21,16 @@ export const languageSlice = createSlice({
   initialState,
   reducers: {
     setLanguage: (state, action) => {
-      state.language = action.payload;
+      const newLang = action.payload;
+      if (['ar', 'en'].includes(newLang)) {
+        state.language = newLang;
+        localStorage.setItem('language', newLang);
+      }
     },
     toggleLanguage: (state) => {
-      state.language = state.language === 'en' ? 'ar' : 'en';
+      const newLang = state.language === 'en' ? 'ar' : 'en';
+      state.language = newLang;
+      localStorage.setItem('language', newLang);
     },
   },
 });
