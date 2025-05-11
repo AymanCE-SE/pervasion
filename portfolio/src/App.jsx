@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { useSelector } from 'react-redux';
 import { selectDarkMode } from './redux/slices/themeSlice';
@@ -30,6 +30,9 @@ import ProjectForm from './components/admin/ProjectForm';
 import UsersList from './components/admin/UsersList';
 import UserForm from './components/admin/UserForm';
 
+// User Dashboard
+// import UserDashboard from './components/user/UserDashboard';
+
 // i18n
 import './i18n';
 
@@ -45,9 +48,22 @@ const App = () => {
   
   // Protected route component for admin
   const AdminProtectedRoute = ({ children }) => {
+    const isAuthenticated = useSelector(selectIsAuthenticated);
+    const userRole = useSelector(selectUserRole);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+      if (!isAuthenticated) {
+        navigate('/admin/login');
+      } else if (userRole !== 'admin') {
+        navigate('/dashboard');
+      }
+    }, [isAuthenticated, userRole, navigate]);
+
     if (!isAuthenticated || userRole !== 'admin') {
-      return <Navigate to="/admin/login" />;
+      return null;
     }
+
     return children;
   };
   
@@ -75,10 +91,17 @@ const App = () => {
             <Route path="login" element={<UserLoginPage />} />
             <Route path="signup" element={<SignupPage />} />
             
-            {/* User Dashboard (protected) */}
-            <Route path="dashboard" element={
+            {/* Dashboard Routes */}
+            <Route path="/dashboard" element={
               <UserProtectedRoute>
-                <div>User Dashboard (Coming Soon)</div>
+                {userRole === 'admin' ? (
+                  <Navigate to="/admin" replace />
+                ) : (
+                  <Layout>
+                    {/* User Dashboard Component */}
+                    {/* <UserDashboard /> */}
+                  </Layout>
+                )}
               </UserProtectedRoute>
             } />
           </Route>
@@ -93,13 +116,9 @@ const App = () => {
             </AdminProtectedRoute>
           }>
             <Route index element={<Dashboard />} />
-            
-            {/* Project Management Routes */}
             <Route path="projects" element={<ProjectsList />} />
             <Route path="projects/new" element={<ProjectForm />} />
             <Route path="projects/edit/:id" element={<ProjectForm />} />
-            
-            {/* User Management Routes */}
             <Route path="users" element={<UsersList />} />
             <Route path="users/new" element={<UserForm />} />
             <Route path="users/edit/:id" element={<UserForm />} />

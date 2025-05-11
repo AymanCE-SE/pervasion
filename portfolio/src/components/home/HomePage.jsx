@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next';
 import Hero from './Hero';
 import FeaturedProjects from './FeaturedProjects';
 import './HomePage.css';
+import Testimonials from './Testimonials';
+import Stats from './Stats';
 
 const HomePage = () => {
   const { t } = useTranslation();
@@ -17,7 +19,9 @@ const HomePage = () => {
       
       <div className="home-page">
         <Hero />
+        <Stats />
         <FeaturedProjects />
+      <Testimonials />
       </div>
     </>
   );

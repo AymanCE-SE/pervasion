@@ -1,20 +1,25 @@
 .projects-page {
   padding: 6rem 0;
   min-height: 100vh;
-  background-color: #ffffff;
-  transition: all 0.3s ease;
+  background-color: var(--bg-primary-light);
+  transition: all var(--transition-normal);
 }
 
 .projects-page.dark-mode {
-  background-color: #1a1a1a;
+  background-color: var(--bg-primary-dark);
 }
 
 .page-title {
-  font-size: 2.5rem;
+  font-size: var(--text-4xl);
   font-weight: 700;
   margin-bottom: 1rem;
   position: relative;
   display: inline-block;
+  color: var(--text-primary-light);
+}
+
+.dark-mode .page-title {
+  color: var(--text-primary-dark);
 }
 
 .page-title::after {
@@ -25,72 +30,92 @@
   transform: translateX(-50%);
   width: 50px;
   height: 3px;
-  background: linear-gradient(45deg, #4a00e0, #8e2de2);
-  border-radius: 3px;
+  background: var(--main-gradient);
+  border-radius: var(--radius-md);
 }
 
 .page-subtitle {
-  font-size: 1.1rem;
-  color: #6c757d;
+  font-size: var(--text-lg);
+  color: var(--text-secondary-light);
   max-width: 600px;
-  margin: 0 auto 2rem;
+  margin: 0 auto 2.5rem;
 }
 
 .dark-mode .page-subtitle {
-  color: #adb5bd;
+  color: var(--text-secondary-dark);
 }
 
 .filter-buttons {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 0.5rem;
-  margin-bottom: 3rem;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-2xl);
 }
 
 .filter-btn {
-  border-radius: 50px;
-  padding: 0.5rem 1.25rem;
-  font-size: 0.9rem;
+  border-radius: var(--radius-full);
+  padding: 0.6rem 1.5rem;
+  font-size: var(--text-base);
   font-weight: 500;
-  transition: all 0.3s ease;
+  transition: all var(--transition-normal);
+  border: 2px solid var(--main) ;
+  background: transparent;
+  color: var(--main);
 }
 
 .filter-btn.active {
-  background: linear-gradient(45deg, #4a00e0, #8e2de2);
+  background: var(--main-gradient);
   border-color: transparent;
-  box-shadow: 0 4px 10px rgba(74, 0, 224, 0.3);
+  color: white;
+  box-shadow: 0 4px 15px var(--overlay-light);
+}
+
+.dark-mode .filter-btn.active {
+  box-shadow: 0 4px 15px var(--overlay-dark);
 }
 
 .filter-btn:not(.active) {
   background-color: transparent;
-  color: #4a00e0;
-  border-color: #4a00e0;
+  color: var(--main);
+  border-color: var(--main);
 }
 
 .dark-mode .filter-btn:not(.active) {
-  color: #8e2de2;
-  border-color: #8e2de2;
+  color: var(--main-light);
+  border-color: var(--main-light);
 }
 
 .filter-btn:hover {
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--overlay-light);
+  background: var(--main-gradient);
+  color: white;
+  border-color: transparent;
+}
+
+.dark-mode .filter-btn:hover {
+  box-shadow: 0 4px 12px var(--overlay-dark);
+  background: var(--main-gradient);
+  color: white;
+  border-color: transparent;
+
 }
 
 .projects-grid {
-  margin-top: 2rem;
+  margin-top: var(--spacing-2xl);
 }
 
 /* Animation for project cards */
 .project-card-enter {
   opacity: 0;
-  transform: scale(0.9);
+  transform: scale(0.95);
 }
 
 .project-card-enter-active {
   opacity: 1;
   transform: scale(1);
-  transition: opacity 300ms, transform 300ms;
+  transition: opacity var(--transition-normal), transform var(--transition-normal);
 }
 
 .project-card-exit {
@@ -99,7 +124,7 @@
 
 .project-card-exit-active {
   opacity: 0;
-  transition: opacity 300ms;
+  transition: opacity var(--transition-normal);
 }
 
 /* RTL Support */
@@ -116,29 +141,31 @@
   }
   
   .page-title {
-    font-size: 2rem;
+    font-size: var(--text-3xl);
   }
   
   .filter-buttons {
-    margin-bottom: 2rem;
+    margin-bottom: var(--spacing-xl);
   }
 }
 
 @media (max-width: 767.98px) {
   .page-title {
-    font-size: 1.75rem;
+    font-size: var(--text-2xl);
   }
   
   .page-subtitle {
-    font-size: 1rem;
+    font-size: var(--text-base);
+    padding: 0 var(--spacing-md);
   }
   
   .filter-buttons {
-    gap: 0.3rem;
+    gap: var(--spacing-xs);
+    padding: 0 var(--spacing-sm);
   }
   
   .filter-btn {
-    font-size: 0.8rem;
-    padding: 0.4rem 1rem;
+    font-size: var(--text-sm);
+    padding: 0.5rem 1.25rem;
   }
 }

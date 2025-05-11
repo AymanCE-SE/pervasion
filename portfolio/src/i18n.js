@@ -15,9 +15,11 @@ const enTranslations = {
     contact: 'Contact',
     admin: 'Admin',
     dashboard: 'Dashboard',
+    services: 'Services',
   },
   home: {
     hero: {
+      titleStart: 'We Create',
       title: 'Creative',
       titleHighlight: 'Design Solutions For Your Vision',
       subtitle: 'Transforming ideas into visual experiences',
@@ -29,6 +31,7 @@ const enTranslations = {
       clientSatisfaction: 'Client Satisfaction',
       card1: 'Brand Identity',
       card2: 'Creative Design',
+      titleEnd: 'that tell your Story',
     },
     featuredProjects: {
       title: 'Featured Projects',
@@ -154,6 +157,60 @@ const enTranslations = {
     viewLess: 'View Less',
     readMore: 'Read More',
   },
+  auth: {
+    login: 'Login',
+    logout: 'Logout',
+    signup: 'Register',
+    forgotPassword: 'Forgot Password?',
+    resetPassword: 'Reset Password',
+    email: 'Email',
+    password: 'Password',
+    confirmPassword: 'Confirm Password',
+    submit: 'Submit',
+    validation: {
+      required: 'This field is required',
+      invalidEmail: 'Please enter a valid email address',
+      passwordMismatch: 'Passwords do not match',
+      minLength: 'Minimum length is {{length}} characters',
+    },
+    welcomeBack: 'Welcome back !',
+    username: 'Username',
+    noAccount: 'Don\'t have an account?',
+  },
+  footer: {
+    follow: 'Follow Us',
+    subscribe: 'Subscribe to our newsletter',
+    subscribeText: 'Get the latest updates and offers',
+    emailPlaceholder: 'Enter your email address',
+    subscribeButton: 'Subscribe',
+    terms: 'Terms of Service',
+    privacy: 'Privacy Policy',
+    rights: 'All rights reserved',
+  },
+  testimonials: {
+    title: 'What Our Clients Say',
+    subtitle: 'Discover why clients love working with us and how we\'ve helped them achieve their goals',
+  },
+  clients: {
+    title: 'Our Clients',
+    subtitle: 'We are proud to work with a diverse range of clients from various industries',
+    satisfied: 'Satisfied Clients',
+  },
+  awards: {
+    title: 'Our Awards',
+    subtitle: 'We have received numerous awards in recognition of our creative and innovative',
+    won: 'Awards Won',
+  },
+  projects: {
+    title: 'Our Projects',
+    subtitle: 'Explore a selection of our featured projects that showcase our skills and creativity',
+    completed: 'Completed Projects',
+  },
+  years: {
+    title: 'Years of Experience',
+    subtitle: 'We have extensive experience in the field of graphic design and creativity',
+    experience: 'Years of Experience',
+  },
 };
 
 // Arabic translations
@@ -169,9 +226,11 @@ const arTranslations = {
     contact: 'اتصل بي',
     admin: 'الإدارة',
     dashboard: 'لوحة المستخدم',
+    services: 'الخدمات',
   },
   home: {
     hero: {
+      titleStart: 'نحن نصنع',
       title:  ' إبداعي',
       titleHighlight: 'حلول تصميم لرؤيتك',
       subtitle: 'تحويل الأفكار إلى تجارب بصرية',
@@ -183,6 +242,7 @@ const arTranslations = {
       clientSatisfaction: 'رضا العملاء',
       card1: 'هوية العلامة التجارية',
       card2: 'تصميم إبداعي',
+      titleEnd: 'التي تحكي قصتك',
     },
     featuredProjects: {
       title: 'مشاريع مميزة',
@@ -307,6 +367,58 @@ const arTranslations = {
     viewMore: 'عرض المزيد',
     viewLess: 'عرض أقل',
     readMore: 'قراءة المزيد',
+  },
+  auth: {
+    login: 'تسجيل الدخول',
+    logout: 'تسجيل الخروج',
+    signup: 'إنشاء حساب',
+    forgotPassword: 'نسيت كلمة المرور؟',
+    resetPassword: 'إعادة تعيين كلمة المرور',
+    email: 'البريد الإلكتروني',
+    password: 'كلمة المرور',
+    confirmPassword: 'تأكيد كلمة المرور',
+    submit: 'إرسال',
+    validation: {
+      required: 'هذا الحقل مطلوب',
+      invalidEmail: 'يرجى إدخال عنوان بريد إلكتروني صالح',
+      passwordMismatch: 'كلمات المرور غير متطابقة',
+      minLength: 'الحد الأدنى للطول هو {{length}} حرفًا',
+    },
+  },
+  footer: {
+    follow: 'تابعنا',
+    subscribe: 'اشترك في نشرتنا الإخبارية',
+    subscribeText: 'احصل على أحدث التحديثات والعروض',
+    emailPlaceholder: 'أدخل عنوان بريدك الإلكتروني',
+    subscribeButton: 'اشترك',
+    terms: 'شروط الخدمة',
+    privacy: 'سياسة الخصوصية',
+    rights: 'جميع الحقوق محفوظة',
+
+  },
+  testimonials: {
+    title: 'ماذا يقول عملاؤنا',
+    subtitle: 'اكتشف لماذا يحب العملاء العمل معنا وكيف ساعدناهم في تحقيق أهدافهم',
+  },
+  clients: {
+    title: 'عملاؤنا',
+    subtitle: 'نحن فخورون بالعمل مع مجموعة متنوعة من العملاء من مختلف الصناعات',
+    satisfied: 'عملاء راضون',
+  },
+  awards: {
+    title: 'جوائزنا',
+    subtitle: 'لقد حصلنا على العديد من الجوائز تقديرًا لعملنا الإبداعي والمبتكر',
+    won: 'جوائز فائزة',
+  },
+  projects: {
+    title: 'مشاريعنا',
+    subtitle: 'استكشف مجموعة من مشاريعنا المميزة التي تعكس مهاراتنا وإبداعنا',
+    completed: 'مشاريع مكتملة',
+  },
+  years: {
+    title: 'سنوات من الخبرة',
+    subtitle: 'نحن نتمتع بخبرة واسعة في مجال التصميم الجرافيكي والإبداعي',
+    experience: 'سنوات من الخبرة',
   },
 };
 
