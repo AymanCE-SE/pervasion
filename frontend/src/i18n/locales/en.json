@@ -1,0 +1,225 @@
+{
+  "app": {
+    "title": "Designer Portfolio",
+    "description": "A modern graphic design portfolio showcasing creative work"
+  },
+  "nav": {
+    "home": "Home",
+    "projects": "Projects",
+    "about": "About",
+    "contact": "Contact",
+    "admin": "Admin",
+    "dashboard": "Dashboard",
+    "login": "Login",
+    "logout": "Logout",
+    "signup": "Sign Up",
+    "profile": "Profile"
+  },
+  "hero": {
+    "titleStart": "Creative Design Solutions",
+    "subtitle": "Bringing ideas to life through visual storytelling",
+    "cta": "View Projects",
+    "ctaSecondary": "Contact Us",
+    "titleHighlight": "stunning designs",
+    "titleEnd": " for brands and businesses",
+    "badge": "Award-winning design studio",
+    "card1": "Brand Identity",
+    "card2": "Web Design",
+    "card3": "Print Media"
+  },
+  "projects": {
+    "title": "Projects",
+    "subtitle": "Explore my latest work",
+    "projectInfo": "Project Information",
+    "viewDetails": "view details",
+    "details": {
+      "date": "Date",
+      "client": "Client",
+      "category": "Category",
+      "location": "Location",
+      "role": "Role"
+    },
+    "categories": {
+      "all": "All",
+      "branding": "Branding",
+      "ui-design": "UI Design",
+      "social-media": "Social Media",
+      "packaging": "Packaging",
+      "print": "Print",
+      "motion": "Motion"
+    },
+    "viewProject": "View Project",
+    "noProjects": "No projects found",
+    "client": "Client",
+    "date": "Date",
+    "category": "Category",
+    "location": "Location",
+    "award": "Award",
+    "website": "Website",
+    "visitWebsite": "Visit Website",
+    "relatedProjects": "Related Projects",
+    "similarCategory": "Projects in the same category",
+    "moreProjects": "More Projects",
+    "exploreMore": "Explore other categories",
+    "projectDescription": "Project Description"
+  },
+  "about": {
+    "title": "About Me",
+    "subtitle": "Passionate about design and creativity",
+    "bio": "I am a graphic designer with over 5 years of experience creating visual solutions for brands and businesses. My approach combines creativity with strategic thinking to deliver designs that not only look great but also achieve business objectives.",
+    "skills": {
+      "title": "Skills",
+      "branding": "Brand Identity",
+      "ui": "UI/UX Design",
+      "print": "Print Design",
+      "motion": "Motion Graphics",
+      "illustration": "Illustration",
+      "photography": "Photography"
+    },
+    "experience": {
+      "title": "Experience",
+      "years": "Years of Experience",
+      "clients": "Clients",
+      "projects": "Projects Completed"
+    }
+  },
+  "contact": {
+    "title": "Get In Touch",
+    "subtitle": "Let's work together on your next project",
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "submit": "Send Message",
+    "success": "Your message has been sent successfully!",
+    "error": "There was an error sending your message. Please try again.",
+    "required": "This field is required",
+    "invalidEmail": "Please enter a valid email address",
+    "loggedInAs": "You are logged in as",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "submit": "Send Message",
+      "subject": "Subject"
+    },
+    "validation": {
+      "required": "This field is required",
+      "invalidEmail": "Please enter a valid email address"
+    },
+    "info": {
+      "title": "Contact Information",
+      "address": "Address",
+      "phone": "Phone",
+      "email": "Email",
+      "hours": "Working Hours"
+    }
+  },
+  "comments": {
+    "title": "Comments",
+    "submit": "Post Comment",
+    "placeholder": "Write your comment here...",
+    "loginRequired": "You must be logged in to post a comment",
+    "loginPrompt": "Please log in to leave a comment",
+    "addError": "Failed to add comment",
+    "delete": "Delete comment",
+    "noComments": "No comments yet. Be the first to comment!"
+  },
+  "auth": {
+    "login": "Login",
+    "signup": "Sign Up",
+    "logout": "Logout",
+    "username": "Username",
+    "email": "Email",
+    "name": "Full Name",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "welcomeBack": "Welcome back",
+    "createAccount": "Create a new account",
+    "alreadyHaveAccount": "Already have an account?",
+    "noAccount": "Don't have an account?",
+    "forgotPassword": "Forgot password?",
+    "resetPassword": "Reset Password",
+    "loginSuccess": "Login successful",
+    "signupSuccess": "Account created successfully",
+    "loginError": "Invalid username or password",
+    "signupError": "Error creating account",
+    "errors": {
+      "generic": "An error occurred. Please try again.",
+      "username": "Username error: {{error}}",
+      "password": "Password error: {{error}}",
+      "connection": "Connection error. Please check your internet connection."
+    }
+  },
+  "validation": {
+    "required": "This field is required",
+    "emailInvalid": "Please enter a valid email address",
+    "passwordLength": "Password must be at least 6 characters",
+    "usernameLength": "Username must be at least 3 characters",
+    "passwordMatch": "Passwords do not match"
+  },
+  "admin": {
+    "dashboard": "Dashboard",
+    "projects": "Projects",
+    "users": "Users",
+    "login": "Admin Login",
+    "logout": "Logout",
+    "welcome": "Welcome",
+    "addNew": "Add New",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirmDelete": "Are you sure you want to delete this item?",
+    "yes": "Yes",
+    "no": "No",
+    "username": "Username",
+    "password": "Password",
+    "email": "Email",
+    "role": "Role",
+    "loginError": "Invalid username or password",
+    "projectForm": {
+      "title": "Project Title",
+      "description": "Description",
+      "category": "Category",
+      "client": "Client",
+      "date": "Date",
+      "featured": "Featured Project",
+      "image": "Main Image URL",
+      "images": "Additional Images URLs (comma separated)"
+    },
+    "userForm": {
+      "username": "Username",
+      "password": "Password",
+      "email": "Email",
+      "name": "Full Name",
+      "role": "Role"
+    }
+  },
+  "footer": {
+    "rights": "All Rights Reserved",
+    "follow": "Follow Me"
+  },
+  "theme": {
+    "light": "Light Mode",
+    "dark": "Dark Mode"
+  },
+  "language": {
+    "en": "English",
+    "ar": "Arabic"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "retry": "Retry",
+    "readMore": "Read More",
+    "backToHome": "Back to Home",
+    "back": "Back to Projects"
+  },
+  "testimonials": {
+    "title": "Testimonials",
+    "subtitle": "What our clients say",
+    "client": "Client",
+    "comment": "Comment",
+    "date": "Date"
+  }
+}

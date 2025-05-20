@@ -1,0 +1,133 @@
+import axios from 'axios';
+
+// Create axios instance with default config
+const api = axios.create({
+  baseURL: 'http://localhost:8000/api',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  withCredentials: true // Important for CORS with credentials
+});
+
+// Add request interceptor for auth token
+api.interceptors.request.use(config => {
+  // Get the current URL path from the config
+  const path = config.url;
+  
+  // Only add authentication for protected endpoints
+  // Public endpoints: projects, categories
+  const publicEndpoints = ['/projects', '/categories'];
+  const isPublicEndpoint = publicEndpoints.some(endpoint => path.startsWith(endpoint));
+  
+  // If it's not a public endpoint and we have a token, add it to the request
+  const token = localStorage.getItem('token');
+  if (token && !isPublicEndpoint) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  
+  return config;
+}, error => {
+  return Promise.reject(error);
+});
+
+// Add response interceptor for error handling
+api.interceptors.response.use(
+  response => response,
+  error => {
+    // Handle network errors
+    if (error.message === 'Network Error') {
+      console.error('Network error - please check if the backend server is running');
+    }
+    
+    // Handle authentication errors
+    if (error.response && error.response.status === 401) {
+      localStorage.removeItem('token');
+      // Optionally redirect to login page
+      // window.location.href = '/login';
+    }
+    
+    return Promise.reject(error);
+  }
+);
+
+// Create API service with methods for different endpoints
+const apiService = {
+  // Projects
+  projects: {
+    getAll: () => api.get('/projects/').then(res => res.data),
+    getById: (id) => api.get(`/projects/${id}/`).then(res => res.data),
+    create: (data) => api.post('/projects/', data).then(res => res.data),
+    update: (id, data) => api.patch(`/projects/${id}/`, data).then(res => res.data),
+    delete: (id) => api.delete(`/projects/${id}/`).then(res => res.data)
+  },
+  
+  // Categories
+  categories: {
+    getAll: () => api.get('/categories/')
+      .then(res => Array.isArray(res.data) ? res.data : (res.data.results || [])),
+    getById: (id) => api.get(`/categories/${id}/`).then(res => res.data)
+  },
+  
+  // Auth
+  auth: {
+    login: async (credentials) => {
+      console.log('Login attempt with email:', credentials.email);
+
+      try {
+        const response = await api.post('/auth/login/', {
+          email: credentials.email.trim(),
+          password: credentials.password
+        });
+        
+        console.log('Login response:', {
+          status: response.status,
+          statusText: response.statusText,
+          data: response.data ? {
+            ...response.data,
+            access: response.data.access ? '[TOKEN_RECEIVED]' : 'NO_TOKEN',
+            refresh: response.data.refresh ? '[REFRESH_TOKEN_RECEIVED]' : 'NO_REFRESH_TOKEN',
+            user: response.data.user ? '[USER_DATA_RECEIVED]' : 'NO_USER_DATA'
+          } : 'NO_DATA'
+        });
+        
+        if (!response.data) {
+          throw new Error('No data received from server');
+        }
+        
+        return response;
+      } catch (error) {
+        console.error('Login error details:', {
+          message: error.message,
+          status: error.response?.status,
+          statusText: error.response?.statusText,
+          data: error.response?.data,
+          config: {
+            url: error.config?.url,
+            method: error.config?.method,
+            data: error.config?.data
+          }
+        });
+        throw error;
+      }
+    },
+    register: async (userData) => {
+      console.log('API Service: Registering user with data:', { ...userData, password: '[REDACTED]', password_confirm: '[REDACTED]' });
+      const response = await api.post('/auth/register/', userData);
+      console.log('API Service: Registration response:', response);
+      return response;
+    },
+    getCurrentUser: async () => {
+      const response = await api.get('/users/me/');
+      return response;
+    }
+  },
+  
+  // Contact
+  contact: {
+    send: (data) => api.post('/contacts/', data).then(res => res.data)
+  }
+};
+
+// Export both the raw API instance and the service methods
+export { api, apiService };
+export default apiService;
