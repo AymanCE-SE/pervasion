@@ -135,7 +135,11 @@ const ProjectsList = () => {
               </div>
             ) : status === 'failed' ? (
               <div className="text-center py-5">
-                <p className="text-danger">{error}</p>
+                <p className="text-danger">
+                  {error && typeof error === 'object'
+                    ? error.detail || error.message || JSON.stringify(error)
+                    : error}
+                </p>
                 <Button 
                   variant="primary" 
                   onClick={() => dispatch(fetchProjects())}

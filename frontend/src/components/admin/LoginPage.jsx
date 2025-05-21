@@ -91,7 +91,13 @@ const LoginPage = () => {
                         transition={{ duration: 0.3 }}
                       >
                         <Alert variant="danger" className="mb-4">
-                          {error}
+                          {typeof error === 'string'
+                            ? error
+                            : error?.detail ||
+                              error?.message ||
+                              (error?.non_field_errors ? error.non_field_errors.join(', ') : '') ||
+                              (Array.isArray(error) ? error.join(', ') : Object.entries(error).map(([k, v]) => `${k}: ${Array.isArray(v) ? v.join(', ') : v}`).join('; ')) ||
+                              t('admin.loginError')}
                         </Alert>
                       </motion.div>
                     )}

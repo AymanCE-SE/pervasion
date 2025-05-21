@@ -25,7 +25,10 @@
     "badge": "Award-winning design studio",
     "card1": "Brand Identity",
     "card2": "Web Design",
-    "card3": "Print Media"
+    "card3": "Print Media",
+    "clientSatisfaction": "Client Satisfaction",
+    "projectsCompleted": "Projects Completed",
+    "yearsExperience": "Years of Experience"
   },
   "projects": {
     "title": "Projects",
@@ -143,6 +146,9 @@
     "signupSuccess": "Account created successfully",
     "loginError": "Invalid username or password",
     "signupError": "Error creating account",
+    "enterEmail": "Enter your email",
+    "enterPassword": "Enter your password",
+    
     "errors": {
       "generic": "An error occurred. Please try again.",
       "username": "Username error: {{error}}",
@@ -190,6 +196,7 @@
     "userForm": {
       "username": "Username",
       "password": "Password",
+      "passwordConfirm": "Confirm Password",
       "email": "Email",
       "name": "Full Name",
       "role": "Role"

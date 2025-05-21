@@ -66,6 +66,11 @@
   --text-3xl: 1.875rem;
   --text-4xl: 2.25rem;
   --text-5xl: 3rem;
+  
+  --primary-color: #3498db;
+  --secondary-color: #2ecc71;
+  --background-color: #fff;
+  --text-color: #222;
 }
 
 /* Global Resets */
@@ -323,4 +328,9 @@ textarea:focus {
 .dark-mode select:focus, 
 .dark-mode textarea:focus {
   box-shadow: 0 0 0 3px var(--overlay-dark);
+}
+
+[data-theme="dark"] {
+  --background-color: #222;
+  --text-color: #fff;
 }

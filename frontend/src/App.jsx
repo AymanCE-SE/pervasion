@@ -79,13 +79,13 @@ const App = () => {
   };
 
   // Protected route component for authenticated users
-  const ProtectedRoute = ({ children }) => {
-    const location = useLocation();
-    if (!isAuthenticated) {
-      return <Navigate to="/login" replace state={{ from: location }} />;
-    }
-    return children;
-  };
+  // const ProtectedRoute = ({ children }) => {
+  //   const location = useLocation();
+  //   if (!isAuthenticated) {
+  //     return <Navigate to="/login" replace state={{ from: location }} />;
+  //   }
+  //   return children;
+  // };
 
   // Loading component for suspense fallback
   const LoadingFallback = () => (
@@ -178,7 +178,7 @@ const App = () => {
                     }
                   />
                   <Route
-                    path="users/:id/edit"
+                    path="users/edit/:id"
                     element={
                       <AdminProtectedRoute>
                         <UserForm />

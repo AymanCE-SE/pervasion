@@ -328,10 +328,11 @@ const ProjectForm = () => {
           <Card.Body>
             {error && (
               <Alert variant="danger" className="mb-4">
-                {error}
+                {typeof error === 'object'
+                  ? error.detail || error.message || JSON.stringify(error)
+                  : error}
               </Alert>
             )}
-            
             <Form noValidate validated={validated} onSubmit={handleSubmit}>
               <Row>
                 <Col md={6}>

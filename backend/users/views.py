@@ -5,18 +5,26 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth import get_user_model
 
 from .serializers import UserSerializer, UserCreateSerializer, CustomTokenObtainPairSerializer
+from .permissions import IsAdminOrStaff
 
 User = get_user_model()
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [permissions.IsAdminUser]
-    
+    permission_classes = [IsAdminOrStaff]
+
     def get_serializer_class(self):
         if self.action in ['create', 'update', 'partial_update']:
             return UserCreateSerializer
         return UserSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 class LoginView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer

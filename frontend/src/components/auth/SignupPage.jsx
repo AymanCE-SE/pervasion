@@ -150,7 +150,11 @@ const SignupPage = () => {
                         transition={{ duration: 0.3 }}
                       >
                         <Alert variant="danger" className="mb-4">
-                          {error}
+                          {typeof error === 'string'
+                            ? error
+                            : error?.message ||
+                              error?.detail ||
+                              (Array.isArray(error) ? error.join(', ') : Object.entries(error).map(([k, v]) => `${k}: ${Array.isArray(v) ? v.join(', ') : v}`).join('; '))}
                         </Alert>
                       </motion.div>
                     )}

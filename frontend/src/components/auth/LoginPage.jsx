@@ -103,10 +103,13 @@ const LoginPage = () => {
                         <Alert variant="danger" className="mb-4">
                           <div className="error-details">
                             <div className="error-message">
-                              {typeof error === 'string' ? error : 
-                               error.detail || error.message || 
-                               error.non_field_errors?.join(', ') || 
-                               t('auth.loginError')}
+                              {typeof error === 'string'
+                                ? error
+                                : error?.detail ||
+                                  error?.message ||
+                                  (error?.non_field_errors ? error.non_field_errors.join(', ') : '') ||
+                                  (Array.isArray(error) ? error.join(', ') : Object.entries(error).map(([k, v]) => `${k}: ${Array.isArray(v) ? v.join(', ') : v}`).join('; ')) ||
+                                  t('auth.loginError')}
                             </div>
                             {process.env.NODE_ENV === 'development' && error?.data && (
                               <pre className="mt-2 mb-0 text-muted small">

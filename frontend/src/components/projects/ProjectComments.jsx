@@ -213,7 +213,9 @@ const ProjectComments = ({ projectId }) => {
 
       {commentsError && (
         <Alert variant="danger" className="mt-3">
-          {typeof commentsError === 'object' ? commentsError.message || 'An error occurred' : commentsError}
+          {typeof commentsError === 'object'
+            ? commentsError.detail || commentsError.message || JSON.stringify(commentsError)
+            : commentsError}
         </Alert>
       )}
 

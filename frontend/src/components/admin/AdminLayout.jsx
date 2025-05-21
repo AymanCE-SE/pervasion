@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { selectIsAuthenticated } from '../../redux/slices/authSlice';
 import { selectDarkMode } from '../../redux/slices/themeSlice';
-import { FaTachometerAlt, FaImages, FaUsers, FaSignOutAlt } from 'react-icons/fa';
+import { FaTachometerAlt, FaImages, FaUsers, FaSignOutAlt, FaHome, FaTags } from 'react-icons/fa';
 import './AdminLayout.css';
 
 const AdminLayout = () => {
@@ -44,6 +44,13 @@ const AdminLayout = () => {
             </div>
             
             <Nav className="flex-column sidebar-nav">
+                            <Nav.Link 
+                as={Link} 
+                to="/" 
+              >
+                <FaHome className="nav-icon" />
+                <span>{t('admin.Home')}</span>
+              </Nav.Link>
               <Nav.Link 
                 as={Link} 
                 to="/admin" 
@@ -62,6 +69,15 @@ const AdminLayout = () => {
                 <span>{t('admin.projects')}</span>
               </Nav.Link>
               
+            <Nav.Link 
+              as={Link} 
+              to="/admin/categories"
+              className={location.pathname.includes('/admin/categories') ? 'active' : ''}
+            >
+              <FaTags className="nav-icon" />
+              <span>{t('admin.categories')}</span>
+            </Nav.Link>
+
               <Nav.Link 
                 as={Link} 
                 to="/admin/users" 
@@ -70,6 +86,8 @@ const AdminLayout = () => {
                 <FaUsers className="nav-icon" />
                 <span>{t('admin.users')}</span>
               </Nav.Link>
+
+
               
               <Nav.Link 
                 as={Link} 

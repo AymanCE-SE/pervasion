@@ -58,7 +58,9 @@ const ErrorToast = () => {
               </strong>
             </Toast.Header>
             <Toast.Body className="text-white">
-              {message}
+              {typeof message === 'object'
+                ? message.detail || message.message || JSON.stringify(message)
+                : message}
             </Toast.Body>
           </Toast>
         </motion.div>

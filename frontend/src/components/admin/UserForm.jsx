@@ -12,7 +12,8 @@ import {
   selectCurrentUser, 
   selectUserStatus,
   selectUserError,
-  clearCurrentUser
+  clearCurrentUser,
+  fetchUsers
 } from '../../redux/slices/usersSlice';
 import { selectDarkMode } from '../../redux/slices/themeSlice';
 import { FaSave, FaArrowLeft } from 'react-icons/fa';
@@ -34,6 +35,7 @@ const UserForm = () => {
   const [formData, setFormData] = useState({
     username: '',
     password: '',
+    password_confirm: '',
     email: '',
     name: '',
     role: 'user'
@@ -61,8 +63,8 @@ const UserForm = () => {
     if (isEditMode && user) {
       setFormData({
         username: user.username || '',
-        // Don't populate password field for security reasons
         password: '',
+        password_confirm: '',
         email: user.email || '',
         name: user.name || '',
         role: user.role || 'user'
@@ -83,34 +85,46 @@ const UserForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const form = e.currentTarget;
-    
-    // Form validation
+
     if (form.checkValidity() === false) {
       e.stopPropagation();
       setValidated(true);
       return;
     }
-    
+
     setValidated(true);
-    
-    // Prepare data for submission
+
     const userData = { ...formData };
-    
-    // If editing and password is empty, remove it from the data
+
+    // Remove password fields if blank in edit mode
     if (isEditMode && !userData.password) {
       delete userData.password;
     }
-    
+    if (isEditMode && !userData.password_confirm) {
+      delete userData.password_confirm;
+    }
+
+    // Only validate password match if at least one is filled
+    if (
+      (userData.password || userData.password_confirm) &&
+      userData.password !== userData.password_confirm
+    ) {
+      alert('Passwords do not match!');
+      return;
+    }
+
     if (isEditMode) {
       dispatch(updateUser({ id, userData }))
         .unwrap()
         .then(() => {
+          dispatch(fetchUsers());
           navigate('/admin/users');
         });
     } else {
       dispatch(createUser(userData))
         .unwrap()
         .then(() => {
+          dispatch(fetchUsers());
           navigate('/admin/users');
         });
     }
@@ -167,7 +181,13 @@ const UserForm = () => {
           <Card.Body>
             {error && (
               <Alert variant="danger" className="mb-4">
-                {error}
+                {typeof error === 'string'
+                  ? error
+                  : error?.detail ||
+                    error?.message ||
+                    (error?.non_field_errors ? error.non_field_errors.join(', ') : '') ||
+                    (Array.isArray(error) ? error.join(', ') : Object.entries(error).map(([k, v]) => `${k}: ${Array.isArray(v) ? v.join(', ') : v}`).join('; ')) ||
+                    'An error occurred.'}
               </Alert>
             )}
             
@@ -190,7 +210,43 @@ const UserForm = () => {
                   </Form.Group>
                 </Col>
                 
+
                 <Col md={6}>
+                  <Form.Group className="mb-3" controlId="userEmail">
+                    <Form.Label>{t('admin.userForm.email')}</Form.Label>
+                    <Form.Control
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      required
+                      placeholder="Enter email address"
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      Valid email address is required
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+              </Row>
+              
+              <Row>
+                
+                <Col md={12}>
+                  <Form.Group className="mb-3" controlId="userName">
+                    <Form.Label>{t('admin.userForm.name')}</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      placeholder="Enter full name"
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+              
+              <Row>
+                  <Col md={6}>
                   <Form.Group className="mb-3" controlId="userPassword">
                     <Form.Label>
                       {t('admin.userForm.password')}
@@ -209,36 +265,22 @@ const UserForm = () => {
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
-              </Row>
-              
-              <Row>
                 <Col md={6}>
-                  <Form.Group className="mb-3" controlId="userEmail">
-                    <Form.Label>{t('admin.userForm.email')}</Form.Label>
+                  <Form.Group className="mb-3" controlId="userPasswordConfirm">
+                    <Form.Label>
+                      {t('admin.userForm.passwordConfirm') || 'Confirm Password'}
+                    </Form.Label>
                     <Form.Control
-                      type="email"
-                      name="email"
-                      value={formData.email}
+                      type="password"
+                      name="password_confirm"
+                      value={formData.password_confirm}
                       onChange={handleInputChange}
-                      required
-                      placeholder="Enter email address"
+                      required={!isEditMode}
+                      placeholder={isEditMode ? '••••••••' : 'Confirm password'}
                     />
                     <Form.Control.Feedback type="invalid">
-                      Valid email address is required
+                      {!isEditMode && 'Password confirmation is required'}
                     </Form.Control.Feedback>
-                  </Form.Group>
-                </Col>
-                
-                <Col md={6}>
-                  <Form.Group className="mb-3" controlId="userName">
-                    <Form.Label>{t('admin.userForm.name')}</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      placeholder="Enter full name"
-                    />
                   </Form.Group>
                 </Col>
               </Row>

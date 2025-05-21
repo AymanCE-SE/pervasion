@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Col, Card, Button, Table, Badge, Modal, Form } from 'react-bootstrap';
+import { Row, Col, Card, Button, Table, Badge, Modal, Form, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
@@ -136,7 +136,11 @@ const UsersList = () => {
               </div>
             ) : status === 'failed' ? (
               <div className="text-center py-5">
-                <p className="text-danger">{error}</p>
+                <p className="text-danger">
+                  {error && typeof error === 'object'
+                    ? error.detail || error.message || JSON.stringify(error)
+                    : error}
+                </p>
                 <Button 
                   variant="primary" 
                   onClick={() => dispatch(fetchUsers())}

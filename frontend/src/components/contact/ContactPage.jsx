@@ -245,9 +245,9 @@ const ContactPage = () => {
                       variant="danger"
                       className="mb-4"
                     >
-                      {typeof contactError === 'string' 
-                        ? contactError 
-                        : 'An error occurred while sending your message. Please try again.'}
+                      {typeof contactError === 'object'
+                        ? contactError.detail || contactError.message || JSON.stringify(contactError)
+                        : contactError}
                     </Alert>
                   )}
                   

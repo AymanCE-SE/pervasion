@@ -145,12 +145,13 @@ const RegisterPage = () => {
                         transition={{ duration: 0.3 }}
                       >
                         <Alert variant="danger" className="mb-4">
-                          {typeof error === 'string' ? error : 
-                           error.detail ? error.detail : 
-                           error.non_field_errors ? error.non_field_errors.join(', ') : 
-                           Object.entries(error).map(([key, value]) => 
-                             `${key}: ${Array.isArray(value) ? value.join(', ') : value}`
-                           ).join('; ') || 'An error occurred. Please try again.'}
+                          {typeof error === 'string'
+                            ? error
+                            : error?.detail ||
+                              error?.message ||
+                              (error?.non_field_errors ? error.non_field_errors.join(', ') : '') ||
+                              (Array.isArray(error) ? error.join(', ') : Object.entries(error).map(([k, v]) => `${k}: ${Array.isArray(v) ? v.join(', ') : v}`).join('; ')) ||
+                              'An error occurred. Please try again.'}
                         </Alert>
                       </motion.div>
                     )}

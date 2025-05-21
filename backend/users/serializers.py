@@ -12,8 +12,8 @@ class UserSerializer(serializers.ModelSerializer):
         read_only_fields = ['created_at']
 
 class UserCreateSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
-    password_confirm = serializers.CharField(write_only=True, required=True)
+    password = serializers.CharField(write_only=True, required=False, validators=[validate_password])
+    password_confirm = serializers.CharField(write_only=True, required=False)
 
     class Meta:
         model = User
@@ -22,10 +22,16 @@ class UserCreateSerializer(serializers.ModelSerializer):
             'role': {'required': False}
         }
 
-    def validate(self, attrs):
-        if attrs['password'] != attrs.pop('password_confirm'):
-            raise serializers.ValidationError({"password": "Password fields didn't match."})
-        return attrs
+    def validate(self, data):
+        # Only require password fields if creating or if password is being changed
+        if self.instance is None or data.get('password') or data.get('password_confirm'):
+            if not data.get('password'):
+                raise serializers.ValidationError({'password': 'This field is required.'})
+            if not data.get('password_confirm'):
+                raise serializers.ValidationError({'password_confirm': 'This field is required.'})
+            if data['password'] != data['password_confirm']:
+                raise serializers.ValidationError({'password_confirm': 'Passwords do not match.'})
+        return data
 
     def create(self, validated_data):
         user = User.objects.create_user(
@@ -43,6 +49,14 @@ class UserCreateSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
+    def update(self, instance, validated_data):
+        password = validated_data.pop('password', None)
+        validated_data.pop('password_confirm', None)
+        instance = super().update(instance, validated_data)
+        if password:
+            instance.set_password(password)
+            instance.save()
+        return instance
 # users/serializers.py
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod

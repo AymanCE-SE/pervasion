@@ -1,35 +1,35 @@
 @import './styles/theme.css';
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Cairo:wght@400;700&display=swap');
-:root {
+/* :root { */
   /* font-family: system-ui, Avenir, Helvetica, Arial, sans-serif; */
   /* font-family: 'Inter', 'Cairo', system-ui, Avenir, Helvetica, Arial, sans-serif  !important; */
-  line-height: 1.5;
+  /* line-height: 1.5;
   font-weight: 400;
   color-scheme: light dark;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
+} */
 
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
   color: var(--text-primary-light);
-  background: var(--bg-primary-light);
+  background: var(--bg-primary-light);  
   transition: color var(--transition-normal),
     background var(--transition-normal);
       font-family: 'Inter', 'Cairo', system-ui, Avenir, Helvetica, Arial, sans-serif !important;
 
 }
 
-body.dark-mode {
+/* body.dark-mode {
   color: var(--text-primary-dark);
   background: var(--bg-primary-dark);
-}
+} */
 
-a {
+/* a {
   font-weight: 500;
   color: var(--primary);
   text-decoration: none;
@@ -65,4 +65,4 @@ button {
 .dark-mode button {
   background-color: var(--bg-secondary-dark) ;
   color: var(--text-primary-dark);
-}
+} */
