@@ -40,7 +40,7 @@ if DEBUG:
     ]
 else:
     CORS_ALLOWED_ORIGINS = [
-        "https://your-production-domain.com",
+        "https://pervasionsa.com",
     ]
 
 

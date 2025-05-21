@@ -52,36 +52,22 @@ export const fetchProjects = createAsyncThunk(
   'projects/fetchProjects',
   async (_, { rejectWithValue, extra }) => {
     try {
-      if (!extra || (!extra.api && !extra.apiService)) {
-        throw new Error('API service not available');
-      }
-
       let data = null;
-
-      // Try apiService first
-      if (extra.apiService?.projects?.getAll) {
+      if (extra?.apiService?.projects?.getAll) {
         try {
           data = await extra.apiService.projects.getAll();
         } catch (e) {
-          console.warn('ApiService failed, falling back to direct API call:', e);
+          // fallback
         }
       }
-
-      // Fallback to direct API
-      if (!data && extra.api) {
+      if (!data && extra?.api) {
         const response = await extra.api.get('/projects/');
         data = response.data;
       }
-
-      if (!data) {
-        throw new Error('Failed to fetch projects');
-      }
-
-      // Handle both paginated and non-paginated responses
-      const projects = data.results || (Array.isArray(data) ? data : []);
-      return projects;
+      if (!data) throw new Error('Failed to fetch projects');
+      // Handle paginated and non-paginated
+      return data.results || data;
     } catch (error) {
-      console.error('Error fetching projects:', error);
       return rejectWithValue({
         detail: error.response?.data?.detail || error.message || 'Failed to fetch projects'
       });
@@ -93,33 +79,19 @@ export const fetchProjectById = createAsyncThunk(
   'projects/fetchProjectById',
   async (id, { rejectWithValue, extra }) => {
     try {
-      if (!extra || (!extra.api && !extra.apiService)) {
-        throw new Error('API service not available');
-      }
-
       let data = null;
-      // Try apiService first
-      if (extra.apiService?.projects?.getById) {
+      if (extra?.apiService?.projects?.getById) {
         try {
           data = await extra.apiService.projects.getById(id);
-        } catch (e) {
-          console.warn('ApiService failed, falling back to direct API call:', e);
-        }
+        } catch (e) {}
       }
-
-      // Fallback to direct API
-      if (!data && extra.api) {
+      if (!data && extra?.api) {
         const response = await extra.api.get(`/projects/${id}/`);
         data = response.data;
       }
-
-      if (!data) {
-        throw new Error('Failed to fetch project');
-      }
-
+      if (!data) throw new Error('Failed to fetch project');
       return data;
     } catch (error) {
-      console.error(`Error fetching project ${id}:`, error);
       return rejectWithValue({
         detail: error.response?.data?.detail || error.message || 'Failed to fetch project'
       });
@@ -131,55 +103,25 @@ export const createProject = createAsyncThunk(
   'projects/createProject',
   async (projectData, { rejectWithValue, extra }) => {
     try {
-      if (!extra || (!extra.api && !extra.apiService)) {
-        throw new Error('API service not available');
-      }
-
-      // Ensure projectData is FormData for direct API calls
-      const prepareFormData = (data) => {
-        if (data instanceof FormData) return data;
-        const formData = new FormData();
-        Object.entries(data).forEach(([key, value]) => {
-          if (value !== undefined && value !== null) {
-            formData.append(key, value);
-          }
-        });
-        return formData;
-      };
-
       let data = null;
-
-      // Try apiService first
-      if (extra.apiService?.projects?.create) {
+      if (extra?.apiService?.projects?.create) {
         try {
           data = await extra.apiService.projects.create(projectData);
-        } catch (e) {
-          console.warn('ApiService failed, falling back to direct API call:', e);
-        }
+        } catch (e) {}
       }
-
-      // Fallback to direct API
-      if (!data && extra.api) {
-        const formData = prepareFormData(projectData);
-        const config = {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        };
-        const response = await extra.api.post('/projects/', formData, config);
+      if (!data && extra?.api) {
+        // Only set headers if NOT FormData
+        const isFormData = projectData instanceof FormData;
+        const config = isFormData ? {} : { headers: { 'Content-Type': 'application/json' } };
+        const response = await extra.api.post('/projects/', projectData, config);
         data = response.data;
       }
-
-      if (!data) {
-        throw new Error('Failed to create project');
-      }
-
+      if (!data) throw new Error('Failed to create project');
       return data;
     } catch (error) {
-      console.error('Error creating project:', error);
-      return rejectWithValue({
-        detail: error.response?.data?.detail || error.message || 'Failed to create project'
-      });
+      return rejectWithValue(
+        error.response?.data || { detail: error.message || 'Failed to create project' }
+      );
     }
   }
 );
@@ -188,53 +130,19 @@ export const updateProject = createAsyncThunk(
   'projects/updateProject',
   async ({ id, projectData }, { rejectWithValue, extra }) => {
     try {
-      if (!extra || (!extra.api && !extra.apiService)) {
-        throw new Error('API service not available');
-      }
-
-      // Ensure projectData is FormData for direct API calls
-      const prepareFormData = (data) => {
-        if (data instanceof FormData) return data;
-        const formData = new FormData();
-        Object.entries(data).forEach(([key, value]) => {
-          if (value !== undefined && value !== null) {
-            formData.append(key, value);
-          }
-        });
-        return formData;
-      };
-
       let data = null;
-
-      // Try apiService first
-      if (extra.apiService?.projects?.update) {
+      if (extra?.apiService?.projects?.update) {
         try {
           data = await extra.apiService.projects.update(id, projectData);
-        } catch (e) {
-          console.warn('ApiService failed, falling back to direct API call:', e);
-        }
+        } catch (e) {}
       }
-
-      // Fallback to direct API
-      if (!data && extra.api) {
-        const formData = prepareFormData(projectData);
-        const config = {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        };
-        // Use PATCH instead of PUT to handle partial updates with files
-        const response = await extra.api.patch(`/projects/${id}/`, formData, config);
+      if (!data && extra?.api) {
+        const response = await extra.api.patch(`/projects/${id}/`, projectData);
         data = response.data;
       }
-
-      if (!data) {
-        throw new Error('Failed to update project');
-      }
-
+      if (!data) throw new Error('Failed to update project');
       return data;
     } catch (error) {
-      console.error(`Error updating project ${id}:`, error);
       return rejectWithValue({
         detail: error.response?.data?.detail || error.message || 'Failed to update project'
       });
@@ -246,37 +154,46 @@ export const deleteProject = createAsyncThunk(
   'projects/deleteProject',
   async (id, { rejectWithValue, extra }) => {
     try {
-      if (!extra || (!extra.api && !extra.apiService)) {
-        throw new Error('API service not available');
-      }
-
       let success = false;
-
-      // Try apiService first
-      if (extra.apiService?.projects?.delete) {
+      if (extra?.apiService?.projects?.delete) {
         try {
           await extra.apiService.projects.delete(id);
           success = true;
-        } catch (e) {
-          console.warn('ApiService failed, falling back to direct API call:', e);
-        }
+        } catch (e) {}
       }
-
-      // Fallback to direct API
-      if (!success && extra.api) {
+      if (!success && extra?.api) {
         await extra.api.delete(`/projects/${id}/`);
         success = true;
       }
-
-      if (!success) {
-        throw new Error('Failed to delete project');
-      }
-
+      if (!success) throw new Error('Failed to delete project');
       return id;
     } catch (error) {
-      console.error(`Error deleting project ${id}:`, error);
       return rejectWithValue({
         detail: error.response?.data?.detail || error.message || 'Failed to delete project'
+      });
+    }
+  }
+);
+
+export const createCategory = createAsyncThunk(
+  'projects/createCategory',
+  async (categoryData, { rejectWithValue, extra }) => {
+    try {
+      let data = null;
+      if (extra?.apiService?.categories?.create) {
+        try {
+          data = await extra.apiService.categories.create(categoryData);
+        } catch (e) {}
+      }
+      if (!data && extra?.api) {
+        const response = await extra.api.post('/categories/', categoryData);
+        data = response.data;
+      }
+      if (!data) throw new Error('Failed to create category');
+      return data;
+    } catch (error) {
+      return rejectWithValue({
+        detail: error.response?.data?.detail || error.message || 'Failed to create category'
       });
     }
   }
@@ -322,18 +239,16 @@ export const projectsSlice = createSlice({
       // Fetch all projects
       .addCase(fetchProjects.pending, (state) => {
         state.status = 'loading';
-        state.projects = []; // Clear existing projects when loading new ones
+        state.projects = [];
       })
       .addCase(fetchProjects.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        // Handle both paginated responses and direct arrays
-        if (action.payload && (Array.isArray(action.payload) || action.payload.results)) {
-          state.projects = action.payload.results || action.payload;
-        } else {
-          // If we get an unexpected response format, set projects to empty array
-          console.error('Unexpected projects response format:', action.payload);
-          state.projects = [];
-        }
+        // Accept both paginated and non-paginated
+        state.projects = Array.isArray(action.payload.results)
+          ? action.payload.results
+          : Array.isArray(action.payload)
+            ? action.payload
+            : [];
       })
       .addCase(fetchProjects.rejected, (state, action) => {
         state.status = 'failed';
@@ -393,6 +308,18 @@ export const projectsSlice = createSlice({
       .addCase(deleteProject.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload || 'Failed to delete project';
+      })
+      // Create category
+      .addCase(createCategory.pending, (state) => {
+        state.categoriesStatus = 'loading';
+      })
+      .addCase(createCategory.fulfilled, (state, action) => {
+        state.categoriesStatus = 'succeeded';
+        state.categories.push(action.payload);
+      })
+      .addCase(createCategory.rejected, (state, action) => {
+        state.categoriesStatus = 'failed';
+        state.categoriesError = action.payload?.detail || 'Failed to create category';
       });
   },
 });

@@ -12,7 +12,12 @@ import {
   selectCurrentProject, 
   selectProjectStatus,
   selectProjectError,
-  clearCurrentProject
+  clearCurrentProject,
+  fetchCategories,
+  selectAllCategories,
+  selectCategoriesStatus,
+  selectCategoriesError,
+  createCategory
 } from '../../redux/slices/projectsSlice';
 import { selectDarkMode } from '../../redux/slices/themeSlice';
 import { FaSave, FaArrowLeft } from 'react-icons/fa';
@@ -29,16 +34,17 @@ const ProjectForm = () => {
   const status = useSelector(selectProjectStatus);
   const error = useSelector(selectProjectError);
   const darkMode = useSelector(selectDarkMode);
+  const categories = useSelector(selectAllCategories);
+  const categoriesStatus = useSelector(selectCategoriesStatus);
+  const categoriesError = useSelector(selectCategoriesError);
   
-  // Form state
+  // Cleaned formData (no image/images)
   const [formData, setFormData] = useState({
     title: '',
     title_ar: '',
     description: '',
     description_ar: '',
-    category: 1, // Default category ID
-    image: null,
-    images: [],
+    category: 1,
     client: '',
     date: '',
     featured: false
@@ -54,20 +60,27 @@ const ProjectForm = () => {
   const [validated, setValidated] = useState(false);
   // Field-specific validation errors from backend
   const [fieldErrors, setFieldErrors] = useState({});
+  const [showNewCategory, setShowNewCategory] = useState(false);
+  const [newCategoryName, setNewCategoryName] = useState('');
+  const [newCategoryNameAr, setNewCategoryNameAr] = useState('');
+  const [creatingCategory, setCreatingCategory] = useState(false);
   
   // Fetch project data if in edit mode
   useEffect(() => {
     if (isEditMode) {
       dispatch(fetchProjectById(id));
-    } else {
-      dispatch(clearCurrentProject());
     }
-    
-    // Cleanup on unmount
     return () => {
       dispatch(clearCurrentProject());
     };
   }, [dispatch, id, isEditMode]);
+  
+  // Fetch categories for select input
+  useEffect(() => {
+    if (categoriesStatus === 'idle') {
+      dispatch(fetchCategories());
+    }
+  }, [categoriesStatus, dispatch]);
   
   // Populate form with project data when available
   useEffect(() => {
@@ -78,8 +91,6 @@ const ProjectForm = () => {
         description: project.description || '',
         description_ar: project.description_ar || '',
         category: project.category || 1,
-        image: null, // We'll keep the file input empty, but show preview
-        images: project.images || [],
         client: project.client || '',
         date: project.date || '',
         featured: project.featured || false
@@ -213,29 +224,16 @@ const ProjectForm = () => {
     
     // Create FormData object for file uploads
     const formDataObj = new FormData();
-    
-    // Add text fields
     formDataObj.append('title', formData.title);
     formDataObj.append('title_ar', formData.title_ar);
     formDataObj.append('description', formData.description);
     formDataObj.append('description_ar', formData.description_ar);
-    formDataObj.append('category', formData.category);
+    formDataObj.append('category', String(formData.category)); // should be the ID
     formDataObj.append('client', formData.client);
     formDataObj.append('date', formData.date);
-    formDataObj.append('featured', formData.featured);
-    
-    // Add main image file if available
-    if (mainImageFile) {
-      formDataObj.append('image', mainImageFile);
-    }
-    
-    // Add additional image files if available
-    if (additionalImageFiles.length > 0) {
-      // The backend expects a flat list of files under the same key name
-      additionalImageFiles.forEach(file => {
-        formDataObj.append('additional_images', file);
-      });
-    }
+    formDataObj.append('featured', formData.featured ? 'true' : 'false');
+    if (mainImageFile) formDataObj.append('image', mainImageFile);
+    additionalImageFiles.forEach(file => formDataObj.append('additional_images', file));
     
     // Handle form submission with better error handling
     if (isEditMode) {
@@ -267,16 +265,6 @@ const ProjectForm = () => {
     }
   };
   
-  // Categories for select dropdown
-  const categories = [
-    'branding',
-    'ui-design',
-    'social-media',
-    'packaging',
-    'print',
-    'motion'
-  ];
-  
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -286,6 +274,35 @@ const ProjectForm = () => {
         duration: 0.5
       },
     },
+  };
+
+  const handleCategoryChange = (e) => {
+    const value = e.target.value;
+    if (value === '__new__') {
+      setShowNewCategory(true);
+    } else {
+      setFormData({ ...formData, category: value });
+      setShowNewCategory(false);
+    }
+  };
+
+  const handleAddCategory = async () => {
+    setCreatingCategory(true);
+    try {
+      const res = await dispatch(createCategory({
+        name: newCategoryName,
+        name_ar: newCategoryNameAr
+      })).unwrap();
+      // Set the new category as selected
+      setFormData({ ...formData, category: res.id });
+      setShowNewCategory(false);
+      setNewCategoryName('');
+      setNewCategoryNameAr('');
+    } catch (err) {
+      alert('Failed to create category');
+    } finally {
+      setCreatingCategory(false);
+    }
   };
 
   return (
@@ -331,6 +348,11 @@ const ProjectForm = () => {
                 {typeof error === 'object'
                   ? error.detail || error.message || JSON.stringify(error)
                   : error}
+              </Alert>
+            )}
+            {categoriesError && (
+              <Alert variant="danger" className="mt-2">
+                {categoriesError}
               </Alert>
             )}
             <Form noValidate validated={validated} onSubmit={handleSubmit}>
@@ -440,14 +462,16 @@ const ProjectForm = () => {
                     <Form.Select
                       name="category"
                       value={formData.category}
-                      onChange={handleInputChange}
+                      onChange={handleCategoryChange}
                       required
                     >
-                      {categories.map((category) => (
-                        <option key={category} value={category}>
-                          {t(`projects.categories.${category}`)}
+                      <option value="">Select a category</option>
+                      {categories.map((cat) => (
+                        <option key={cat.id} value={cat.id}>
+                          {cat.name}
                         </option>
                       ))}
+                      <option value="__new__">+ Create new category</option>
                     </Form.Select>
                   </Form.Group>
                 </Col>
@@ -571,6 +595,31 @@ const ProjectForm = () => {
                   </div>
                 )}
               </Form.Group>
+              
+              {showNewCategory && (
+                <div className="mt-2">
+                  <Form.Control
+                    type="text"
+                    placeholder="New category name (English)"
+                    value={newCategoryName}
+                    onChange={e => setNewCategoryName(e.target.value)}
+                  />
+                  <Form.Control
+                    type="text"
+                    placeholder="New category name (Arabic)"
+                    value={newCategoryNameAr}
+                    onChange={e => setNewCategoryNameAr(e.target.value)}
+                  />
+                  <Button
+                    size="sm"
+                    className="mt-2"
+                    onClick={handleAddCategory}
+                    disabled={creatingCategory || !newCategoryName || !newCategoryNameAr}
+                  >
+                    {creatingCategory ? 'Adding...' : 'Add Category'}
+                  </Button>
+                </div>
+              )}
               
               <div className="form-actions">
                 <Button 

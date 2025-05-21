@@ -5,10 +5,12 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from .models import Project, Category
 from .serializers import ProjectSerializer, CategorySerializer
+from users.permissions import IsAdminOrStaff
 
 class ProjectViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
+    
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['category', 'featured']
     search_fields = ['title', 'title_ar', 'description', 'description_ar', 'client']
@@ -19,7 +21,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
         if self.action in ['list', 'retrieve', 'featured']:
             permission_classes = [permissions.AllowAny]
         else:
-            permission_classes = [permissions.IsAdminUser]
+            permission_classes = [IsAdminOrStaff]
         return [permission() for permission in permission_classes]
     
     @action(detail=False, methods=['get'])

@@ -154,7 +154,7 @@ const App = () => {
                     }
                   />
                   <Route
-                    path="projects/:id/edit"
+                    path="projects/edit/:id"
                     element={
                       <AdminProtectedRoute>
                         <ProjectForm />

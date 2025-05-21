@@ -69,14 +69,6 @@ const AdminLayout = () => {
                 <span>{t('admin.projects')}</span>
               </Nav.Link>
               
-            <Nav.Link 
-              as={Link} 
-              to="/admin/categories"
-              className={location.pathname.includes('/admin/categories') ? 'active' : ''}
-            >
-              <FaTags className="nav-icon" />
-              <span>{t('admin.categories')}</span>
-            </Nav.Link>
 
               <Nav.Link 
                 as={Link} 

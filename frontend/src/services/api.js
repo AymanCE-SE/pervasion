@@ -4,48 +4,67 @@ import axios from 'axios';
 const api = axios.create({
   baseURL: 'http://localhost:8000/api',
   headers: {
-    'Content-Type': 'application/json'
+    // 'Content-Type': 'application/json'
   },
   withCredentials: true // Important for CORS with credentials
 });
 
 // Add request interceptor for auth token
 api.interceptors.request.use(config => {
-  // Get the current URL path from the config
   const path = config.url;
-  
-  // Only add authentication for protected endpoints
-  // Public endpoints: projects, categories
-  const publicEndpoints = ['/projects', '/categories'];
-  const isPublicEndpoint = publicEndpoints.some(endpoint => path.startsWith(endpoint));
-  
-  // If it's not a public endpoint and we have a token, add it to the request
+  const method = config.method?.toUpperCase();
+
+  // Only GET requests to /projects and /categories are public
+  const publicEndpoints = [
+    { path: '/projects', method: 'GET' },
+    { path: '/categories', method: 'GET' }
+  ];
+  const isPublicEndpoint = publicEndpoints.some(
+    ep => path.startsWith(ep.path) && method === ep.method
+  );
+
   const token = localStorage.getItem('token');
   if (token && !isPublicEndpoint) {
     config.headers.Authorization = `Bearer ${token}`;
   }
-  
+
   return config;
-}, error => {
-  return Promise.reject(error);
-});
+}, error => Promise.reject(error));
 
 // Add response interceptor for error handling
 api.interceptors.response.use(
   response => response,
-  error => {
-    // Handle network errors
-    if (error.message === 'Network Error') {
-      console.error('Network error - please check if the backend server is running');
+  async error => {
+    const originalRequest = error.config;
+    if (
+      error.response &&
+      error.response.status === 401 &&
+      !originalRequest._retry
+    ) {
+      originalRequest._retry = true;
+      const refreshToken = localStorage.getItem('refreshToken');
+      if (refreshToken) {
+        try {
+          const res = await axios.post('http://localhost:8000/api/auth/refresh/', {
+            refresh: refreshToken
+          });
+          const newAccess = res.data.access;
+          localStorage.setItem('token', newAccess);
+          originalRequest.headers.Authorization = `Bearer ${newAccess}`;
+          return api(originalRequest);
+        } catch (refreshError) {
+          // Refresh failed, force logout
+          localStorage.removeItem('token');
+          localStorage.removeItem('refreshToken');
+          window.location.href = '/admin/login';
+        }
+      } else {
+        // No refresh token, force logout
+        localStorage.removeItem('token');
+        localStorage.removeItem('refreshToken');
+        window.location.href = '/admin/login';
+      }
     }
-    
-    // Handle authentication errors
-    if (error.response && error.response.status === 401) {
-      localStorage.removeItem('token');
-      // Optionally redirect to login page
-      // window.location.href = '/login';
-    }
-    
     return Promise.reject(error);
   }
 );
