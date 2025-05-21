@@ -29,13 +29,14 @@ const AboutPage = React.lazy(() => import('./components/about/AboutPage'));
 const ContactPage = React.lazy(() => import('./components/contact/ContactPage'));
 const UserLoginPage = React.lazy(() => import('./components/auth/LoginPage'));
 const RegisterPage = React.lazy(() => import('./components/auth/RegisterPage'));
-const AdminLoginPage = React.lazy(() => import('./components/admin/LoginPage'));
-const LogoutPage = React.lazy(() => import('./components/admin/LogoutPage'));
+// const AdminLoginPage = React.lazy(() => import('./components/admin/LoginPage'));
+// const LogoutPage = React.lazy(() => import('./components/admin/LogoutPage'));
 const Dashboard = React.lazy(() => import('./components/admin/Dashboard'));
 const ProjectsList = React.lazy(() => import('./components/admin/ProjectsList'));
 const ProjectForm = React.lazy(() => import('./components/admin/ProjectForm'));
 const UsersList = React.lazy(() => import('./components/admin/UsersList'));
 const UserForm = React.lazy(() => import('./components/admin/UserForm'));
+const ContactList = React.lazy(() => import('./components/admin/ContactList'));
 
 const App = () => {
   const dispatch = useDispatch();
@@ -68,13 +69,11 @@ const App = () => {
   const AdminProtectedRoute = ({ children }) => {
     const location = useLocation();
     if (!isAuthenticated) {
-      return <Navigate to="/admin/login" replace state={{ from: location }} />;
+      return <Navigate to="/login" replace state={{ from: location }} />;
     }
-
     if (userRole !== 'admin') {
       return <Navigate to="/" replace />;
     }
-
     return children;
   };
 
@@ -99,6 +98,7 @@ const App = () => {
       <GlobalErrorHandler>
         <HelmetProvider>
           <Suspense fallback={<LoadingFallback />}>
+
             <Routes>
                 {/* Public Routes */}
                 <Route path="/" element={<Layout />}>
@@ -120,7 +120,7 @@ const App = () => {
                     <AdminLayout />
                   </AdminProtectedRoute>
                 }>
-                  <Route path="login" element={<AdminLoginPage />} />
+                  {/* <Route path="login" element={<AdminLoginPage />} /> */}
                   <Route
                     index
                     element={
@@ -185,7 +185,15 @@ const App = () => {
                       </AdminProtectedRoute>
                     }
                   />
-                  <Route path="logout" element={<LogoutPage />} />
+                  <Route
+                    path="contacts"
+                    element={
+                      <AdminProtectedRoute>
+                        <ContactList />
+                      </AdminProtectedRoute>
+                    }
+                  />
+                  {/* <Route path="logout" element={<LogoutPage />} /> */}
                 </Route>
 
                 {/* 404 Route */}

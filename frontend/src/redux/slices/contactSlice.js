@@ -28,10 +28,55 @@ export const submitContactForm = createAsyncThunk(
   }
 );
 
+export const fetchContacts = createAsyncThunk(
+  'adminContacts/fetchContacts',
+  async (_, { rejectWithValue, extra }) => {
+    try {
+      if (!extra?.api) throw new Error('API service not available');
+      const response = await extra.api.get('/contacts/');
+      return response.data; // Will include count, next, previous, and results
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data || error.message || 'Failed to fetch contacts'
+      );
+    }
+  }
+);
+
+export const markAsRead = createAsyncThunk(
+  'contacts/markAsRead',
+  async (contactId, { rejectWithValue, extra }) => {
+    try {
+      if (!extra?.api) throw new Error('API service not available');
+      const response = await extra.api.patch(`/contacts/${contactId}/mark_as_read/`);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data || error.message || 'Failed to mark message as read'
+      );
+    }
+  }
+);
+
+// Add new action
+export const deleteContact = createAsyncThunk(
+  'adminContacts/deleteContact',
+  async (contactId, { rejectWithValue, extra }) => {
+    try {
+      await extra.api.delete(`/contacts/${contactId}/`);
+      return contactId;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data || error.message || 'Failed to delete contact'
+      );
+    }
+  }
+);
+
 const initialState = {
-  status: 'idle', // 'idle' | 'loading' | 'succeeded' | 'failed'
-  error: null,
-  successMessage: null
+  contacts: [], // Make sure this is an array
+  status: 'idle',
+  error: null
 };
 
 export const contactSlice = createSlice({
@@ -60,6 +105,27 @@ export const contactSlice = createSlice({
         state.error = typeof action.payload === 'string'
           ? action.payload
           : 'Failed to send message. Please try again.';
+      })
+      .addCase(fetchContacts.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(fetchContacts.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.contacts = action.payload.results; // Store just the results array
+        state.error = null;
+      })
+      .addCase(fetchContacts.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload;
+      })
+      .addCase(markAsRead.fulfilled, (state, action) => {
+        const index = state.contacts.findIndex(contact => contact.id === action.payload.id);
+        if (index !== -1) {
+          state.contacts[index] = action.payload;
+        }
+      })
+      .addCase(deleteContact.fulfilled, (state, action) => {
+        state.contacts = state.contacts.filter(contact => contact.id !== action.payload);
       });
   },
 });
@@ -69,5 +135,8 @@ export const { clearContactStatus } = contactSlice.actions;
 export const selectContactStatus = (state) => state.contact.status;
 export const selectContactError = (state) => state.contact.error;
 export const selectContactSuccessMessage = (state) => state.contact.successMessage;
+export const selectAllContacts = (state) => state.contact.contacts || [];
+export const selectContactsStatus = (state) => state.contact.status;
+export const selectContactsError = (state) => state.contact.error;
 
 export default contactSlice.reducer;

@@ -1,0 +1,109 @@
+.contacts-list-page {
+  padding: 1.5rem;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.page-header h1 {
+  margin: 0;
+  font-size: 1.75rem;
+}
+
+.page-header p {
+  margin: 0.5rem 0 0;
+  color: #6c757d;
+}
+
+.list-card {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.list-card.dark-mode {
+  background-color: #2b3035;
+  color: #fff;
+}
+
+.search-input {
+  max-width: 300px;
+  margin-left: auto;
+}
+
+.table {
+  margin-bottom: 0;
+}
+
+/* Add to existing styles */
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.message-details .detail-group {
+  margin-bottom: 1.5rem;
+}
+
+.message-details label {
+  font-weight: 600;
+  color: #666;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.message-details p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.message-details .message-content {
+  white-space: pre-wrap;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 4px;
+}
+
+.dark-mode .message-details .message-content {
+  background: #343a40;
+}
+
+.action-btn {
+  padding: 0.25rem 0.5rem;
+}
+
+.badge svg {
+  margin-right: 0.25rem;
+  vertical-align: -0.125em;
+}
+
+.badge {
+  transition: all 0.2s ease;
+}
+
+.badge:hover {
+  opacity: 0.8;
+  transform: scale(1.05);
+}
+
+tr.table-warning:hover {
+  background-color: #fff3cd !important;
+}
+
+/* Responsive */
+@media (max-width: 767.98px) {
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .search-input {
+    margin: 1rem 0 0;
+    max-width: 100%;
+  }
+  
+  .table {
+    min-width: 800px;
+  }
+}

@@ -2,10 +2,10 @@ import React, { useEffect } from 'react';
 import { Container, Row, Col, Nav } from 'react-bootstrap';
 import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
-import { selectIsAuthenticated } from '../../redux/slices/authSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectIsAuthenticated, logout } from '../../redux/slices/authSlice';
 import { selectDarkMode } from '../../redux/slices/themeSlice';
-import { FaTachometerAlt, FaImages, FaUsers, FaSignOutAlt, FaHome, FaTags } from 'react-icons/fa';
+import { FaTachometerAlt, FaImages, FaUsers, FaSignOutAlt, FaHome, FaTags, FaEnvelope } from 'react-icons/fa';
 import './AdminLayout.css';
 
 const AdminLayout = () => {
@@ -15,6 +15,7 @@ const AdminLayout = () => {
   
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const darkMode = useSelector(selectDarkMode);
+  const dispatch = useDispatch();
   
   // Check if user is authenticated
   useEffect(() => {
@@ -28,6 +29,12 @@ const AdminLayout = () => {
     return location.pathname === path;
   };
   
+  // Logout handler
+  const handleLogout = async () => {
+    await dispatch(logout());
+    navigate('/');
+  };
+
   if (!isAuthenticated) {
     return null; // Don't render anything while redirecting
   }
@@ -80,11 +87,20 @@ const AdminLayout = () => {
               </Nav.Link>
 
 
-              
               <Nav.Link 
                 as={Link} 
-                to="/admin/logout" 
+                to="/admin/contacts" 
+                className={location.pathname.includes('/admin/contacts') ? 'active' : ''}
+              >
+                <FaEnvelope className="nav-icon" />
+                <span>{t('admin.contacts')}</span>
+              </Nav.Link>
+              
+              <Nav.Link 
+                as="button"
+                onClick={handleLogout}
                 className="logout-link"
+                style={{ background: 'none', border: 'none', textAlign: 'left' }}
               >
                 <FaSignOutAlt className="nav-icon" />
                 <span>{t('admin.logout')}</span>

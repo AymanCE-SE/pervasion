@@ -10,7 +10,8 @@ import {
   deleteProject,
   selectAllProjects, 
   selectProjectStatus,
-  selectProjectError
+  selectProjectError,
+  selectAllCategories
 } from '../../redux/slices/projectsSlice';
 import { selectDarkMode } from '../../redux/slices/themeSlice';
 import { selectLanguage } from '../../redux/slices/languageSlice';
@@ -26,6 +27,7 @@ const ProjectsList = () => {
   const error = useSelector(selectProjectError);
   const darkMode = useSelector(selectDarkMode);
   const language = useSelector(selectLanguage);
+  const categories = useSelector(selectAllCategories);
   
   // Delete confirmation modal state
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -174,9 +176,9 @@ const ProjectsList = () => {
                           {language === 'en' ? project.title : project.title_ar}
                         </td>
                         <td>
-                          <Badge bg="info" className="category-badge">
-                            {t(`projects.categories.${project.category}`)}
-                          </Badge>
+                        <Badge bg="info" className="category-badge">
+                          {language === 'en' ? project.category_name : project.category_name_ar}
+                        </Badge>
                         </td>
                         <td>{new Date(project.date).toLocaleDateString()}</td>
                         <td>
