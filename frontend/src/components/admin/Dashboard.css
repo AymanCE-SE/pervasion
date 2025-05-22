@@ -76,10 +76,17 @@
   background: linear-gradient(45deg, #11998e, #38ef7d);
 }
 
+.messages-icon {
+  background-color: #6f42c1;
+}
+
 .stat-value {
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .stat-label {
@@ -98,11 +105,12 @@
   border-radius: 15px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
   overflow: hidden;
+  margin-top: 2rem;
 }
 
-.dark-mode .recent-card {
-  background-color: #333;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+.recent-card.dark-mode {
+  background-color: #2b3035;
+  color: #fff;
 }
 
 .recent-card .card-header {
@@ -151,30 +159,52 @@
   border-color: rgba(255, 255, 255, 0.05);
 }
 
+.recent-card .table {
+  margin-bottom: 0;
+}
+
+.recent-card .table td {
+  vertical-align: middle;
+}
+
+.project-thumbnail img {
+  transition: transform 0.2s ease;
+}
+
+.project-thumbnail img:hover {
+  transform: scale(1.1);
+}
+
 .featured-badge {
-  display: inline-block;
-  padding: 0.25rem 0.75rem;
-  border-radius: 50px;
-  font-size: 0.75rem;
-  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.875rem;
 }
 
-.featured-badge.featured {
-  background-color: rgba(56, 239, 125, 0.15);
-  color: #38ef7d;
+.featured-badge svg {
+  margin-right: 0.25rem;
 }
 
-.featured-badge.not-featured {
-  background-color: rgba(220, 53, 69, 0.15);
-  color: #dc3545;
+.badge.bg-info {
+  background-color: #17a2b8 !important;
+  color: white;
+  font-weight: 500;
+  padding: 0.4rem 0.8rem;
 }
 
-.dark-mode .featured-badge.featured {
-  background-color: rgba(56, 239, 125, 0.25);
+.table-hover tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.02);
 }
 
-.dark-mode .featured-badge.not-featured {
-  background-color: rgba(220, 53, 69, 0.25);
+.dark-mode .table-hover tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.unread-badge {
+  font-size: 0.5em;
+  vertical-align: middle;
+  padding: 0.4em 0.6em;
 }
 
 /* RTL Support */

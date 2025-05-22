@@ -1,15 +1,17 @@
 import React, { useEffect } from 'react';
-import { Row, Col, Card } from 'react-bootstrap';
+import { Row, Col, Card, Badge } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchProjects, selectAllProjects } from '../../redux/slices/projectsSlice';
 import { fetchUsers, selectAllUsers } from '../../redux/slices/usersSlice';
+import { fetchContacts, selectAllContacts } from '../../redux/slices/contactSlice';
 import { selectUser } from '../../redux/slices/authSlice';
 import { selectDarkMode } from '../../redux/slices/themeSlice';
-import { FaImages, FaUsers, FaEye, FaStar } from 'react-icons/fa';
+import { FaImages, FaUsers, FaEye, FaStar, FaCheck, FaTimes, FaEnvelope } from 'react-icons/fa';
 import './Dashboard.css';
+import { Link } from 'react-router-dom';
 
 const Dashboard = () => {
   const { t } = useTranslation();
@@ -17,6 +19,7 @@ const Dashboard = () => {
   
   const projects = useSelector(selectAllProjects);
   const users = useSelector(selectAllUsers);
+  const contacts = useSelector(selectAllContacts);
   const currentUser = useSelector(selectUser);
   const darkMode = useSelector(selectDarkMode);
   
@@ -24,13 +27,16 @@ const Dashboard = () => {
   useEffect(() => {
     dispatch(fetchProjects());
     dispatch(fetchUsers());
+    dispatch(fetchContacts());
   }, [dispatch]);
   
   // Calculate dashboard stats
   const totalProjects = projects.length;
   const featuredProjects = projects.filter(project => project.featured).length;
   const totalUsers = users.length;
-  
+  const totalMessages = contacts.length;
+  const unreadMessages = contacts.filter(contact => !contact.is_read).length;
+
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -51,6 +57,15 @@ const Dashboard = () => {
       transition: { duration: 0.4, ease: 'easeOut' },
     },
   };
+
+  // Determine category field based on language
+  const { i18n } = useTranslation();
+  const categoryField = i18n.language === 'ar' ? 'category_name_ar' : 'category_name';
+
+  // Get recent projects sorted by date
+  const recentProjects = [...projects]
+    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+    .slice(0, 5);
 
   return (
     <>
@@ -117,11 +132,22 @@ const Dashboard = () => {
               <motion.div variants={itemVariants}>
                 <Card className={`stat-card ${darkMode ? 'dark-mode' : ''}`}>
                   <Card.Body>
-                    <div className="stat-icon views-icon">
-                      <FaEye />
+                    <div className="stat-icon messages-icon">
+                      <FaEnvelope />
                     </div>
-                    <h3 className="stat-value">1,234</h3>
-                    <p className="stat-label">Total Views</p>
+                    <h3 className="stat-value">
+                      {totalMessages}
+                      {unreadMessages > 0 && (
+                        <Badge 
+                          bg="warning" 
+                          text="dark" 
+                          className="ms-2 unread-badge"
+                        >
+                          {unreadMessages} new
+                        </Badge>
+                      )}
+                    </h3>
+                    <p className="stat-label">{t('admin.messages')}</p>
                   </Card.Body>
                 </Card>
               </motion.div>
@@ -131,30 +157,66 @@ const Dashboard = () => {
           {/* Recent Projects */}
           <motion.div variants={itemVariants}>
             <Card className={`recent-card ${darkMode ? 'dark-mode' : ''}`}>
-              <Card.Header>
-                <h5 className="mb-0">Recent Projects</h5>
+              <Card.Header className="d-flex justify-content-between align-items-center">
+                <h5 className="mb-0">{t('admin.recentProjects')}</h5>
+                <Link 
+                  to="/admin/projects" 
+                  className="btn btn-sm btn-primary"
+                >
+                  {t('admin.viewAll')}
+                </Link>
               </Card.Header>
               <Card.Body>
                 <div className="table-responsive">
-                  <table className="table">
+                  <table className="table table-hover align-middle">
                     <thead>
                       <tr>
+                        <th style={{ width: '50px' }}>#</th>
+                        <th style={{ width: '80px' }}>Image</th>
                         <th>Title</th>
                         <th>Category</th>
                         <th>Date</th>
-                        <th>Featured</th>
+                        <th style={{ width: '100px' }}>Featured</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {projects.slice(0, 5).map((project) => (
+                      {recentProjects.map((project) => (
                         <tr key={project.id}>
-                          <td>{project.title}</td>
-                          <td>{t(`projects.categories.${project.category}`)}</td>
-                          <td>{new Date(project.date).toLocaleDateString()}</td>
+                          <td>{project.id}</td>
                           <td>
-                            <span className={`featured-badge ${project.featured ? 'featured' : 'not-featured'}`}>
-                              {project.featured ? 'Yes' : 'No'}
+                            <div className="project-thumbnail">
+                              <img 
+                                src={project.image} 
+                                alt={project.title}
+                                className="img-fluid rounded"
+                                style={{ width: '50px', height: '50px', objectFit: 'cover' }}
+                              />
+                            </div>
+                          </td>
+                          <td>
+                            {i18n.language === 'ar' ? project.title_ar : project.title}
+                          </td>
+                          <td>
+                            <span className="badge bg-info">
+                              {i18n.language === 'ar' ? 
+                                project.category_name_ar : 
+                                project.category_name}
                             </span>
+                          </td>
+                          <td>
+                            {new Date(project.created_at).toLocaleDateString()}
+                          </td>
+                          <td>
+                            <Badge 
+                              bg={project.featured ? 'success' : 'secondary'}
+                              className="featured-badge"
+                            >
+                              {project.featured ? (
+                                <><FaCheck className="me-1" /> Yes</>
+                              ) : (
+                                <><FaTimes className="me-1" /> No</>
+                              )}
+                            </Badge>
                           </td>
                         </tr>
                       ))}
