@@ -96,15 +96,15 @@ export const contactSlice = createSlice({
         state.error = null;
         state.successMessage = null;
       })
-      .addCase(submitContactForm.fulfilled, (state) => {
+      .addCase(submitContactForm.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.successMessage = 'Your message has been sent successfully!';
+        state.error = null;
+        state.successMessage = 'Your message has been sent successfully. We will get back to you soon!';
       })
       .addCase(submitContactForm.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = typeof action.payload === 'string'
-          ? action.payload
-          : 'Failed to send message. Please try again.';
+        state.error = action.payload || 'Failed to send message. Please try again.';
+        state.successMessage = null;
       })
       .addCase(fetchContacts.pending, (state) => {
         state.status = 'loading';

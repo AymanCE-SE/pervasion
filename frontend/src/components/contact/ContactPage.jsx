@@ -13,7 +13,7 @@ import {
   selectContactError, 
   selectContactSuccessMessage 
 } from '../../redux/slices/contactSlice';
-import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaUser } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaUser, FaCheckCircle } from 'react-icons/fa';
 import './ContactPage.css';
 
 const ContactPage = () => {
@@ -85,6 +85,18 @@ const ContactPage = () => {
     });
   };
 
+  // Reset form function
+  const resetForm = () => {
+    setFormData({
+      name: isAuthenticated ? formData.name : '',
+      email: isAuthenticated ? formData.email : '',
+      subject: '',
+      message: '',
+      userId: isAuthenticated ? currentUser.id : ''
+    });
+    setValidated(false);
+  };
+
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -97,39 +109,41 @@ const ContactPage = () => {
       return;
     }
     
-    setValidated(true);
+    // Clear previous validation state
+    setValidated(false);
     
-    // Add timestamp and status to form data
     const contactData = {
       ...formData,
-      // If user is authenticated, ensure we use their data
       name: isAuthenticated ? formData.name : formData.name,
       email: isAuthenticated ? (currentUser.email || currentUser.username) : formData.email,
       userId: isAuthenticated ? currentUser.id : '',
       status: 'new'
     };
     
-    // Log the data being sent
-    console.log('Sending contact data:', { ...contactData, message: '[REDACTED]' });
-    
-    dispatch(submitContactForm(contactData))
-      .unwrap()
-      .then(() => {
-        // Reset message and subject fields on success
-        setFormData(prev => ({
-          ...prev,
-          subject: '',
-          message: ''
-        }));
-        
-        // Clear status after 5 seconds
-        setTimeout(() => {
-          dispatch(clearContactStatus());
-        }, 5000);
-      })
-      .catch((error) => {
-        console.error('Contact form submission error:', error);
+    try {
+      await dispatch(submitContactForm(contactData)).unwrap();
+      
+      // Reset form on success
+      setFormData({
+        name: isAuthenticated ? formData.name : '',
+        email: isAuthenticated ? formData.email : '',
+        subject: '',
+        message: '',
+        userId: isAuthenticated ? currentUser.id : ''
       });
+      
+      // Scroll to top to show success message
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      
+      // Clear success message after 5 seconds
+      setTimeout(() => {
+        dispatch(clearContactStatus());
+      }, 5000);
+      
+    } catch (error) {
+      console.error('Contact form submission error:', error);
+      setValidated(true);
+    }
   };
 
   // Animation variants
@@ -231,13 +245,25 @@ const ContactPage = () => {
               
               <Col lg={7}>
                 <motion.div variants={itemVariants} className="contact-form">
-                  {(contactStatus === 'succeeded' && successMessage) && (
-                    <Alert 
-                      variant="success"
-                      className="mb-4"
+                  {contactStatus === 'succeeded' && successMessage && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
                     >
-                      {successMessage}
-                    </Alert>
+                      <Alert 
+                        variant="success"
+                        className="mb-4 d-flex align-items-center"
+                      >
+                        <div className="me-3">
+                          <FaCheckCircle size={24} />
+                        </div>
+                        <div>
+                          <h6 className="mb-0 fw-bold">Thank you!</h6>
+                          <p className="mb-0">{successMessage}</p>
+                        </div>
+                      </Alert>
+                    </motion.div>
                   )}
                   
                   {(contactStatus === 'failed' && contactError) && (
