@@ -4,10 +4,9 @@ import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { logout, selectIsAuthenticated, selectUser } from "../../redux/slices/authSlice";
-import { FiSun, FiMoon, FiGlobe, FiUser, FiLogIn, FiMenu, FiX } from "react-icons/fi";
+import { FiSun, FiMoon, FiGlobe, FiUser, FiLogIn, FiMenu, FiX, FiLogOut } from "react-icons/fi";
 
 // Ensure icons have display: inline-block by default
-const iconStyle = { display: 'inline-block' };
 import { useAppSettings } from "../../hooks/useAppSettings";
 import "./Header.css";
 import logo from "../../assets/logo-dark.png";
@@ -48,11 +47,18 @@ const NavLinks = memo(({ isAuthenticated, closeMenu, isMobile = false, user }) =
     });
   }
 
-  // Only include test error in development mode and mobile menu
-  if (process.env.NODE_ENV === 'development' && isMobile) {
-    navItems.push({ path: "/test-error", label: "Test Error" });
-  }
-  
+
+  // Combine related callbacks
+const handleMenuActions = useCallback(() => {
+  setIsMenuOpen(false);
+  setShowUserMenu(false);
+}, []);
+
+// Use it for both closeMenu and toggle
+const toggleMenu = useCallback(() => {
+  setIsMenuOpen(prev => !prev);
+}, []);
+
   return (
     <ul className={`nav-links ${isMobile ? 'mobile-nav' : 'desktop-nav'}`}>
       {navItems.map((item, index) => (
@@ -85,7 +91,8 @@ const ActionButtons = memo(({
   isAuthenticated, 
   onToggleTheme, 
   onToggleLanguage, 
-  onLogout 
+  onLogout,
+  closeMenu 
 }) => {
   const { t } = useTranslation();
   const [showUserMenu, setShowUserMenu] = useState(false);
@@ -98,8 +105,8 @@ const ActionButtons = memo(({
         onClick={onToggleTheme}
         aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
       >
-        <FiSun className={`theme-icon ${darkMode ? 'active' : ''}`} style={iconStyle} />
-        <FiMoon className={`theme-icon ${!darkMode ? 'active' : ''}`} style={iconStyle} />
+        <FiSun className={`theme-icon ${darkMode ? 'active' : ''}`} style={{ display: 'inline-block' }} />
+        <FiMoon className={`theme-icon ${!darkMode ? 'active' : ''}`} style={{ display: 'inline-block' }} />
       </button>
       
       <button 
@@ -107,7 +114,7 @@ const ActionButtons = memo(({
         onClick={onToggleLanguage}
         aria-label={`Switch to ${currentLang === 'en' ? 'Arabic' : 'English'}`}
       >
-        <FiGlobe style={iconStyle} />
+        <FiGlobe style={{ display: 'inline-block' }} />
         <span>{currentLang === 'en' ? 'عربي' : 'EN'}</span>
       </button>
 
@@ -119,7 +126,7 @@ const ActionButtons = memo(({
             aria-expanded={showUserMenu}
             aria-label="User menu"
           >
-            <FiUser style={iconStyle} />
+            <FiUser style={{ display: 'inline-block' }} />
             <span className="user-name">
               {user?.name?.split(' ')[0] || t('nav.profile')}
             </span>
@@ -134,11 +141,17 @@ const ActionButtons = memo(({
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.2 }}
               >
-                <Link to="/profile" className="dropdown-item">
-                  {t('nav.profile')}
+                <Link to="/profile" className="dropdown-item" onClick={closeMenu}>
+                  <FiUser /> {t('nav.profile')}
                 </Link>
-                <button onClick={onLogout} className="dropdown-item">
-                  {t('nav.logout')}
+                <button 
+                  className="dropdown-item logout" 
+                  onClick={() => {
+                    onLogout();
+                    closeMenu();
+                  }}
+                >
+                  <FiLogOut /> {t('nav.logout')}
                 </button>
               </motion.div>
             )}
@@ -156,6 +169,103 @@ const ActionButtons = memo(({
 
 ActionButtons.displayName = 'ActionButtons';
 
+// Add these components before the Header component
+
+const MobileActions = memo(({ 
+  darkMode, 
+  currentLang, 
+  toggleTheme, 
+  handleLanguageChange, 
+  closeMenu 
+}) => {
+  const { t } = useTranslation();
+
+  return (
+    <div className="mobile-actions">
+      <button 
+        className="mobile-action-btn"
+        onClick={() => {
+          toggleTheme();
+          closeMenu();
+        }}
+      >
+        {darkMode ? (
+          <>
+            <FiSun className="action-icon" />
+            <span>{t('theme.light')}</span>
+          </>
+        ) : (
+          <>
+            <FiMoon className="action-icon" />
+            <span>{t('theme.dark')}</span>
+          </>
+        )}
+      </button>
+
+      <button 
+        className="mobile-action-btn"
+        onClick={() => {
+          handleLanguageChange();
+          closeMenu();
+        }}
+      >
+        <FiGlobe className="action-icon" />
+        <span>{currentLang === 'en' ? 'عربي' : 'EN'}</span>
+      </button>
+    </div>
+  );
+});
+
+const MobileUserMenu = memo(({ 
+  isAuthenticated, 
+  user, 
+  onLogout, 
+  closeMenu 
+}) => {
+  const { t } = useTranslation();
+
+  if (!isAuthenticated) {
+    return (
+      <Link 
+        to="/login" 
+        className="mobile-action-btn login-btn"
+        onClick={closeMenu}
+      >
+        <FiLogIn className="action-icon" />
+        <span>{t('nav.login')}</span>
+      </Link>
+    );
+  }
+
+  return (
+    <div className="mobile-user-menu">
+      <Link 
+        to="/profile" 
+        className="mobile-action-btn"
+        onClick={closeMenu}
+      >
+        <FiUser className="action-icon" />
+        <span>{user?.name?.split(' ')[0] || t('nav.profile')}</span>
+      </Link>
+      
+      <button 
+        className="mobile-action-btn logout-btn"
+        onClick={() => {
+          onLogout();
+          closeMenu();
+        }}
+      >
+        <FiLogOut className="action-icon" />
+        <span>{t('nav.logout')}</span>
+      </button>
+    </div>
+  );
+});
+
+// Add display names
+MobileActions.displayName = 'MobileActions';
+MobileUserMenu.displayName = 'MobileUserMenu';
+
 const Header = () => {
   const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
@@ -172,7 +282,7 @@ const Header = () => {
   // Local state
   const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [showUserMenu, setShowUserMenu] = useState(false);
+  // const [showUserMenu, setShowUserMenu] = useState(false);
   const [currentLang, setCurrentLang] = useState(i18n.language);
   
   // Update current language when i18n language changes
@@ -224,33 +334,33 @@ const Header = () => {
   }, [handleScroll]);
 
   // Animation variants
-  const logoVariants = {
-    hidden: { opacity: 0, x: -20 },
-    visible: { 
-      opacity: 1, 
-      x: 0,
-      transition: { 
-        duration: 0.8,
-        ease: [0.25, 0.1, 0.25, 1]
-      }
-    },
-    hover: { 
-      scale: 1.05,
-      transition: { duration: 0.3 }
-    }
-  };
+  // const logoVariants = {
+  //   hidden: { opacity: 0, x: -20 },
+  //   visible: { 
+  //     opacity: 1, 
+  //     x: 0,
+  //     transition: { 
+  //       duration: 0.8,
+  //       ease: [0.25, 0.1, 0.25, 1]
+  //     }
+  //   },
+  //   hover: { 
+  //     scale: 1.05,
+  //     transition: { duration: 0.3 }
+  //   }
+  // };
 
-  const mobileMenuVariants = {
-    closed: { opacity: 0, x: isRTL ? "100%" : "-100%" },
-    open: { 
-      opacity: 1, 
-      x: 0, 
-      transition: { 
-        duration: 0.4,
-        ease: [0.25, 0.1, 0.25, 1]
-      } 
-    }
-  };
+  // const mobileMenuVariants = {
+  //   closed: { opacity: 0, x: isRTL ? "100%" : "-100%" },
+  //   open: { 
+  //     opacity: 1, 
+  //     x: 0, 
+  //     transition: { 
+  //       duration: 0.4,
+  //       ease: [0.25, 0.1, 0.25, 1]
+  //     } 
+  //   }
+  // };
 
   return (
     <header 
@@ -285,6 +395,7 @@ const Header = () => {
             onToggleTheme={toggleTheme}
             onToggleLanguage={handleLanguageChange}
             onLogout={handleLogout}
+            closeMenu={closeMenu} // Add this prop
           />
         </div>
 
@@ -299,81 +410,39 @@ const Header = () => {
         </button>
 
         {/* Mobile Menu */}
-        <AnimatePresence>
-          {isMenuOpen && (
-            <motion.div 
-              className="mobile-menu"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-            >
-              <div className="mobile-controls">
-                <NavLinks 
-                  isAuthenticated={isAuthenticated} 
-                  closeMenu={closeMenu}
-                  isMobile={true}
-                  user={user}
-                />
-                
-                <div className="mobile-actions">
-                  <button 
-                    className="mobile-theme-toggle"
-                    onClick={() => {
-                      toggleTheme();
-                      closeMenu();
-                    }}
-                    aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-                  >
-                    {darkMode ? <FiSun /> : <FiMoon />}
-                    <span>{darkMode ? 'Light' : 'Dark'}</span>
-                  </button>
-                  <button 
-                    className="mobile-lang-toggle"
-                    onClick={() => {
-                      handleLanguageChange();
-                      closeMenu();
-                    }}
-                    aria-label={`Switch to ${currentLang === 'en' ? 'Arabic' : 'English'}`}
-                  >
-                    <FiGlobe />
-                    <span>{currentLang === 'en' ? 'عربي' : 'EN'}</span>
-                  </button>
-                </div>
-                
-                {isAuthenticated ? (
-                  <div className="user-menu">
-                    <button 
-                      className="user-button"
-                      onClick={() => setShowUserMenu(!showUserMenu)}
-                      aria-expanded={showUserMenu}
-                      aria-label="User menu"
-                    >
-                      <FiUser />
-                      <span className="user-name">
-                        {user?.name?.split(' ')[0] || t('nav.profile')}
-                      </span>
-                    </button>
-                    {showUserMenu && (
-                      <div className="user-dropdown">
-                        <Link to="/profile" onClick={closeMenu}>
-                          <FiUser /> {t('nav.profile')}
-                        </Link>
-                        <button onClick={handleLogout}>
-                          <FiLogOut /> {t('nav.logout')}
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <Link to="/login" className="login-button" onClick={closeMenu}>
-                    <FiLogIn /> {t('nav.login')}
-                  </Link>
-                )}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+<AnimatePresence>
+  {isMenuOpen && (
+    <motion.div 
+      className="mobile-menu"
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.3 }}
+    >
+      <div className="mobile-controls">
+        <NavLinks 
+          isAuthenticated={isAuthenticated} 
+          closeMenu={closeMenu}
+          isMobile={true}
+          user={user}
+        />
+        <MobileActions 
+          darkMode={darkMode}
+          currentLang={currentLang}
+          toggleTheme={toggleTheme}
+          handleLanguageChange={handleLanguageChange}
+          closeMenu={closeMenu}
+        />
+        <MobileUserMenu 
+          isAuthenticated={isAuthenticated}
+          user={user}
+          onLogout={handleLogout}
+          closeMenu={closeMenu}
+        />
+      </div>
+    </motion.div>
+  )}
+</AnimatePresence>
       </div>
     </header>
   );
