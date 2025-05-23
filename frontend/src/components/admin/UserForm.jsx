@@ -34,11 +34,13 @@ const UserForm = () => {
   // Form state
   const [formData, setFormData] = useState({
     username: '',
+    email: '',
     password: '',
     password_confirm: '',
-    email: '',
     name: '',
-    role: 'user'
+    role: 'user',
+    is_active: false,
+    email_verified: false
   });
   
   // Form validation state
@@ -63,11 +65,13 @@ const UserForm = () => {
     if (isEditMode && user) {
       setFormData({
         username: user.username || '',
-        password: '',
-        password_confirm: '',
         email: user.email || '',
+        password: '', // Clear password fields in edit mode
+        password_confirm: '', // Clear password confirm in edit mode
         name: user.name || '',
-        role: user.role || 'user'
+        role: user.role || 'user',
+        is_active: user.is_active ?? false,
+        email_verified: user.email_verified ?? false
       });
     }
   }, [isEditMode, user]);
@@ -82,7 +86,7 @@ const UserForm = () => {
   };
   
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.currentTarget;
 
@@ -92,41 +96,52 @@ const UserForm = () => {
       return;
     }
 
-    setValidated(true);
+    // Create a clean payload without empty password fields
+    const payload = {
+      username: formData.username,
+      email: formData.email,
+      name: formData.name,
+      role: formData.role,
+      is_active: formData.is_active,
+      email_verified: formData.email_verified
+    };
 
-    const userData = { ...formData };
-
-    // Remove password fields if blank in edit mode
-    if (isEditMode && !userData.password) {
-      delete userData.password;
-    }
-    if (isEditMode && !userData.password_confirm) {
-      delete userData.password_confirm;
-    }
-
-    // Only validate password match if at least one is filled
-    if (
-      (userData.password || userData.password_confirm) &&
-      userData.password !== userData.password_confirm
-    ) {
-      alert('Passwords do not match!');
+    // Only add password fields if they're both filled
+    if (formData.password && formData.password_confirm) {
+      if (formData.password !== formData.password_confirm) {
+        dispatch({
+          type: 'users/setError',
+          payload: 'Passwords do not match'
+        });
+        return;
+      }
+      payload.password = formData.password;
+      payload.password_confirm = formData.password_confirm;
+    } else if ((formData.password || formData.password_confirm) && !isEditMode) {
+      dispatch({
+        type: 'users/setError',
+        payload: 'Both password fields are required for new users'
+      });
       return;
     }
 
-    if (isEditMode) {
-      dispatch(updateUser({ id, userData }))
-        .unwrap()
-        .then(() => {
-          dispatch(fetchUsers());
-          navigate('/admin/users');
+    try {
+      const action = isEditMode
+        ? updateUser({ id, userData: payload })
+        : createUser(payload);
+
+      await dispatch(action).unwrap();
+      dispatch(fetchUsers());
+      navigate('/admin/users');
+    } catch (error) {
+      console.error('Operation failed:', error);
+      // Handle specific error cases
+      if (error?.detail) {
+        dispatch({
+          type: 'users/setError',
+          payload: error.detail
         });
-    } else {
-      dispatch(createUser(userData))
-        .unwrap()
-        .then(() => {
-          dispatch(fetchUsers());
-          navigate('/admin/users');
-        });
+      }
     }
   };
   
@@ -258,28 +273,29 @@ const UserForm = () => {
                       value={formData.password}
                       onChange={handleInputChange}
                       required={!isEditMode}
-                      placeholder={isEditMode ? '••••••••' : 'Enter password'}
+                      placeholder={isEditMode ? 'Leave blank to keep current' : 'Enter password'}
+                      minLength={8}
                     />
                     <Form.Control.Feedback type="invalid">
-                      {!isEditMode && 'Password is required'}
+                      {!isEditMode ? 'Password must be at least 8 characters' : ''}
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
                 <Col md={6}>
                   <Form.Group className="mb-3" controlId="userPasswordConfirm">
                     <Form.Label>
-                      {t('admin.userForm.passwordConfirm') || 'Confirm Password'}
+                      {isEditMode ? 'Confirm New Password' : 'Confirm Password'}
                     </Form.Label>
                     <Form.Control
                       type="password"
                       name="password_confirm"
                       value={formData.password_confirm}
                       onChange={handleInputChange}
-                      required={!isEditMode}
-                      placeholder={isEditMode ? '••••••••' : 'Confirm password'}
+                      required={!isEditMode || formData.password}
+                      placeholder={isEditMode ? 'Leave blank to keep current' : 'Confirm password'}
                     />
                     <Form.Control.Feedback type="invalid">
-                      {!isEditMode && 'Password confirmation is required'}
+                      {!isEditMode ? 'Please confirm your password' : ''}
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
@@ -300,6 +316,38 @@ const UserForm = () => {
                   Admin users have full access to the dashboard and can manage all content.
                 </Form.Text>
               </Form.Group>
+              
+              {/* Add Email Verification Status */}
+              <Row className="mb-3">
+                <Col md={6}>
+                  <Form.Group className="status-group">
+                    <Form.Label>Account Status</Form.Label>
+                    <div className="d-flex gap-3">
+                      <Form.Check
+                        type="switch"
+                        id="is_active"
+                        label="Active"
+                        checked={formData.is_active}
+                        onChange={(e) => setFormData({
+                          ...formData,
+                          is_active: e.target.checked
+                        })}
+                      />
+                      <Form.Check
+                        type="switch"
+                        id="email_verified"
+                        label="Email Verified"
+                        checked={formData.email_verified}
+                        onChange={(e) => setFormData({
+                          ...formData,
+                          email_verified: e.target.checked,
+                          is_active: e.target.checked ? true : formData.is_active // Activate if email verified
+                        })}
+                      />
+                    </div>
+                  </Form.Group>
+                </Col>
+              </Row>
               
               <div className="form-actions">
                 <Button 

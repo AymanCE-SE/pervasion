@@ -121,6 +121,16 @@ const LoginPage = () => {
                       </motion.div>
                     )}
                     
+                    {error?.email_unverified && (
+                      <Alert variant="warning" className="mb-4">
+                        <Alert.Heading>Email Not Verified</Alert.Heading>
+                        <p>
+                          Please verify your email address before logging in.
+                          Check your email inbox for the verification link.
+                        </p>
+                      </Alert>
+                    )}
+                    
                     <Form onSubmit={handleSubmit}>
                       <Form.Group controlId="formEmail" className="mb-4">
                         <Form.Label className="form-label">

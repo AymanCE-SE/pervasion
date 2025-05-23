@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Verify Your Email</title>
+</head>
+<body>
+    <h2>Welcome to Pervasion!</h2>
+    <p>Hi {{ username }},</p>
+    <p>Thank you for registering! Please verify your email by clicking the link below:</p>
+    <p>
+        <a href="{{ verify_url }}" style="
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 20px 0;
+        ">Verify Email Address</a>
+    </p>
+    <p>Or copy and paste this link in your browser:</p>
+    <p>{{ verify_url }}</p>
+    <p>This link will expire in 24 hours.</p>
+    <p>If you didn't register for an account, please ignore this email.</p>
+</body>
+</html>

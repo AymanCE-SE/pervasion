@@ -37,6 +37,7 @@ const ProjectForm = React.lazy(() => import('./components/admin/ProjectForm'));
 const UsersList = React.lazy(() => import('./components/admin/UsersList'));
 const UserForm = React.lazy(() => import('./components/admin/UserForm'));
 const ContactList = React.lazy(() => import('./components/admin/ContactList'));
+const VerifyEmail = React.lazy(() => import('./components/auth/VerifyEmail'));
 
 const App = () => {
   const dispatch = useDispatch();
@@ -113,6 +114,7 @@ const App = () => {
                 <Route path="/login" element={<UserLoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/signup" element={<RegisterPage />} />
+                <Route path="/verify-email" element={<VerifyEmail />} />
 
                 {/* Admin Routes */}
                 <Route path="/admin" element={

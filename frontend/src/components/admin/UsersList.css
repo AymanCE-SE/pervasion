@@ -122,10 +122,19 @@
 }
 
 .role-badge {
-  font-weight: 500;
+  padding: 0.35em 0.65em;
   font-size: 0.75rem;
-  padding: 0.35rem 0.65rem;
-  border-radius: 50px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+}
+
+.role-badge.bg-primary {
+  background: linear-gradient(45deg, #0d6efd, #0a58ca) !important;
+}
+
+.role-badge.bg-secondary {
+  background: linear-gradient(45deg, #6c757d, #565e64) !important;
 }
 
 .action-buttons {
@@ -190,4 +199,38 @@
   .table {
     min-width: 700px;
   }
+}
+
+.verification-badge,
+.status-badge {
+  font-size: 0.75rem;
+  padding: 0.35em 0.65em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+}
+
+.verification-badge svg,
+.status-badge svg {
+  margin-top: -1px;
+}
+
+/* Status colors */
+.badge.bg-success {
+  background: linear-gradient(45deg, #28a745, #34ce57) !important;
+}
+
+.badge.bg-warning {
+  background: linear-gradient(45deg, #ffc107, #ffcd39) !important;
+  color: #000;
+}
+
+.badge.bg-danger {
+  background: linear-gradient(45deg, #dc3545, #e4606d) !important;
+}
+
+/* Dark mode adjustments */
+.dark-mode .verification-badge.bg-warning {
+  color: #fff;
+  background: linear-gradient(45deg, #b78500, #cc9600) !important;
 }

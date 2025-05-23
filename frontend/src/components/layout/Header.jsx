@@ -98,6 +98,12 @@ const ActionButtons = memo(({
   const [showUserMenu, setShowUserMenu] = useState(false);
   const user = useSelector(selectUser);
 
+  // Add a local close handler
+  const handleClose = useCallback(() => {
+    setShowUserMenu(false);
+    closeMenu?.(); // Optional chaining in case closeMenu is not provided
+  }, [closeMenu]);
+
   return (
     <div className="header-actions">
       <button 
@@ -141,14 +147,14 @@ const ActionButtons = memo(({
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.2 }}
               >
-                <Link to="/profile" className="dropdown-item" onClick={closeMenu}>
+                <Link to="/profile" className="dropdown-item" onClick={handleClose}>
                   <FiUser /> {t('nav.profile')}
                 </Link>
                 <button 
                   className="dropdown-item logout" 
                   onClick={() => {
                     onLogout();
-                    closeMenu();
+                    handleClose();
                   }}
                 >
                   <FiLogOut /> {t('nav.logout')}
@@ -158,8 +164,8 @@ const ActionButtons = memo(({
           </AnimatePresence>
         </div>
       ) : (
-        <Link to="/login" className="login-button">
-          <FiLogIn style={iconStyle} />
+        <Link to="/login" className="login-button" onClick={closeMenu}>
+          <FiLogIn style={{ display: 'inline-block' }} />
           <span>{t('nav.login')}</span>
         </Link>
       )}
@@ -279,10 +285,9 @@ const Header = () => {
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const user = useSelector(selectUser);
   
-  // Local state
+  // Local state management
   const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  // const [showUserMenu, setShowUserMenu] = useState(false);
   const [currentLang, setCurrentLang] = useState(i18n.language);
   
   // Update current language when i18n language changes
@@ -304,10 +309,9 @@ const Header = () => {
     navigate(location.pathname, { replace: true });
   }, [toggleLanguage, navigate, location.pathname, i18n]);
 
-  // Close menu function
+  // Close menu function - remove setShowUserMenu reference
   const closeMenu = useCallback(() => {
     setIsMenuOpen(false);
-    setShowUserMenu(false);
   }, []);
 
   // Handle logout

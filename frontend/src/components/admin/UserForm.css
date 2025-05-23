@@ -116,6 +116,39 @@
   opacity: 0.7;
 }
 
+.form-check-input {
+  width: 2.5em;
+  height: 1.25em;
+  margin-top: 0.25em;
+  cursor: pointer;
+}
+
+.form-check-input:checked {
+  background-color: #4a00e0;
+  border-color: #4a00e0;
+}
+
+.dark-mode .form-check-input:checked {
+  background-color: #8e2de2;
+  border-color: #8e2de2;
+}
+
+.form-check-label {
+  cursor: pointer;
+  user-select: none;
+  margin-left: 0.5rem;
+}
+
+.status-group {
+  background: rgba(0, 0, 0, 0.02);
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.dark-mode .status-group {
+  background: rgba(255, 255, 255, 0.05);
+}
+
 /* RTL Support */
 [dir="rtl"] .page-header h1,
 [dir="rtl"] .page-header p,

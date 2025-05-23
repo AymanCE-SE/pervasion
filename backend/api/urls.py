@@ -2,7 +2,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenRefreshView
 
-from users.views import UserViewSet, LoginView, RegisterView
+from users.views import UserViewSet, LoginView, RegisterView, verify_email  # Add verify_email import
 from projects.views import ProjectViewSet, CategoryViewSet
 from contact.views import ContactViewSet
 from comments.views import CommentViewSet
@@ -19,4 +19,5 @@ urlpatterns = [
     path('auth/login/', LoginView.as_view(), name='token_obtain_pair'),
     path('auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('auth/register/', RegisterView.as_view(), name='register'),
+    path('auth/verify-email/', verify_email, name='verify-email'),  # Add this line
 ]

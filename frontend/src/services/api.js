@@ -130,15 +130,29 @@ const apiService = {
       }
     },
     register: async (userData) => {
-      console.log('API Service: Registering user with data:', { ...userData, password: '[REDACTED]', password_confirm: '[REDACTED]' });
-      const response = await api.post('/auth/register/', userData);
-      console.log('API Service: Registration response:', response);
+      // Create a new object to avoid mutation
+      const registrationData = {
+        username: userData.username,
+        email: userData.email,
+        password: userData.password,
+        password_confirm: userData.password_confirm, // This was being transformed incorrectly
+        name: userData.name
+      };
+
+      console.log('API Service: Registering user with data:', {
+        ...registrationData,
+        password: '[REDACTED]',
+        password_confirm: '[REDACTED]'
+      });
+
+      const response = await api.post('/auth/register/', registrationData);
       return response;
     },
     getCurrentUser: async () => {
       const response = await api.get('/users/me/');
       return response;
-    }
+    },
+    verifyEmail: (token) => api.get(`/auth/verify-email/?token=${token}`)
   },
   
   // Contact

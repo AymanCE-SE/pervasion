@@ -32,160 +32,25 @@ const { user: storedUser, token: storedToken, refreshToken: storedRefreshToken }
 // Async thunk for registration
 export const register = createAsyncThunk(
   'auth/register',
-  async (userData, { rejectWithValue, extra }) => {
+  async (userData, { extra, rejectWithValue }) => {
     try {
-      if (!extra || (!extra.api && !extra.apiService)) {
-        throw new Error('API service not available');
-      }
-
-      // Validate required fields
-      const requiredFields = ['username', 'password', 'confirmPassword', 'email'];
-      const missingFields = {};
-      
-      for (const field of requiredFields) {
-        if (!userData[field]) {
-          missingFields[field] = ['This field is required.'];
-        }
-      }
-      
-      if (Object.keys(missingFields).length > 0) {
-        return rejectWithValue(missingFields);
-      }
-
-      // Prepare registration data
-      const registerData = {
+      // Ensure field names match
+      const registrationData = {
         username: userData.username,
-        password: userData.password,
-        password_confirm: userData.confirmPassword,  // Backend expects password_confirm
         email: userData.email,
-        first_name: userData.name || '',
-        last_name: userData.name || ''
+        password: userData.password,
+        password_confirm: userData.password_confirm,
+        name: userData.name
       };
 
-      console.log('Registration data:', { ...registerData, password: '[REDACTED]', password_confirm: '[REDACTED]' });
-
-      try {
-        // Try registration first
-        let registerResponse = null;
-        
-        try {
-          if (extra.apiService?.auth?.register) {
-            console.log('Using apiService for registration');
-            registerResponse = await extra.apiService.auth.register(registerData);
-            console.log('apiService registration response:', registerResponse);
-          } else if (extra.api) {
-            console.log('Using direct API for registration');
-            registerResponse = await extra.api.post('/auth/register/', registerData);
-            console.log('Direct API registration response:', registerResponse);
-          } else {
-            throw new Error('No API service available');
-          }
-
-          // Log the response for debugging
-          console.log('Registration response:', {
-            status: registerResponse?.status,
-            data: registerResponse?.data,
-            headers: registerResponse?.headers
-          });
-
-        } catch (error) {
-          console.error('Registration error:', {
-            message: error.message,
-            response: error.response?.data,
-            status: error.response?.status
-          });
-
-          // If username already exists or other validation errors
-          if (error.response?.data) {
-            return rejectWithValue(error.response.data);
-          }
-          throw error;
-        }
-
-        // Check if we have a valid response
-        if (!registerResponse) {
-          throw new Error('Registration failed - no response object');
-        }
-
-        // For apiService response
-        if (registerResponse.data === undefined && registerResponse.username) {
-          // apiService returned the data directly
-          registerResponse = { data: registerResponse };
-        }
-
-        if (!registerResponse.data) {
-          throw new Error('Registration failed - no response data');
-        }
-
-        // Registration successful, try to login
-        const loginData = {
-          username: userData.username,
-          password: userData.password
-        };
-
-        try {
-          let loginResponse = null;
-
-          if (extra.apiService?.auth?.login) {
-            loginResponse = await extra.apiService.auth.login(loginData);
-          } else if (extra.api) {
-            loginResponse = await extra.api.post('/auth/login/', loginData);
-          }
-
-          if (!loginResponse?.data) {
-            throw new Error('Login failed after registration');
-          }
-
-          const { access, refresh } = loginResponse.data;
-
-          // Get user data
-          // Get user data with profile
-          const userResponse = await extra.api.get('/users/me/', {
-            headers: { 'Authorization': `Bearer ${access}` }
-          });
-          let user = userResponse.data;
-
-          // Get profile data
-          try {
-            const profileResponse = await extra.api.get('/users/profile/', {
-              headers: { 'Authorization': `Bearer ${access}` }
-            });
-            user = {
-              ...user,
-              ...profileResponse.data,
-              email: user.email || userData.username
-            };
-          } catch (profileError) {
-            console.warn('Error fetching profile after registration:', profileError);
-            user = {
-              ...user,
-              email: userData.username
-            };
-          }
-
-          // Store auth data
-          localStorage.setItem('user', JSON.stringify(user));
-          localStorage.setItem('token', access);
-          localStorage.setItem('refreshToken', refresh);
-
-          return { user, token: access, refreshToken: refresh };
-        } catch (loginError) {
-          // If login fails after registration, return success
-          return {
-            detail: 'Account created successfully. Please try logging in.',
-            registration_success: true
-          };
-        }
-      } catch (error) {
-        console.error('Registration error:', error.response?.data || error);
-        return rejectWithValue({
-          detail: error.message || 'Registration failed. Please try again.'
-        });
-      }
+      const response = await extra.apiService.auth.register(registrationData);
+      
+      return {
+        message: response.data.message || 'Registration successful! Please check your email for verification.',
+        email: userData.email
+      };
     } catch (error) {
-      return rejectWithValue({
-        detail: error.response?.data?.detail || error.message || 'Registration failed'
-      });
+      return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
@@ -282,8 +147,16 @@ export const login = createAsyncThunk(
         throw error;
       }
 
+      // Check if user is verified before proceeding
+      if (response.data?.user && !response.data.user.email_verified) {
+        return rejectWithValue({
+          detail: 'Please verify your email before logging in',
+          email_unverified: true,
+          email: email
+        });
+      }
+
       const result = handleLoginResponse(response.data, email);
-      console.log('Login successful, user:', result.user);
       return result;
       
     } catch (error) {
@@ -334,29 +207,47 @@ export const logout = createAsyncThunk(
 
 // Initial state
 const initialState = {
-  user: storedUser ? {
-    id: storedUser.id || null,
-    username: storedUser.username || '',
-    email: storedUser.email || '',
-    name: storedUser.name || storedUser.username || '',
-    role: (storedUser.is_superuser || storedUser.is_staff || storedUser.role === 'admin') 
-      ? 'admin' 
-      : (storedUser.role || 'user'),
-    is_staff: Boolean(storedUser.is_staff),
-    is_superuser: Boolean(storedUser.is_superuser)
-  } : null,
-  token: storedToken,
-  refreshToken: storedRefreshToken,
+  user: null,
+  token: null,
+  refreshToken: null,
+  isAuthenticated: false,
   status: 'idle',
-  error: null
+  error: null,
+  verificationStatus: 'idle',
+  verificationError: null,
+  registrationSuccess: false,
+  registrationEmail: null,
+  isEmailVerified: false
 };
 
-export const authSlice = createSlice({
+// Add verification thunk
+export const verifyEmail = createAsyncThunk(
+  'auth/verifyEmail',
+  async (token, { extra, rejectWithValue }) => {
+    try {
+      const response = await extra.apiService.auth.verifyEmail(token);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+
+
+// Update auth slice reducers
+const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
     clearError: (state) => {
       state.error = null;
+    },
+    clearVerificationState: (state) => {
+      state.verificationStatus = 'idle';
+      state.verificationError = null;
+      state.registrationSuccess = false;
+      state.registrationEmail = null;
     },
   },
   extraReducers: (builder) => {
@@ -367,22 +258,10 @@ export const authSlice = createSlice({
         state.error = null;
       })
       .addCase(register.fulfilled, (state, action) => {
-        if (action.payload?.registration_success) {
-          // Registration successful but login failed
-          state.status = 'succeeded';
-          state.error = {
-            type: 'success',
-            message: action.payload.detail
-          };
-        } else if (action.payload?.user) {
-          // Registration and login both successful
-          state.status = 'succeeded';
-          state.user = action.payload.user;
-          state.token = action.payload.token;
-          state.refreshToken = action.payload.refreshToken;
-          state.isAuthenticated = true;
-          state.error = null;
-        }
+        state.status = 'succeeded';
+        state.error = null;
+        state.registrationSuccess = true;
+        state.registrationEmail = action.payload.email;
       })
       .addCase(register.rejected, (state, action) => {
         state.status = 'failed';
@@ -390,6 +269,23 @@ export const authSlice = createSlice({
           type: 'error',
           message: action.payload?.detail || 'Registration failed'
         };
+      })
+      // Verification
+      .addCase(verifyEmail.pending, (state) => {
+        state.verificationStatus = 'loading';
+        state.verificationError = null;
+      })
+      .addCase(verifyEmail.fulfilled, (state, action) => {
+        state.verificationStatus = 'succeeded';
+        state.isEmailVerified = true;
+        // Clear registration state after successful verification
+        state.registrationSuccess = false;
+        state.registrationEmail = null;
+      })
+      .addCase(verifyEmail.rejected, (state, action) => {
+        state.verificationStatus = 'failed';
+        state.verificationError = action.payload;
+        state.isEmailVerified = false;
       })
       // Login
       .addCase(login.pending, (state) => {
@@ -402,6 +298,7 @@ export const authSlice = createSlice({
         state.token = action.payload.token;
         state.refreshToken = action.payload.refreshToken;
         state.isAuthenticated = true;
+        state.isEmailVerified = action.payload.user.email_verified;
       })
       .addCase(login.rejected, (state, action) => {
         state.status = 'failed';
@@ -418,7 +315,7 @@ export const authSlice = createSlice({
   },
 });
 
-export const { clearError } = authSlice.actions;
+export const { clearError, clearVerificationState } = authSlice.actions;
 
 export const selectUser = (state) => state.auth.user;
 export const selectToken = (state) => state.auth.token;
@@ -427,5 +324,10 @@ export const selectIsAuthenticated = (state) => state.auth.isAuthenticated;
 export const selectAuthStatus = (state) => state.auth.status;
 export const selectAuthError = (state) => state.auth.error;
 export const selectUserRole = (state) => state.auth.user?.role;
+// Add these selectors after existing ones
+export const selectVerificationStatus = (state) => state.auth.verificationStatus;
+export const selectVerificationError = (state) => state.auth.verificationError;
+export const selectRegistrationEmail = (state) => state.auth.registrationEmail;
+export const selectRegistrationSuccess = (state) => state.auth.registrationSuccess;
 
 export default authSlice.reducer;

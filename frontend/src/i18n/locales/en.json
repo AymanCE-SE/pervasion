@@ -146,8 +146,9 @@
     "signupSuccess": "Account created successfully",
     "loginError": "Invalid username or password",
     "signupError": "Error creating account",
-    "enterEmail": "Enter your email",
+    "emailPlaceholder": "Enter your email",
     "enterPassword": "Enter your password",
+
     
     "errors": {
       "generic": "An error occurred. Please try again.",
@@ -176,6 +177,7 @@
     "recentProjects": "Recent Projects",
     "messages": "Messages",
     "unreadMessages": "{{count}} unread",
+    "totalMessages": "{{count}} messages",
     "viewAll": "View All",
     "delete": "Delete",
     "save": "Save",

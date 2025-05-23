@@ -19,19 +19,22 @@ const RegisterPage = () => {
   const status = useSelector(selectAuthStatus);
   const error = useSelector(selectAuthError);
   const isAuthenticated = useSelector(selectIsAuthenticated);
+  const registrationSuccess = useSelector(state => state.auth.registrationSuccess);
+  const registrationEmail = useSelector(state => state.auth.registrationEmail);
   
   // Form state
   const [formData, setFormData] = useState({
     username: '',
     email: '',
     password: '',
-    confirmPassword: '',
+    password_confirm: '',
     name: ''
   });
   
   // Form validation state
   const [validated, setValidated] = useState(false);
   const [passwordsMatch, setPasswordsMatch] = useState(true);
+  const [showVerificationMessage, setShowVerificationMessage] = useState(false);
   
   // Handle form input changes
   const handleInputChange = (e) => {
@@ -42,9 +45,9 @@ const RegisterPage = () => {
     });
     
     // Check if passwords match when either password field changes
-    if (name === 'password' || name === 'confirmPassword') {
+    if (name === 'password' || name === 'password_confirm') {
       if (name === 'password') {
-        setPasswordsMatch(value === formData.confirmPassword);
+        setPasswordsMatch(value === formData.password_confirm);
       } else {
         setPasswordsMatch(formData.password === value);
       }
@@ -56,43 +59,83 @@ const RegisterPage = () => {
     }
   };
   
+  // Add this before form submission
+  const validatePasswords = () => {
+    if (!formData.password) {
+      return {
+        valid: false,
+        error: 'Password is required'
+      };
+    }
+    
+    if (!formData.password_confirm) {
+      return {
+        valid: false,
+        error: 'Password confirmation is required'
+      };
+    }
+    
+    if (formData.password !== formData.password_confirm) {
+      return {
+        valid: false,
+        error: 'Passwords do not match'
+      };
+    }
+    
+    return { valid: true };
+  };
+  
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.currentTarget;
+
+    // Reset validation state
+    setValidated(true);
     
-    // Validate form
-    if (form.checkValidity() === false || !passwordsMatch) {
+    if (form.checkValidity() === false) {
       e.stopPropagation();
-      setValidated(true);
       return;
     }
-    
-    // Log form data before submission
-    console.log('Form data being submitted:', {
-      username: formData.username,
-      email: formData.email,
-      password: '[REDACTED]',
-      confirmPassword: '[REDACTED]',
-      name: formData.name
-    });
-    
-    // Verify passwords match before submission
-    if (formData.password !== formData.confirmPassword) {
-      console.error('Passwords do not match!');
-      setPasswordsMatch(false);
-      setValidated(true);
+
+    // Validate passwords match
+    const passwordValidation = validatePasswords();
+    if (!passwordValidation.valid) {
+      dispatch(clearError()); 
+      dispatch({ 
+        type: 'auth/setError', 
+        payload: { detail: passwordValidation.error }
+      });
       return;
     }
-    
-    // Dispatch register action
-    dispatch(register({
-      username: formData.username,
-      email: formData.email,
+
+    // Create payload explicitly
+    const payload = {
+      username: formData.username.trim(),
+      email: formData.email.trim(),
       password: formData.password,
-      confirmPassword: formData.confirmPassword,
-      name: formData.name
-    }));
+      password_confirm: formData.password_confirm,
+      name: formData.name.trim()
+    };
+
+    try {
+      const result = await dispatch(register(payload)).unwrap();
+      
+      if (result) {
+        setValidated(false);
+        setShowVerificationMessage(true);
+        setFormData({
+          username: '',
+          email: '',
+          password: '',
+          password_confirm: '',
+          name: ''
+        });
+      }
+    } catch (error) {
+      console.error('Registration error:', error);
+      // Error will be handled by the reducer
+    }
   };
   
   // Redirect if already authenticated and clear errors on mount
@@ -106,6 +149,14 @@ const RegisterPage = () => {
     }
     // eslint-disable-next-line
   }, []);
+  
+  // Clear errors and status on mount/unmount
+  useEffect(() => {
+    dispatch(clearError());
+    return () => {
+      dispatch(clearError());
+    };
+  }, [dispatch]);
   
   return (
     <>
@@ -152,6 +203,22 @@ const RegisterPage = () => {
                               (error?.non_field_errors ? error.non_field_errors.join(', ') : '') ||
                               (Array.isArray(error) ? error.join(', ') : Object.entries(error).map(([k, v]) => `${k}: ${Array.isArray(v) ? v.join(', ') : v}`).join('; ')) ||
                               'An error occurred. Please try again.'}
+                        </Alert>
+                      </motion.div>
+                    )}
+                    
+                    {showVerificationMessage && registrationSuccess && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <Alert variant="success" className="mb-4">
+                          <Alert.Heading>Registration Successful!</Alert.Heading>
+                          <p>
+                            A verification email has been sent to {registrationEmail}.
+                            Please check your email and click the verification link to activate your account.
+                          </p>
                         </Alert>
                       </motion.div>
                     )}
@@ -242,8 +309,8 @@ const RegisterPage = () => {
                               <span className="input-group-text"><FaLock /></span>
                               <Form.Control
                                 type="password"
-                                name="confirmPassword"
-                                value={formData.confirmPassword}
+                                name="password_confirm"
+                                value={formData.password_confirm}
                                 onChange={handleInputChange}
                                 placeholder={t('auth.confirmPasswordPlaceholder')}
                                 required
@@ -263,8 +330,23 @@ const RegisterPage = () => {
                           type="submit" 
                           size="lg"
                           disabled={status === 'loading'}
+                          className="d-flex align-items-center justify-content-center gap-2"
                         >
-                          {status === 'loading' ? t('common.loading') : t('auth.register')}
+                          {status === 'loading' ? (
+                            <>
+                              <span 
+                                className="spinner-border spinner-border-sm" 
+                                role="status" 
+                                aria-hidden="true"
+                              />
+                              <span>{t('common.loading')}</span>
+                            </>
+                          ) : (
+                            <>
+                              <FaUserPlus />
+                              <span>{t('auth.register')}</span>
+                            </>
+                          )}
                         </Button>
                       </div>
                     </Form>

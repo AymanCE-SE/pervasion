@@ -13,7 +13,7 @@ import {
   selectUserError
 } from '../../redux/slices/usersSlice';
 import { selectDarkMode } from '../../redux/slices/themeSlice';
-import { FaPlus, FaEdit, FaTrash, FaUserShield } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaTrash, FaUserShield, FaEnvelopeOpen, FaEnvelope, FaUserCheck, FaUserSlash, FaUser } from 'react-icons/fa';
 import './UsersList.css';
 
 const UsersList = () => {
@@ -157,6 +157,7 @@ const UsersList = () => {
                       <th>Username</th>
                       <th>Name</th>
                       <th>Email</th>
+                      <th>Status</th>
                       <th>Role</th>
                       <th style={{ width: '120px' }}>Actions</th>
                     </tr>
@@ -167,13 +168,43 @@ const UsersList = () => {
                         <td>{user.id}</td>
                         <td>{user.username}</td>
                         <td>{user.name || '-'}</td>
-                        <td>{user.email}</td>
+                        <td>
+                          <div className="d-flex align-items-center gap-2">
+                            {user.email}
+                            <Badge 
+                              bg={user.email_verified ? 'success' : 'warning'}
+                              className="verification-badge"
+                            >
+                              {Boolean(user.email_verified) ? (
+                                <><FaEnvelopeOpen size="0.8em" /> Verified</>
+                              ) : (
+                                <><FaEnvelope size="0.8em" /> Unverified</>
+                              )}
+                            </Badge>
+                          </div>
+                        </td>
+                        <td>
+                          <Badge 
+                            bg={user.is_active ? 'success' : 'danger'}
+                            className="status-badge"
+                          >
+                            {Boolean(user.is_active) ? (
+                              <><FaUserCheck size="0.8em" /> Active</>
+                            ) : (
+                              <><FaUserSlash size="0.8em" /> Inactive</>
+                            )}
+                          </Badge>
+                        </td>
                         <td>
                           <Badge 
                             bg={user.role === 'admin' ? 'primary' : 'secondary'}
                             className="role-badge"
                           >
-                            {user.role}
+                            {user.role === 'admin' ? (
+                              <><FaUserShield size="0.8em" /> Admin</>
+                            ) : (
+                              <><FaUser size="0.8em" /> User</>
+                            )}
                           </Badge>
                         </td>
                         <td>
