@@ -35,12 +35,14 @@
     "subtitle": "Explore my latest work",
     "projectInfo": "Project Information",
     "viewDetails": "view details",
+    "completed": "Completed Projects",
     "details": {
       "date": "Date",
       "client": "Client",
       "category": "Category",
       "location": "Location",
-      "role": "Role"
+      "role": "Role",
+      "loading": "Loading project details..."
     },
     "categories": {
       "all": "All",
@@ -238,5 +240,14 @@
     "client": "Client",
     "comment": "Comment",
     "date": "Date"
+  },
+  "clients": {
+    "satisfied": "satified clients"
+  },
+  "years": {
+    "experience": "experience Years"
+  },
+  "awards":{
+    "won": "won an award"
   }
 }

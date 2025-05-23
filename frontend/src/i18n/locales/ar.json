@@ -35,12 +35,14 @@
     "subtitle": "استكشف أحدث أعمالي",
     "projectInfo": "معلومات المشروع",
     "viewDetails": "عرض التفاصيل",
+    "completed": "المشاريع المكتملة",
     "details": {
       "date": "التاريخ",
       "client": "العميل",
       "category": "الفئة",
       "location": "الموقع",
-      "role": "الدور"
+      "role": "الدور",
+      "loading": "جاري تحميل تفاصيل المشروع..."
     },
     "categories": {
       "all": "الكل",
@@ -237,6 +239,14 @@
     "client": "العميل",
     "comment": "التعليق",
     "date": "التاريخ"
+  },
+    "clients": {
+    "satisfied": "عملاء راضون"
+  },
+    "years": {
+    "experience": "سنوات من الخبرة"
+  },
+  "awards": {
+    "won": "فاز بجائزة"
   }
-
 }

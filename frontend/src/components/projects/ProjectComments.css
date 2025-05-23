@@ -87,7 +87,7 @@
   font-size: 0.95rem;
   font-weight: 500;
   color: white;
-  background: var(--primary-gradient);
+  background: var(--main-gradient);
   border: none;
   border-radius: 8px;
   cursor: pointer;
