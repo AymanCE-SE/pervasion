@@ -54,10 +54,7 @@ const ProjectComments = ({ projectId }) => {
       return;
     }
 
-    console.log('Current User:', currentUser); // Debug log
-    
     if (!currentUser || !currentUser.id) {
-      console.error('No current user or user ID found');
       setError('User not properly authenticated');
       return;
     }
@@ -67,22 +64,17 @@ const ProjectComments = ({ projectId }) => {
       content: commentText.trim()
     };
 
-    console.log('Preparing comment data:', commentData); // Debug log
-
     try {
-      console.log('Dispatching addComment with data:', commentData);
       const result = await dispatch(addComment(commentData));
       
       // Check if the action was successful
       if (addComment.fulfilled.match(result)) {
-        console.log('Comment added successfully:', result.payload);
         setCommentText('');
         setError('');
         // Refresh comments after successful submission
         dispatch(fetchCommentsByProjectId(projectId));
       } else if (addComment.rejected.match(result)) {
         // Handle rejected action
-        console.error('Error adding comment:', result);
         const error = result.payload || result.error;
         let errorMessage = t('comments.addError');
         
@@ -107,12 +99,9 @@ const ProjectComments = ({ projectId }) => {
             }
           }
         }
-        
-        console.error('Error details:', error);
         setError(errorMessage);
       }
     } catch (err) {
-      console.error('Unexpected error:', err);
       setError(t('comments.addError'));
     }
   };

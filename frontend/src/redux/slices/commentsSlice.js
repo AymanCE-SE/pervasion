@@ -15,14 +15,6 @@ export const fetchCommentsByProjectId = createAsyncThunk(
       });
       return response.data.results || [];
     } catch (error) {
-      console.error('Error details:', {
-        status: error.response?.status,
-        data: error.response?.data,
-        headers: error.response?.headers,
-        request: error.request,
-        message: error.message
-      });
-      
       let errorMessage = 'Failed to fetch comments';
       if (error.response) {
         // Server responded with a status other than 2xx
@@ -46,20 +38,17 @@ export const addComment = createAsyncThunk(
   'comments/addComment',
   async (commentData, { rejectWithValue }) => {
     try {
-      console.log('Sending comment to API:', commentData);
       const token = localStorage.getItem('token');
       
       if (!token) {
         throw new Error('Authentication required. Please log in.');
       }
 
-      console.log('Using token:', token ? 'Token exists' : 'No token');
-
       const config = {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
-          'X-Requested-With': 'XMLHttpRequest' // Add this to help identify AJAX requests
+          'X-Requested-With': 'XMLHttpRequest'
         },
         validateStatus: function (status) {
           return status < 500; // Reject only if the status code is greater than or equal to 500
@@ -72,17 +61,11 @@ export const addComment = createAsyncThunk(
         content: commentData.content
       };
       
-      console.log('Sending formatted data to API:', JSON.stringify(formattedData, null, 2));
-      console.log('Sending to URL:', `${API_CONFIG.BASE_URL}/comments/`);
-      
       const response = await axios.post(
         `${API_CONFIG.BASE_URL}/comments/`,
         formattedData,
         config
       );
-      
-      console.log('API response status:', response.status);
-      console.log('API response data:', response.data);
       
       // If we get here but the status is an error, handle it
       if (response.status >= 400) {
@@ -91,12 +74,6 @@ export const addComment = createAsyncThunk(
       
       return response.data;
     } catch (error) {
-      console.error('API Error:', {
-        message: error.message,
-        response: error.response?.data,
-        status: error.response?.status
-      });
-      
       let errorMessage = 'Failed to add comment';
       
       if (error.response) {

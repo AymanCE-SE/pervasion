@@ -121,6 +121,12 @@ const ProjectForm = () => {
   const handleMainImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      console.log('Selected main image file:', {
+        name: file.name,
+        type: file.type,
+        size: file.size
+      });
+      
       // Clear any previous image validation errors
       setFieldErrors(prev => ({...prev, image: null}));
       
@@ -144,11 +150,8 @@ const ProjectForm = () => {
         return;
       }
       
+      // Store the file object itself
       setMainImageFile(file);
-      setFormData({
-        ...formData,
-        image: file
-      });
       
       // Create a preview URL
       const previewUrl = URL.createObjectURL(file);
@@ -158,8 +161,15 @@ const ProjectForm = () => {
   
   // Handle additional images file upload
   const handleAdditionalImagesChange = (e) => {
-    const files = Array.from(e.target.files);
+    // Reset the input value to ensure onChange fires even if same files are selected again
+    const inputElement = e.target;
+    const files = Array.from(inputElement.files);
+    inputElement.value = null;
+    
     if (files.length > 0) {
+      console.log(`Selected ${files.length} additional image files:`, 
+        files.map(f => ({ name: f.name, type: f.type, size: f.size })));
+      
       // Clear any previous additional images validation errors
       setFieldErrors(prev => ({...prev, additional_images: null}));
       
@@ -187,11 +197,11 @@ const ProjectForm = () => {
       }
       
       // All files are valid, proceed
-      setAdditionalImageFiles([...additionalImageFiles, ...files]);
+      setAdditionalImageFiles(prevFiles => [...prevFiles, ...files]);
       
       // Create preview URLs
       const previewUrls = files.map(file => URL.createObjectURL(file));
-      setAdditionalImagePreviews([...additionalImagePreviews, ...previewUrls]);
+      setAdditionalImagePreviews(prevPreviews => [...prevPreviews, ...previewUrls]);
     }
   };
   
@@ -221,9 +231,12 @@ const ProjectForm = () => {
     }
     
     setValidated(true);
+    setFieldErrors({});
     
     // Create FormData object for file uploads
     const formDataObj = new FormData();
+    
+    // Add basic form fields
     formDataObj.append('title', formData.title);
     formDataObj.append('title_ar', formData.title_ar);
     formDataObj.append('description', formData.description);
@@ -232,31 +245,97 @@ const ProjectForm = () => {
     formDataObj.append('client', formData.client);
     formDataObj.append('date', formData.date);
     formDataObj.append('featured', formData.featured ? 'true' : 'false');
-    if (mainImageFile) formDataObj.append('image', mainImageFile);
-    additionalImageFiles.forEach(file => formDataObj.append('additional_images', file));
+    
+    // Skip image validation in edit mode if we already have an image preview
+    // and no new file was selected
+    const needsMainImage = !isEditMode || (!imagePreview && !mainImageFile);
+    
+    // Only validate main image if we're in create mode or if there's no existing image
+    if (needsMainImage && !mainImageFile) {
+      console.log('Main image validation failed: No image provided and one is required');
+      setFieldErrors(prev => ({
+        ...prev,
+        image: 'Main image is required'
+      }));
+      return;
+    }
+    
+    // Add main image if we have one
+    if (mainImageFile instanceof File) {
+      console.log('Adding main image to FormData:', {
+        name: mainImageFile.name,
+        type: mainImageFile.type,
+        size: mainImageFile.size
+      });
+      formDataObj.append('image', mainImageFile);
+    }
+    
+    // Add additional images - simplified approach
+    if (additionalImageFiles && additionalImageFiles.length > 0) {
+      console.log(`Adding ${additionalImageFiles.length} additional images to FormData`);
+      
+      // Use a simpler loop for appending files
+      for (let i = 0; i < additionalImageFiles.length; i++) {
+        const file = additionalImageFiles[i];
+        if (file instanceof File) {
+          console.log(`Additional image ${i}:`, {
+            name: file.name,
+            type: file.type,
+            size: file.size
+          });
+          // Just append the file with no extra parameters
+          formDataObj.append('additional_images', file);
+        }
+      }
+    }
+    
+    // Log FormData for debugging
+    console.log('Final FormData contents:');
+    for (let [key, value] of formDataObj.entries()) {
+      if (value instanceof File) {
+        console.log(`${key}: File (${value.name}, ${value.type}, ${value.size} bytes)`);
+      } else {
+        console.log(`${key}: ${value}`);
+      }
+    }
+    
+    // Special handling for empty file inputs in edit mode
+    // In edit mode, if we don't add any new files, we shouldn't include them in the FormData
+    // This prevents 400 errors from Django when empty files are submitted
+    
+    console.log('Form submission in', isEditMode ? 'EDIT' : 'CREATE', 'mode');
     
     // Handle form submission with better error handling
     if (isEditMode) {
+      // Log what's being sent for update
+      console.log('Sending update request for project ID:', id);
+      
       dispatch(updateProject({ id, projectData: formDataObj }))
         .unwrap()
         .then(() => {
+          console.log('Project updated successfully');
           navigate('/admin/projects');
         })
         .catch(error => {
           console.error('Project update error:', error);
+          
           // Check if the error is a validation error (object with field names as keys)
           if (error && typeof error === 'object' && !Array.isArray(error)) {
+            // Format and display validation errors
             setFieldErrors(error);
           }
         });
     } else {
+      // Create new project
       dispatch(createProject(formDataObj))
         .unwrap()
         .then(() => {
+          console.log('Project created successfully');
           navigate('/admin/projects');
         })
         .catch(error => {
           console.error('Project creation error:', error);
+          
           // Check if the error is a validation error (object with field names as keys)
           if (error && typeof error === 'object' && !Array.isArray(error)) {
             setFieldErrors(error);
@@ -355,7 +434,7 @@ const ProjectForm = () => {
                 {categoriesError}
               </Alert>
             )}
-            <Form noValidate validated={validated} onSubmit={handleSubmit}>
+            <Form noValidate validated={validated} onSubmit={handleSubmit} encType="multipart/form-data">
               <Row>
                 <Col md={6}>
                   <Form.Group className="mb-3" controlId="projectTitle">
@@ -540,7 +619,7 @@ const ProjectForm = () => {
                 </Form.Text>
                 {fieldErrors.image && (
                   <div className="text-danger mt-1">
-                    {fieldErrors.image}
+                    {Array.isArray(fieldErrors.image) ? fieldErrors.image[0] : fieldErrors.image}
                   </div>
                 )}
                 <Form.Control.Feedback type="invalid">
@@ -572,7 +651,13 @@ const ProjectForm = () => {
                 </Form.Text>
                 {fieldErrors.additional_images && (
                   <div className="text-danger mt-1">
-                    {fieldErrors.additional_images}
+                    {typeof fieldErrors.additional_images === 'string' 
+                      ? fieldErrors.additional_images 
+                      : Object.keys(fieldErrors.additional_images).map(key => {
+                          const error = fieldErrors.additional_images[key];
+                          return <div key={key}>{Array.isArray(error) ? error.join(', ') : String(error)}</div>;
+                        })
+                    }
                   </div>
                 )}
                 <Form.Control.Feedback type="invalid">

@@ -84,12 +84,10 @@ const ProjectsPage = () => {
     return baseCategories;
   }, [categories]);
   
-  // Debug: Log language and categories to console
+  // Track language changes
   React.useEffect(() => {
-    console.log('Current language:', currentLanguage);
-    console.log('Categories from API:', categories);
-    console.log('All categories:', allCategories);
-  }, [categories, allCategories, currentLanguage]);
+    // Refresh UI when language changes
+  }, [currentLanguage]);
   
   // Filter projects by selected category
   const filteredProjects = React.useMemo(() => {

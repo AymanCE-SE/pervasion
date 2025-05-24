@@ -178,7 +178,8 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10,
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',  # Optional: Keep only in development
+        # Only include BrowsableAPIRenderer in development
+        *(['rest_framework.renderers.BrowsableAPIRenderer'] if DEBUG else []),
     ],
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend',
@@ -205,15 +206,16 @@ SIMPLE_JWT = {
 
 # CORS Settings
 # Specific allowed origins for better security
-# CORS_ALLOWED_ORIGINS = [
-#     'http://localhost:5173',  # Vite dev server
-#     'http://localhost:5174',  # Vite preview
-#     'http://127.0.0.1:5173',
-#     'http://127.0.0.1:5174',
-#     'http://localhost:3000',  # Fallback
-# ]
-# not allower for production
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:5173',  # Vite dev server
+    'http://localhost:5174',  # Vite preview
+    'http://127.0.0.1:5173',
+    'http://127.0.0.1:5174',
+    'http://localhost:3000',  # Fallback
+    'https://pervasionsa.com',  # Production domain
+]
+# Disable all origins for production
+CORS_ALLOW_ALL_ORIGINS = False
 
 
 CORS_ALLOW_CREDENTIALS = True

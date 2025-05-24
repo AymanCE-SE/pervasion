@@ -104,21 +104,63 @@ export const createProject = createAsyncThunk(
   async (projectData, { rejectWithValue, extra }) => {
     try {
       let data = null;
+      const isFormData = projectData instanceof FormData;
+      
+      // Log what we're sending to help with debugging
+      console.log('Creating project with FormData:', isFormData);
+      
+      if (isFormData) {
+        // For debugging - log files in FormData
+        if (process.env.NODE_ENV !== 'production') {
+          console.log('FormData contents:');
+          for (let [key, value] of projectData.entries()) {
+            if (value instanceof File) {
+              console.log(`${key}: File (${value.name}, ${value.type}, ${value.size} bytes)`);
+            } else {
+              console.log(`${key}: ${value}`);
+            }
+          }
+        }
+      }
+      
       if (extra?.apiService?.projects?.create) {
         try {
           data = await extra.apiService.projects.create(projectData);
-        } catch (e) {}
+        } catch (e) {
+          console.warn('ApiService create failed, falling back to direct API');
+        }
       }
+      
       if (!data && extra?.api) {
-        // Only set headers if NOT FormData
-        const isFormData = projectData instanceof FormData;
-        const config = isFormData ? {} : { headers: { 'Content-Type': 'application/json' } };
+        // Configure request properly for FormData
+        const config = isFormData ? {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          }
+        } : { 
+          headers: { 'Content-Type': 'application/json' } 
+        };
+        
+        console.log('Sending request with config:', {
+          url: '/projects/',
+          method: 'POST',
+          isFormData,
+          headers: config.headers
+        });
+        
         const response = await extra.api.post('/projects/', projectData, config);
         data = response.data;
       }
+      
       if (!data) throw new Error('Failed to create project');
       return data;
     } catch (error) {
+      console.error('Project creation error:', {
+        status: error.response?.status,
+        data: error.response?.data,
+        message: error.message
+      });
+      
       return rejectWithValue(
         error.response?.data || { detail: error.message || 'Failed to create project' }
       );
@@ -131,21 +173,66 @@ export const updateProject = createAsyncThunk(
   async ({ id, projectData }, { rejectWithValue, extra }) => {
     try {
       let data = null;
+      const isFormData = projectData instanceof FormData;
+      
+      // Log what we're sending to help with debugging
+      console.log(`Updating project ${id} with FormData:`, isFormData);
+      
+      if (isFormData) {
+        // For debugging - log files in FormData
+        if (process.env.NODE_ENV !== 'production') {
+          console.log('FormData contents for update:');
+          for (let [key, value] of projectData.entries()) {
+            if (value instanceof File) {
+              console.log(`${key}: File (${value.name}, ${value.type}, ${value.size} bytes)`);
+            } else {
+              console.log(`${key}: ${value}`);
+            }
+          }
+        }
+      }
+      
       if (extra?.apiService?.projects?.update) {
         try {
           data = await extra.apiService.projects.update(id, projectData);
-        } catch (e) {}
+        } catch (e) {
+          console.warn('ApiService update failed, falling back to direct API');
+        }
       }
+      
       if (!data && extra?.api) {
-        const response = await extra.api.patch(`/projects/${id}/`, projectData);
+        // Configure request properly for FormData
+        const config = isFormData ? {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          }
+        } : { 
+          headers: { 'Content-Type': 'application/json' } 
+        };
+        
+        console.log('Sending update request with config:', {
+          url: `/projects/${id}/`,
+          method: 'PATCH',
+          isFormData,
+          headers: config.headers
+        });
+        
+        const response = await extra.api.patch(`/projects/${id}/`, projectData, config);
         data = response.data;
       }
+      
       if (!data) throw new Error('Failed to update project');
       return data;
     } catch (error) {
-      return rejectWithValue({
-        detail: error.response?.data?.detail || error.message || 'Failed to update project'
+      console.error('Project update error:', {
+        status: error.response?.status,
+        data: error.response?.data,
+        message: error.message
       });
+      
+      return rejectWithValue(
+        error.response?.data || { detail: error.message || 'Failed to update project' }
+      );
     }
   }
 );

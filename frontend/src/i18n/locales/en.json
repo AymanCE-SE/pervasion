@@ -134,6 +134,7 @@
     "signup": "Sign Up",
     "logout": "Logout",
     "username": "Username",
+    "enterEmail": "Enter your email",
     "email": "Email",
     "name": "Full Name",
     "password": "Password",
@@ -150,8 +151,11 @@
     "signupError": "Error creating account",
     "emailPlaceholder": "Enter your email",
     "enterPassword": "Enter your password",
-
-    
+    "passwordsMustMatch":"password must match",
+    "usernameRequired":"username is required",
+    "passwordRequirements":"password is required",
+    "validEmailRequired":"email is required",
+    "nameRequired":"name is required",
     "errors": {
       "generic": "An error occurred. Please try again.",
       "username": "Username error: {{error}}",

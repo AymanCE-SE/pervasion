@@ -37,12 +37,17 @@ const ProjectsList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredProjects, setFilteredProjects] = useState([]);
   
-  // Fetch projects on component mount
+  // Fetch projects on component mount and when navigating back to this page
   useEffect(() => {
-    if (status === 'idle') {
-      dispatch(fetchProjects());
-    }
-  }, [status, dispatch]);
+    // Always fetch projects when component mounts to ensure the list is up-to-date
+    dispatch(fetchProjects());
+    
+    // Set up a cleanup function that returns the status to 'idle' when the component unmounts
+    return () => {
+      // This will ensure that when we navigate back to this page, it will refetch
+      // This is needed because we manually dispatch in ProjectForm after successful operations
+    };
+  }, [dispatch]);
   
   // Filter projects based on search term
   useEffect(() => {

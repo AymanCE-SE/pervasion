@@ -2,9 +2,9 @@ import axios from 'axios';
 
 // Create axios instance with default config
 const api = axios.create({
-  baseURL: 'http://localhost:8000/api',
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000/api',
   headers: {
-    // 'Content-Type': 'application/json'
+    'Content-Type': 'application/json'
   },
   withCredentials: true // Important for CORS with credentials
 });
@@ -90,23 +90,10 @@ const apiService = {
   // Auth
   auth: {
     login: async (credentials) => {
-      console.log('Login attempt with email:', credentials.email);
-
       try {
         const response = await api.post('/auth/login/', {
           email: credentials.email.trim(),
           password: credentials.password
-        });
-        
-        console.log('Login response:', {
-          status: response.status,
-          statusText: response.statusText,
-          data: response.data ? {
-            ...response.data,
-            access: response.data.access ? '[TOKEN_RECEIVED]' : 'NO_TOKEN',
-            refresh: response.data.refresh ? '[REFRESH_TOKEN_RECEIVED]' : 'NO_REFRESH_TOKEN',
-            user: response.data.user ? '[USER_DATA_RECEIVED]' : 'NO_USER_DATA'
-          } : 'NO_DATA'
         });
         
         if (!response.data) {
@@ -115,17 +102,6 @@ const apiService = {
         
         return response;
       } catch (error) {
-        console.error('Login error details:', {
-          message: error.message,
-          status: error.response?.status,
-          statusText: error.response?.statusText,
-          data: error.response?.data,
-          config: {
-            url: error.config?.url,
-            method: error.config?.method,
-            data: error.config?.data
-          }
-        });
         throw error;
       }
     },
@@ -135,15 +111,9 @@ const apiService = {
         username: userData.username,
         email: userData.email,
         password: userData.password,
-        password_confirm: userData.password_confirm, // This was being transformed incorrectly
+        password_confirm: userData.password_confirm,
         name: userData.name
       };
-
-      console.log('API Service: Registering user with data:', {
-        ...registrationData,
-        password: '[REDACTED]',
-        password_confirm: '[REDACTED]'
-      });
 
       const response = await api.post('/auth/register/', registrationData);
       return response;
