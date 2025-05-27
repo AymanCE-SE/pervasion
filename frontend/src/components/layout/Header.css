@@ -35,7 +35,7 @@
 }
 
 .logo-image {
-  height: 35px;
+  height: 45px;
   width: auto;
   transition: transform var(--transition-normal);
 }
@@ -63,7 +63,7 @@
 }
 
 .nav-link {
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.9) !important;
   font-weight: 500;
   padding: 0.6rem 1.2rem;
   border-radius: var(--radius-full);
@@ -79,7 +79,7 @@
   left: 50%;
   width: 0;
   height: 2px;
-  background: #fff;
+  background: #e94d33;
   transform: translateX(-50%);
   transition: width var(--transition-normal);
 }
@@ -91,9 +91,11 @@
 
 .nav-link:hover,
 .nav-link.active {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.15);
+  color: #e94d33 !important;
+  /* background: rgba(255, 255, 255, 0.15); */
+  font-weight: 550;
   transform: translateY(-2px);
+  padding: 0.1rem 0.3rem;
 }
 
 /* Actions */
@@ -112,7 +114,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: #fff !important;
   border: none;
   transition: all var(--transition-normal);
   background: rgba(255, 255, 255, 0.1);
@@ -204,9 +206,10 @@
 
 .mobile-menu {
   position: fixed;
-  inset: 50px 0 0 0;
+  inset:  90px 0 0 0;
   /* background: linear-gradient(to bottom, var(--bg-primary-dark), rgba(17, 24, 39, 0.98)); */
-  background: linear-gradient(to bottom, var(--main-dark),var(--main));
+  background: linear-gradient(to bottom, var(--main-light),var(--main-dark));
+  /* background: var(--main-gradient); */
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   z-index: 999;

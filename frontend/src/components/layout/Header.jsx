@@ -9,7 +9,7 @@ import { FiSun, FiMoon, FiGlobe, FiUser, FiLogIn, FiMenu, FiX, FiLogOut } from "
 // Ensure icons have display: inline-block by default
 import { useAppSettings } from "../../hooks/useAppSettings";
 import "./Header.css";
-import logo from "../../assets/logo-dark.png";
+import logo from "../../assets/PERV-WHITE@10x.png";
 
 // Memoized navigation links to prevent unnecessary re-renders
 const NavLinks = memo(({ isAuthenticated, closeMenu, isMobile = false, user }) => {

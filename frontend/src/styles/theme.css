@@ -48,7 +48,7 @@
   --spacing-lg: 2rem;
   --spacing-xl: 2rem;
   --spacing-2xl: 3rem;
-    --transition-fast: all 0.2s ease;
+  --transition-fast: all 0.2s ease;
   --transition-normal: all 0.3s ease;
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
   --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -80,7 +80,7 @@
   /* Header Variables */
   --header-shadow: 0 2px 15px rgba(32, 118, 232, 0.1);
   --header-gradient: linear-gradient(to right, var(--main), var(--main-light));
-  --header-height: 70px;
+  --header-height: 100px;
   --header-mobile-height: 60px;
 }
 

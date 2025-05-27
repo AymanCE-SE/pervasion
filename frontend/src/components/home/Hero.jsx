@@ -192,7 +192,7 @@ const Hero = () => {
                   to="/contact"
                   variant="outline-primary"
                   size="lg"
-                  className="hero-cta-secondary"
+                  className="hero-cta-secondary ms-3"
                 >
                   {t('hero.ctaSecondary', 'Contact Us')}
                 </Button>
