@@ -31,8 +31,12 @@ class ProjectViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 class CategoryViewSet(viewsets.ModelViewSet):
-    queryset = Category.objects.all()
+    queryset = Category.objects.all().order_by('name')  # Explicitly set ordering
     serializer_class = CategorySerializer
+    
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ['name', 'name_ar', 'created_at']
+    ordering = ['name']  # Default ordering
     
     def get_permissions(self):
         if self.action in ['list', 'retrieve']:

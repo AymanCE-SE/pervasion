@@ -21,11 +21,10 @@ export const getAbsoluteImageUrl = (url) => {
   if (!url) return '/images/placeholder.svg';
   if (isAbsoluteUrl(url)) return url;
   
-  // If the URL is relative, prepend the API base URL
-  const apiBaseUrl = 'http://localhost:8000';
+  // Get the API base URL from environment variable or default
+  const apiBaseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
   
-  // Handle Django media URLs correctly
-  // Django typically serves media files at /media/
+  // Handle Django media URLs
   if (url.startsWith('/media/')) {
     return `${apiBaseUrl}${url}`;
   }
