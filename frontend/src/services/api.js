@@ -45,7 +45,9 @@ api.interceptors.response.use(
       const refreshToken = localStorage.getItem('refreshToken');
       if (refreshToken) {
         try {
-          const res = await axios.post('http://localhost:8000/api/auth/refresh/', {
+          // Use the same base URL as the main API instead of hardcoded localhost
+          const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+          const res = await axios.post(`${baseURL}/auth/refresh/`, {
             refresh: refreshToken
           });
           const newAccess = res.data.access;

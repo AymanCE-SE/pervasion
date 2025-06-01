@@ -154,9 +154,9 @@
 }
 
 .dark-mode .form-control {
-  background-color: var(--input-bg-dark);
+  background-color: white;
   border-color: var(--input-border-dark);
-  color: var(--text-primary-dark);
+  color: var(--text-primary-light);
 }
 
 .form-control:focus {

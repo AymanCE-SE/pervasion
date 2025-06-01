@@ -26,21 +26,29 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-y0xkml9*wyrm2xi23@omj@!xbw((whu!i#da)vqkvqfs@9bxsi')
+# In production, this should be set in environment variables with no fallback
+SECRET_KEY = os.getenv('SECRET_KEY')
+if not SECRET_KEY and not DEBUG:
+    raise ValueError("SECRET_KEY environment variable is required in production mode")
+elif not SECRET_KEY:
+    SECRET_KEY = 'django-insecure-y0xkml9*wyrm2xi23@omj@!xbw((whu!i#da)vqkvqfs@9bxsi'  # Only for development
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,pervasionsa.com,www.pervasionsa.com').split(',')
 
 if DEBUG:
     CORS_ALLOWED_ORIGINS = [
+        "http://localhost:5173",  # Vite dev server
+        "http://127.0.0.1:5173",
         "http://localhost:3000",
         "http://127.0.0.1:3000",
     ]
 else:
     CORS_ALLOWED_ORIGINS = [
         "https://pervasionsa.com",
+        "https://www.pervasionsa.com",
     ]
 
 
@@ -216,6 +224,7 @@ CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:5174',
     'http://localhost:3000',  # Fallback
     'https://pervasionsa.com',  # Production domain
+    'https://www.pervasionsa.com',  # Production domain with www
 ]
 # Disable all origins for production
 CORS_ALLOW_ALL_ORIGINS = False
@@ -271,7 +280,19 @@ if DEBUG and (not EMAIL_HOST_USER or not EMAIL_HOST_PASSWORD):
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
     print("Warning: Using console email backend. Emails will be printed to console.")
 
+# Production security settings
+if not DEBUG:
+    # Enable HTTPS/SSL
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = 31536000  # 1 year
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SECURE_REFERRER_POLICY = 'same-origin'
+    SECURE_BROWSER_XSS_FILTER = True
+
 # Frontend URL for email verification
-FRONTEND_URL = os.getenv('FRONTEND_URL', 'http://localhost:5173')
+FRONTEND_URL = os.getenv('FRONTEND_URL', 'http://localhost:5173' if DEBUG else 'https://www.pervasionsa.com')
 
 

@@ -24,6 +24,11 @@ urlpatterns = [
     path('api/', include('api.urls')),
 ]
 
+# Always serve media files through Django
+# In production, these should be served by the web server directly
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Static files only need to be added in DEBUG mode as they're collected and served
+# by the web server in production
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

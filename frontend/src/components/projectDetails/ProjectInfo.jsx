@@ -19,18 +19,18 @@ const ProjectInfo = ({ project, currentLanguage }) => {
     {
       icon: <FiTag className="me-2" />,
       label: 'projects.details.category',
-      value: project.category_name || 'N/A'
-    },
-    {
-      icon: <FiMapPin className="me-2" />,
-      label: 'projects.details.location',
-      value: project.location || 'N/A'
-    },
-    {
-      icon: <FiAward className="me-2" />,
-      label: 'projects.details.role',
-      value: project.role || 'N/A'
-    }
+      value: project.category_name || 'N/A'}
+    // },
+    // {
+    //   icon: <FiMapPin className="me-2" />,
+    //   label: 'projects.details.location',
+    //   value: project.location || 'N/A'
+    // },
+    // {
+    //   icon: <FiAward className="me-2" />,
+    //   label: 'projects.details.role',
+    //   value: project.role || 'N/A'
+    // }
   ];
 
   return (
@@ -47,12 +47,12 @@ const ProjectInfo = ({ project, currentLanguage }) => {
             {infoItems.map((item, index) => (
               <li key={index} className="mb-3">
                 <div className="d-flex align-items-center">
-                  <span className="text-muted me-2 d-flex align-items-center" style={{ minWidth: '24px' }}>
+                  <span className="text-muted me-2 d-flex align-items-center info-value" style={{ minWidth: '24px' }}>
                     {item.icon}
                   </span>
                   <div className="flex-grow-1">
-                    <small className="text-muted d-block">{t(item.label)}</small>
-                    <span className="d-block">{item.value}</span>
+                    <small className="text-muted d-block info-item">{t(item.label)}</small>
+                    <span className="d-block info-value">{item.value}</span>
                   </div>
                 </div>
               </li>
