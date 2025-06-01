@@ -51,7 +51,7 @@ const AdminLayout = () => {
             </div>
             
             <Nav className="flex-column sidebar-nav">
-                            <Nav.Link 
+              <Nav.Link 
                 as={Link} 
                 to="/" 
               >
@@ -99,7 +99,7 @@ const AdminLayout = () => {
               <Nav.Link 
                 as="button"
                 onClick={handleLogout}
-                className="logout-link"
+                className="logout-link text-danger"
                 style={{ background: 'none', border: 'none', textAlign: 'left' }}
               >
                 <FaSignOutAlt className="nav-icon" />
