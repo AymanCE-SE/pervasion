@@ -47,6 +47,8 @@ if DEBUG:
     ]
 else:
     CORS_ALLOWED_ORIGINS = [
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
         "https://pervasionsa.com",
         "https://www.pervasionsa.com",
     ]
@@ -77,10 +79,10 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',  # Add CORS middleware
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',  # Add whitenoise for static files
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',  # Add CORS middleware
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -281,16 +283,16 @@ if DEBUG and (not EMAIL_HOST_USER or not EMAIL_HOST_PASSWORD):
     print("Warning: Using console email backend. Emails will be printed to console.")
 
 # Production security settings
-if not DEBUG:
-    # Enable HTTPS/SSL
-    SECURE_SSL_REDIRECT = True
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-    SECURE_HSTS_SECONDS = 31536000  # 1 year
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
-    SECURE_REFERRER_POLICY = 'same-origin'
-    SECURE_BROWSER_XSS_FILTER = True
+# if not DEBUG:
+#     # Enable HTTPS/SSL
+#     SECURE_SSL_REDIRECT = True
+#     SESSION_COOKIE_SECURE = True
+#     CSRF_COOKIE_SECURE = True
+#     SECURE_HSTS_SECONDS = 31536000  # 1 year
+#     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+#     SECURE_HSTS_PRELOAD = True
+#     SECURE_REFERRER_POLICY = 'same-origin'
+#     SECURE_BROWSER_XSS_FILTER = True
 
 # Frontend URL for email verification
 FRONTEND_URL = os.getenv('FRONTEND_URL', 'http://localhost:5173' if DEBUG else 'https://www.pervasionsa.com')

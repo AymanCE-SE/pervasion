@@ -94,8 +94,6 @@ class LoginView(TokenObtainPairView):
         return super().post(request, *args, **kwargs)
 
 class RegisterView(APIView):
-    permission_classes = [permissions.AllowAny]
-    
     def post(self, request):
         serializer = UserCreateSerializer(data=request.data)
         
@@ -104,33 +102,27 @@ class RegisterView(APIView):
                 # Create inactive user
                 user = serializer.save(is_active=False, email_verified=False)
                 
-                # Generate token
-                token = RefreshToken.for_user(user)
-                token['email'] = user.email
-                token['type'] = 'email_verification'
-                
-                # Create verification URL
-                verification_url = f"{settings.FRONTEND_URL}/verify-email?token={str(token.access_token)}"
-                
-                # Log for debugging
-                logger.info(f"Generated verification URL: {verification_url}")
-                
                 try:
-                    # Render email template
+                    # Generate verification token
+                    token = user.get_verification_token()
+                    verify_url = f"{settings.FRONTEND_URL}/verify-email?token={token}"
+                    
+                    # Log for debugging
+                    if settings.DEBUG:
+                        logger.info(f"Generated verification URL: {verify_url}")
+                    
+                    # Send verification email
                     email_context = {
                         'username': user.username,
-                        'verify_url': verification_url
+                        'verify_url': verify_url
                     }
-                    html_message = render_to_string('emails/verify_email.html', email_context)
-                    plain_message = strip_tags(html_message)
                     
-                    # Send email
                     send_mail(
                         subject='Verify your email address',
-                        message=plain_message,
+                        message=strip_tags(render_to_string('emails/verify_email.html', email_context)),
                         from_email=settings.DEFAULT_FROM_EMAIL,
                         recipient_list=[user.email],
-                        html_message=html_message,
+                        html_message=render_to_string('emails/verify_email.html', email_context),
                         fail_silently=False
                     )
                     
@@ -138,15 +130,12 @@ class RegisterView(APIView):
                         "message": "Registration successful! Please check your email for verification.",
                         "email": user.email
                     }, status=status.HTTP_201_CREATED)
-                
+                    
                 except Exception as e:
-                    # Log the error and cleanup
-                    logger.error(f"Failed to send verification email: {str(e)}")
+                    logger.error(f"Email sending error: {str(e)}")
                     user.delete()
-                    return Response({
-                        'detail': 'Registration failed due to email sending error.'
-                    }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-            
+                    raise
+                    
             except Exception as e:
                 logger.error(f"Registration error: {str(e)}")
                 return Response({
@@ -165,28 +154,40 @@ def verify_email(request):
         }, status=status.HTTP_400_BAD_REQUEST)
     
     try:
-        decoded_token = AccessToken(token)
-        user_id = decoded_token['user_id']
+        # Decode token and validate
+        token_obj = AccessToken(token)
+        
+        # Check if token type is correct
+        if token_obj.get('type') != 'email_verification':
+            raise Exception('Invalid token type')
+            
+        user_id = token_obj['user_id']
         user = User.objects.get(id=user_id)
+        
+        # Check if email matches
+        if token_obj.get('email') != user.email:
+            raise Exception('Token email mismatch')
         
         if user.email_verified:
             return Response({
                 'detail': 'Email is already verified'
-            })
+            }, status=status.HTTP_200_OK)
         
+        # Verify user
         user.email_verified = True
         user.is_active = True
         user.save()
         
         return Response({
             'detail': 'Email verified successfully'
-        })
+        }, status=status.HTTP_200_OK)
         
     except User.DoesNotExist:
         return Response({
             'detail': 'User not found'
         }, status=status.HTTP_404_NOT_FOUND)
-    except Exception:
+    except Exception as e:
+        logger.error(f"Email verification error: {str(e)}")
         return Response({
-            'detail': 'Invalid or expired verification token'
+            'detail': str(e) if settings.DEBUG else 'Invalid or expired verification token'
         }, status=status.HTTP_400_BAD_REQUEST)

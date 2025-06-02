@@ -6,6 +6,7 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from rest_framework_simplejwt.tokens import RefreshToken
+from datetime import timedelta
 import logging
 
 logger = logging.getLogger(__name__)
@@ -64,13 +65,17 @@ class User(AbstractUser):
     def get_verification_token(self):
         """Generate verification token using JWT"""
         try:
-            # Create refresh token
             refresh = RefreshToken.for_user(self)
             # Add custom claims
             refresh['type'] = 'email_verification'
             refresh['user_id'] = self.id
-            # Return access token as string
-            return str(refresh.access_token)
+            refresh['email'] = self.email  # Add email to token claims
+            
+            # Set longer expiration for verification tokens (24 hours)
+            access = refresh.access_token
+            access.set_exp(lifetime=timedelta(hours=24))
+            
+            return str(access)
         except Exception as e:
             logger.error(f"Token generation error: {str(e)}")
             raise

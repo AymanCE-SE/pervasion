@@ -37,6 +37,7 @@ yarn-error.log*
 
 # Environment variables
 .env
+.vite
 
 # IDE
 .idea/
