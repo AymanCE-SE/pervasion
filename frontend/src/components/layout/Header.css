@@ -6,7 +6,8 @@
   width: 100%;
   height: var(--header-height);
   z-index: 1000;
-  background: linear-gradient(to right, var(--main), var(--main-light));
+  /* background: linear-gradient(to right, var(--main), var(--main-light)); */
+  background: var(--main);
   box-shadow: 0 2px 15px rgba(32, 118, 232, 0.1);
   transition: all var(--transition-normal);
 }
@@ -35,7 +36,7 @@
 }
 
 .logo-image {
-  height: 45px;
+  height: 55px;
   width: auto;
   transition: transform var(--transition-normal);
 }

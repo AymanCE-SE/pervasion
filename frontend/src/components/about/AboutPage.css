@@ -25,7 +25,7 @@
   transform: translateX(-50%);
   width: 50px;
   height: 3px;
-  background: linear-gradient(45deg, #4a00e0, #8e2de2);
+  background: var(--main-gradient);
   border-radius: 3px;
 }
 
@@ -86,7 +86,7 @@
   left: 0;
   width: 40px;
   height: 3px;
-  background: linear-gradient(45deg, #4a00e0, #8e2de2);
+  background: var(--main-gradient);
   border-radius: 3px;
 }
 
@@ -120,7 +120,7 @@
   left: 0;
   width: 30px;
   height: 3px;
-  background: linear-gradient(45deg, #4a00e0, #8e2de2);
+  background: var(--main-gradient);
   border-radius: 3px;
 }
 
@@ -142,11 +142,11 @@
 
 .skill-info span {
   font-weight: 600;
-  color: #4a00e0;
+  color: var(--main-gradient);
 }
 
 .dark-mode .skill-info span {
-  color: #8e2de2;
+  color: var(--main);
 }
 
 .skill-progress {
@@ -160,7 +160,7 @@
 }
 
 .skill-progress .progress-bar {
-  background: linear-gradient(45deg, #4a00e0, #8e2de2);
+  background: var(--main-gradient);
   border-radius: 4px;
 }
 
@@ -190,7 +190,7 @@
   font-size: 3rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
-  background: linear-gradient(45deg, #4a00e0, #8e2de2);
+  background: var(--main-gradient);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
