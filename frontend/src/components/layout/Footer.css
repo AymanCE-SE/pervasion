@@ -1,12 +1,13 @@
 .footer {
   padding: 4rem 0 2rem;
-  background-color: #f8f9fa;
+  background: var(--bg-secondary-light);
+  color: var(--text-primary-light);
   transition: all 0.3s ease;
 }
 
 .footer.dark-mode {
-  background-color: #212529;
-  color: #f8f9fa;
+  background: var(--bg-secondary-dark);
+  color: var(--text-primary-dark);
 }
 
 .footer-main {
@@ -17,11 +18,20 @@
   font-weight: 700;
   margin-bottom: 1.5rem;
   font-size: 1.5rem;
+  color: var(--main);
+  letter-spacing: 0.01em;
+}
+.footer.dark-mode .footer-title {
+  color: var(--main-light);
 }
 
 .footer-info p {
   margin-bottom: 1.5rem;
   line-height: 1.6;
+  color: var(--text-secondary-light);
+}
+.footer.dark-mode .footer-info p {
+  color: var(--text-secondary-dark);
 }
 
 .footer-links h4,
@@ -30,6 +40,11 @@
   margin-bottom: 1.5rem;
   position: relative;
   display: inline-block;
+  color: var(--main);
+}
+.footer.dark-mode .footer-links h4,
+.footer.dark-mode .footer-social h4 {
+  color: var(--main-light);
 }
 
 .footer-links h4::after,
@@ -39,8 +54,14 @@
   left: 0;
   bottom: -5px;
   width: 30px;
-  height: 2px;
-  background-color: #007bff;
+  height: 2.5px;
+  background: var(--main-light);
+  border-radius: 2px;
+  transition: background 0.3s;
+}
+.footer.dark-mode .footer-links h4::after,
+.footer.dark-mode .footer-social h4::after {
+  background: var(--accent);
 }
 
 .footer-links ul {
@@ -54,24 +75,36 @@
 }
 
 .footer-links ul li a {
-  color: inherit;
+  color: var(--main);
   text-decoration: none;
-  transition: all 0.3s ease;
+  transition: color 0.3s;
   position: relative;
   display: inline-block;
+  font-weight: 500;
 }
-
+.footer.dark-mode .footer-links ul li a {
+  color: var(--main-light);
+}
 .footer-links ul li a::after {
   content: '';
   position: absolute;
   bottom: -2px;
   left: 0;
   width: 0;
-  height: 1px;
-  background-color: currentColor;
-  transition: all 0.3s ease;
+  height: 2px;
+  background: var(--main-light);
+  transition: width 0.3s;
+  border-radius: 2px;
 }
-
+.footer.dark-mode .footer-links ul li a::after {
+  background: var(--accent);
+}
+.footer-links ul li a:hover {
+  color: var(--main-light);
+}
+.footer.dark-mode .footer-links ul li a:hover {
+  color: var(--accent);
+}
 .footer-links ul li a:hover::after {
   width: 100%;
 }
@@ -89,34 +122,44 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: rgba(0, 123, 255, 0.1);
-  color: #007bff;
-  transition: all 0.3s ease;
+  background: var(--bg-overlay-light);
+  color: var(--main-light);
+  font-size: 1.2rem;
+  transition: all 0.3s;
+  border: 1.5px solid transparent;
 }
-
-.dark-mode .social-links a {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #f8f9fa;
+.footer.dark-mode .social-links a {
+  background: var(--bg-overlay-dark);
+  color: var(--accent);
 }
-
 .social-links a:hover {
-  background-color: #007bff;
-  color: white;
-  transform: translateY(-3px);
+  background: var(--main-light);
+  color: #fff;
+  border-color: var(--main-light);
+  transform: translateY(-3px) scale(1.08);
+}
+.footer.dark-mode .social-links a:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
 }
 
 .footer-bottom {
   padding-top: 2rem;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-top: 1px solid var(--border-light);
 }
-
-.dark-mode .footer-bottom {
-  border-top-color: rgba(255, 255, 255, 0.1);
+.footer.dark-mode .footer-bottom {
+  border-top: 1px solid var(--border-dark);
 }
 
 .copyright {
   text-align: center;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+  color: var(--text-secondary-light);
+  letter-spacing: 0.01em;
+}
+.footer.dark-mode .copyright {
+  color: var(--text-secondary-dark);
 }
 
 /* RTL Support */
@@ -125,7 +168,6 @@
   left: auto;
   right: 0;
 }
-
 [dir="rtl"] .footer-links ul li a::after {
   left: auto;
   right: 0;
@@ -136,19 +178,16 @@
   .footer {
     padding: 3rem 0 1.5rem;
   }
-  
   .footer-info,
   .footer-links,
   .footer-social {
     text-align: center;
   }
-  
   .footer-links h4::after,
   .footer-social h4::after {
     left: 50%;
     transform: translateX(-50%);
   }
-  
   .social-links {
     justify-content: center;
   }
