@@ -80,7 +80,7 @@
   left: 50%;
   width: 0;
   height: 2px;
-  background: #e94d33;
+  background: var(--main-light);
   transform: translateX(-50%);
   transition: width var(--transition-normal);
 }
@@ -92,7 +92,7 @@
 
 .nav-link:hover,
 .nav-link.active {
-  color: #e94d33 !important;
+  color: var(--main-light) !important;
   /* background: rgba(255, 255, 255, 0.15); */
   font-weight: 550;
   transform: translateY(-2px);
