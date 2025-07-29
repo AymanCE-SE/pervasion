@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -7,13 +7,13 @@ import { useSelector } from 'react-redux';
 import { selectDarkMode } from '../../redux/slices/themeSlice';
 import { BsArrowRight } from 'react-icons/bs';
 import './Hero.css';
+import heroImg from "../../assets/Horses_in_Moonlight.png";
 
 const Hero = () => {
   const { t, i18n } = useTranslation();
   const darkMode = useSelector(selectDarkMode);
   const isRTL = i18n.language === 'ar';
 
-  // Animation variants for staggered animations
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -34,19 +34,34 @@ const Hero = () => {
     },
   };
 
-  // Animation for floating elements
-  const floatingVariants = {
+  const blobVariants = {
     animate: {
-      y: [0, -15, 0],
+      scale: [1, 1.05, 1],
+      x: [0, 10, 0],
+      y: [0, -10, 0],
       transition: {
-        duration: 4,
+        duration: 15,
         ease: 'easeInOut',
         repeat: Infinity,
+        repeatType: 'reverse',
       },
     },
   };
 
-  // Animation for the particles
+  // Floating card positions for LTR/RTL
+  const cardPositions = isRTL
+    ? [
+        { x: 40, y: -40 },   // card-1
+        { x: -60, y: 40 },   // card-2
+        { x: 0, y: 100 },    // card-3
+      ]
+    : [
+        { x: -40, y: -40 },
+        { x: 60, y: 40 },
+        { x: 0, y: 100 },
+      ];
+
+  // Animated particles
   const generateParticles = () => {
     const particles = [];
     for (let i = 0; i < 20; i++) {
@@ -55,7 +70,6 @@ const Hero = () => {
       const direction = Math.random() > 0.5 ? 'horizontal' : 'vertical';
       const duration = Math.random() * 10 + 10;
       const delay = Math.random() * 5;
-      
       particles.push(
         <motion.div
           key={i}
@@ -86,21 +100,6 @@ const Hero = () => {
       );
     }
     return particles;
-  };
-
-  // Animation for the main blobs
-  const blobVariants = {
-    animate: {
-      scale: [1, 1.05, 1],
-      x: [0, 10, 0],
-      y: [0, -10, 0],
-      transition: {
-        duration: 15,
-        ease: 'easeInOut',
-        repeat: Infinity,
-        repeatType: 'reverse',
-      },
-    },
   };
 
   return (
@@ -160,10 +159,16 @@ const Hero = () => {
                     animate={{ pathLength: 1, opacity: 1 }}
                     transition={{ delay: 1.4, duration: 1.2, ease: "easeInOut" }}
                   >
+                    <defs>
+                      <linearGradient id="heroStrokeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor="#2F3E49" />
+                        <stop offset="100%" stopColor="#4FB0A8" />
+                      </linearGradient>
+                    </defs>
                     <motion.path
                       d="M0,4 Q25,8 50,4 T100,4"
                       fill="none"
-                      stroke="rgb(32, 118, 232)"
+                      stroke="url(#heroStrokeGradient)"
                       strokeWidth="2"
                       strokeLinecap="round"
                     />
@@ -227,14 +232,15 @@ const Hero = () => {
                 whileHover={{ y: -8, transition: { duration: 0.4 } }}
               >
                 <img
-                  src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+                  src={heroImg}
                   alt="Designer workspace"
                   className="hero-img"
                 />
                 <div className="img-overlay"></div>
+                <span className="img-shine" />
                 
                 {/* Design elements overlay */}
-                <motion.div
+                {/* <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 1.2, duration: 0.8 }}
@@ -246,43 +252,79 @@ const Hero = () => {
                   <div className="design-dot dot-1"></div>
                   <div className="design-dot dot-2"></div>
                   <div className="design-dot dot-3"></div>
-                </motion.div>
+                  </motion.div> */}
               </motion.div>
-              
+                  
               <motion.div 
                 className="floating-card card-1"
-                variants={floatingVariants}
-                animate="animate"
-                initial={{ opacity: 0, x: -50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 1 }}
-                viewport={{ once: true }}
+                initial={{ opacity: 0, x: -40, y: -40, scale: 0.9 }}
+                animate={{
+                  opacity: 1,
+                  x: [-40, -30, -40],
+                  y: [-40, -60, -40],
+                  scale: [1, 1.08, 1],
+                  transition: {
+                    duration: 4,
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                    ease: "easeInOut"
+                  }
+                }}
+                whileHover={{
+                  scale: 1.15,
+                  rotate: -6,
+                  transition: { duration: 0.3 }
+                }}
               >
                 <div className="card-icon">🎨</div>
                 <div className="card-text">{t('hero.card1', 'Brand Identity')}</div>
               </motion.div>
-              
+
               <motion.div 
                 className="floating-card card-2"
-                variants={floatingVariants}
-                animate="animate"
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 1.3 }}
-                viewport={{ once: true }}
+                initial={{ opacity: 0, x: 60, y: 40, scale: 0.9 }}
+                animate={{
+                  opacity: 1,
+                  x: [60, 80, 60],
+                  y: [40, 20, 40],
+                  scale: [1, 1.08, 1],
+                  transition: {
+                    duration: 4.5,
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                    ease: "easeInOut"
+                  }
+                }}
+                whileHover={{
+                  scale: 1.15,
+                  rotate: 6,
+                  transition: { duration: 0.3 }
+                }}
               >
                 <div className="card-icon">✨</div>
                 <div className="card-text">{t('hero.card2', 'Web Design')}</div>
               </motion.div>
-              
+
               <motion.div 
                 className="floating-card card-3"
-                variants={floatingVariants}
-                animate="animate"
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 1.6 }}
-                viewport={{ once: true }}
+                initial={{ opacity: 0, x: 0, y: 100, scale: 0.9 }}
+                animate={{
+                  opacity: 1,
+                  x: [0, 20, 0],
+                  y: [100, 120, 100],
+                  scale: [1, 1.08, 1],
+                  transition: {
+                    duration: 5,
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                    ease: "easeInOut"
+                  }
+                }}
+                whileHover={{
+                  scale: 1.15,
+                  rotate: -3,
+                  transition: { duration: 0.3 }
+                }}
               >
                 <div className="card-icon">🖌️</div>
                 <div className="card-text">{t('hero.card3', 'Print Media')}</div>

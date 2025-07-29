@@ -1,46 +1,49 @@
 :root {
   /* Brand Colors */
-  --primary: #4a00e0;
-  --primary-light: #818cf8;
-  --primary-dark: #3600a6;
-  --secondary: #0ea5e9;
-  --accent: #a78bfa;
-  --main: #2e3e4c;  /*blue*/
-  --main-light: #6eb5a0;/*Accent*/
-  --main-dark: #0d5bc1;
+  --main: #2F3E49;           /* Blue */
+  --main-light: #4FB0A8;     /* Accent */
+  --main-dark: #1c2630;      /* Deep Blue (darker shade of main) */
+  --primary: #2F3E49;        /* Use main as primary for consistency */
+  --primary-light: #4FB0A8;  /* Accent */
+  --primary-dark: #1c2630;   /* Deep Blue */
+  --secondary: #A28F7E;      /* Taupe */
+  --accent: #4FB0A8;         /* Accent */
   
   /* Light Theme */
-  --bg-primary-light: rgba(255, 255, 255, 0.98);
-  --bg-secondary-light: rgba(255, 255, 255, 0.95);
-  --bg-overlay-light: rgba(255, 255, 255, 0.85);
-  --text-primary-light: #1e293b;
-  --text-secondary-light: #64748b;
-  --border-light: rgba(226, 232, 240, 0.8);
-  --shadow-light: rgba(0, 0, 0, 0.05);
-  --overlay-light: rgba(32, 118, 232, 0.08);
+  --bg-primary-light: #fff;
+  --bg-secondary-light: #f8f9fa;
+  --bg-overlay-light: rgba(79, 176, 168, 0.08); /* Accent overlay */
+  --text-primary-light: #2F3E49;   /* Blue */
+  --text-secondary-light: #A28F7E; /* Taupe */
+  --border-light: rgba(162, 143, 126, 0.2);     /* Taupe border */
+  --shadow-light: rgba(47, 62, 73, 0.05);       /* Blue shadow */
+  --overlay-light: rgba(79, 176, 168, 0.08);    /* Accent overlay */
   
+  /* Sandstone for highlights or backgrounds */
+  --sandstone: #D0C6B9;
+
   /* Dark Theme */
-  --bg-primary-dark: rgba(17, 24, 39, 0.98);
-  --bg-secondary-dark: rgba(31, 41, 55, 0.95);
-  --bg-overlay-dark: rgba(15, 23, 42, 0.85);
+  --bg-primary-dark: #2F3E49;      /* Blue */
+  --bg-secondary-dark: #1c2630;    /* Deep Blue */
+  --bg-overlay-dark: rgba(47, 62, 73, 0.85);    /* Blue overlay */
   --text-primary-dark: #f3f4f6;
-  --text-secondary-dark: #d1d5db;
-  --border-dark: rgba(55, 65, 81, 0.5);
-  --shadow-dark: rgba(0, 0, 0, 0.3);
-  --overlay-dark: rgba(32, 118, 232, 0.12);
+  --text-secondary-dark: #D0C6B9;  /* Sandstone */
+  --border-dark: rgba(208, 198, 185, 0.2);      /* Sandstone border */
+  --shadow-dark: rgba(79, 176, 168, 0.2);       /* Accent shadow */
+  --overlay-dark: rgba(79, 176, 168, 0.12);     /* Accent overlay */
   
   /* Gradients */
-  --primary-gradient: linear-gradient(45deg, var(--primary), var(--primary-light));
-  --primary-dark-gradient: linear-gradient(135deg, var(--primary-light), var(--accent));
+  --primary-gradient: linear-gradient(45deg, var(--main), var(--main-light));
+  --primary-dark-gradient: linear-gradient(135deg, var(--main-light), var(--accent));
   --main-gradient: linear-gradient(45deg, var(--main), var(--main-light));
   --main-dark-gradient: linear-gradient(135deg, var(--main-dark), var(--main));
-  
+
   /* Effects */
   --glass-blur: 12px;
   --transition-fast: 0.2s ease;
   --transition-normal: all 0.3s ease;
   --transition-slow: 0.5s ease;
-  
+
   /* Spacing */
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
@@ -48,11 +51,9 @@
   --spacing-lg: 2rem;
   --spacing-xl: 2rem;
   --spacing-2xl: 3rem;
-  --transition-fast: all 0.2s ease;
-  --transition-normal: all 0.3s ease;
-  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
-  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.1);
+  --shadow-sm: 0 2px 4px rgba(47, 62, 73, 0.1);
+  --shadow-md: 0 4px 8px rgba(47, 62, 73, 0.1);
+  --shadow-lg: 0 8px 16px rgba(47, 62, 73, 0.1);
 
   /* Border Radius */
   --radius-sm: 0.25rem;
@@ -60,7 +61,7 @@
   --radius-lg: 0.75rem;
   --radius-xl: 1rem;
   --radius-full: 9999px;
-  
+
   /* Font Sizes */
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;
@@ -71,14 +72,9 @@
   --text-3xl: 1.875rem;
   --text-4xl: 2.25rem;
   --text-5xl: 3rem;
-  
-  --primary-color: #3498db;
-  --secondary-color: #2ecc71;
-  --background-color: #fff;
-  --text-color: #222;
 
   /* Header Variables */
-  --header-shadow: 0 2px 15px rgba(32, 118, 232, 0.1);
+  --header-shadow: 0 2px 15px rgba(47, 62, 73, 0.1);
   --header-gradient: linear-gradient(to right, var(--main), var(--main-light));
   --header-height: 100px;
   --header-mobile-height: 60px;
