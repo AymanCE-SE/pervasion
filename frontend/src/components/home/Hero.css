@@ -277,7 +277,7 @@
 .card-text {
   font-weight: 700;
   font-size: 1.08rem;
-  color: var(--main) !important;
+  color: var(--main-light) !important;
   letter-spacing: 0.01em;
   text-shadow: 0 1px 2px var(--bg-overlay-light);
   transition: color 0.3s;
