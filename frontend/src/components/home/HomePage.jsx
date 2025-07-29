@@ -6,6 +6,7 @@ import FeaturedProjects from './FeaturedProjects';
 import './HomePage.css';
 import Testimonials from './Testimonials';
 import Stats from './Stats';
+import ServicesSection from './ServicesSection';
 
 const HomePage = () => {
   const { t } = useTranslation();
@@ -20,8 +21,9 @@ const HomePage = () => {
       <div className="home-page">
         <Hero />
         <Stats />
+        <ServicesSection />
         <FeaturedProjects />
-      <Testimonials />
+        <Testimonials />
       </div>
     </>
   );

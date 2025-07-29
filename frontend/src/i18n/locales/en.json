@@ -292,5 +292,40 @@
   },
   "awards":{
     "won": "won an award"
+  },
+  "home": {
+    "services": {
+      "title": "Our Services",
+      "subtitle": "What we offer for your brand growth",
+      "branding": {
+        "headline": "Branding & Visual Identity",
+        "branch1": "Logo Design",
+        "branch2": "Complete Brand Identity",
+        "branch3": "Company Profiles & Presentations",
+        "branch4": "Business Cards & Print Materials",
+        "branch5": "Packaging & Label Design"
+      },
+      "social": {
+        "headline": "Social Media Marketing",
+        "branch1": "Social Media Account Setup",
+        "branch2": "Creative & Engaging Content Writing",
+        "branch3": "Regular Post Design & Publishing",
+        "branch4": "Monthly Performance Reports"
+      },
+      "seo": {
+        "headline": "SEO & Content Marketing",
+        "branch1": "Website Analysis",
+        "branch2": "Keyword Research",
+        "branch3": "SEO-Friendly Article Writing",
+        "branch4": "Image & Metadata Optimization"
+      },
+      "growth": {
+        "headline": "Growth Strategy",
+        "branch1": "Comprehensive Marketing Plans",
+        "branch2": "Brand Strategy Consulting",
+        "branch3": "Integration with Analytics & Tracking Tools",
+        "branch4": "Ongoing Brand Support"
+      }
+    }
   }
 }
