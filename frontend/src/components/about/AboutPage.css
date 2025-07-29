@@ -206,6 +206,100 @@
   color: #adb5bd;
 }
 
+/* Services Section */
+.services-section {
+  margin-top: 4rem;
+}
+
+.service-card {
+  background: var(--bg-secondary-light);
+  border-radius: 18px;
+  padding: 1.5rem 1.2rem;
+  border: 1.5px solid var(--border-light);
+  transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+  min-height: 120px;
+  cursor: pointer;
+  box-shadow: 0 2px 12px rgba(47, 62, 73, 0.06);
+  position: relative;
+  overflow: hidden;
+  outline: none;
+}
+.service-card:hover, .service-card.open {
+  border-color: var(--main-light);
+  transform: translateY(-4px) scale(1.025);
+  box-shadow: 0 8px 32px rgba(79, 176, 168, 0.10);
+}
+.dark-mode .service-card {
+  background: var(--bg-secondary-dark);
+  border: 1.5px solid var(--border-dark);
+  box-shadow: 0 2px 12px rgba(79, 176, 168, 0.10);
+}
+.dark-mode .service-card:hover, .dark-mode .service-card.open {
+  border-color: var(--accent);
+  box-shadow: 0 8px 32px rgba(79, 176, 168, 0.18);
+}
+
+.service-headline {
+  font-size: 1.13rem;
+  font-weight: 700;
+  color: var(--main);
+  letter-spacing: 0.01em;
+  user-select: none;
+  transition: color 0.2s;
+}
+.dark-mode .service-headline {
+  color: var(--main-light);
+}
+.service-arrow {
+  font-size: 1.1rem;
+  margin-left: 0.7rem;
+  transition: transform 0.3s;
+  color: var(--main-light);
+  display: inline-block;
+}
+.service-arrow.rotated {
+  transform: rotate(180deg);
+}
+
+.service-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  opacity: 1;
+  transition: opacity 0.3s;
+}
+.service-list-item {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  color: var(--text-secondary-light);
+  margin-bottom: 0.7rem;
+  font-weight: 500;
+  transition: color 0.2s;
+  opacity: 1;
+  animation: fadeInUp 0.5s;
+}
+.dark-mode .service-list-item {
+  color: var(--sandstone);
+}
+.service-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--main-light);
+  margin-right: 0.7rem;
+  flex-shrink: 0;
+}
+.dark-mode .service-dot {
+  background: var(--accent);
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(10px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+
 /* RTL Support */
 [dir="rtl"] .page-title::after {
   left: auto;
@@ -247,6 +341,14 @@
   .stat-value {
     font-size: 2.5rem;
   }
+  
+  .service-card {
+    padding: 1.2rem 0.8rem;
+    min-height: 100px;
+  }
+  .service-headline {
+    font-size: 1.02rem;
+  }
 }
 
 @media (max-width: 767.98px) {
@@ -268,5 +370,18 @@
   
   .stat-item {
     margin-bottom: 1.5rem;
+  }
+  .services-section {
+    margin-top: 2.5rem;
+  }
+  .service-card {
+    padding: 1rem 0.7rem;
+    min-height: 80px;
+  }
+  .service-headline {
+    font-size: 0.98rem;
+  }
+  .service-list-item {
+    font-size: 0.95rem;
   }
 }

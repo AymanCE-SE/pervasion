@@ -86,6 +86,45 @@
       "years": "Years of Experience",
       "clients": "Clients",
       "projects": "Projects Completed"
+    },
+    "services": {
+      "title": "Our Services",
+      "branding": {
+        "headline": "Brand Strategy & Identity",
+        "child1": "Logo Design",
+        "child2": "Brand Guidelines",
+        "child3": "Naming & Messaging"
+      },
+      "ui": {
+        "headline": "UI/UX & Web Design",
+        "child1": "Website Design",
+        "child2": "Mobile App Design",
+        "child3": "Wireframing & Prototyping"
+      },
+      "print": {
+        "headline": "Print & Packaging",
+        "child1": "Brochures & Flyers",
+        "child2": "Business Cards",
+        "child3": "Product Packaging"
+      },
+      "motion": {
+        "headline": "Motion Graphics",
+        "child1": "Animated Videos",
+        "child2": "Social Media Animations",
+        "child3": "Explainer Videos"
+      },
+      "illustration": {
+        "headline": "Illustration",
+        "child1": "Custom Artwork",
+        "child2": "Editorial Illustration",
+        "child3": "Icon Design"
+      },
+      "photography": {
+        "headline": "Photography",
+        "child1": "Product Photography",
+        "child2": "Portraits",
+        "child3": "Event Photography"
+      }
     }
   },
   "contact": {
