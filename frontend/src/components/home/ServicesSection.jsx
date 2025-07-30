@@ -113,7 +113,7 @@ const ServicesSection = () => {
                           initial={{ opacity: 0, x: -20 }}
                           animate={{ opacity: 1, x: 0 }}
                           exit={{ opacity: 0, x: -20 }}
-                          transition={{ duration: 0.85, delay: bidx * 0.08 }}
+                          transition={{ duration: 0., delay: bidx * 0.08 }}
                         >
                           <span className="branch-dot"></span>
                           {branch}

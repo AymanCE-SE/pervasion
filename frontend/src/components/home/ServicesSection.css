@@ -32,7 +32,7 @@
 .service-card:hover, .service-card.open {
   transform: translateY(-8px) scale(1.03);
   box-shadow: 0 16px 48px var(--shadow-md);
-  background: var(--main-gradient);
+  background: var(--sandstone-gradient-light);
 }
 .home-services-section.dark-mode .service-card:hover,
 .home-services-section.dark-mode .service-card.open {
@@ -49,7 +49,7 @@
 
 .service-icon {
   font-size: 2.2rem;
-  color: var(--main-light);
+  color: var(--main);
   background: var(--bg-overlay-light);
   border-radius: 50%;
   padding: 0.7rem;
@@ -115,7 +115,7 @@
   display: flex;
   align-items: center;
   font-size: 1rem;
-  color: var(--text-secondary-light);
+  color: var(--text-primary-light);
   margin-bottom: 0.7rem;
   font-weight: 500;
   transition: color 0.2s;
@@ -129,12 +129,13 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--main-light);
+  background: var(--text-primary-light);
   margin-right: 0.7rem;
+  margin-left: 0.7rem;
   flex-shrink: 0;
 }
 .home-services-section.dark-mode .branch-dot {
-  background: var(--accent);
+  background: var(--text-secondary-light);
 }
 
 /* Responsive */
