@@ -19,7 +19,7 @@
   height: 100%;
   position: relative;
   overflow: hidden;
-  background: var(--main-gradient);
+  background: var(--sandstone-gradient-light);
   box-shadow: 0 8px 32px var(--shadow-light);
   display: flex;
   align-items: center;
@@ -39,7 +39,7 @@
 .stats-grid-card:hover {
   transform: translateY(-8px) scale(1.03);
   box-shadow: 0 16px 48px var(--shadow-md);
-  background: var(--primary-gradient);
+  background: var(--sandstone-gradient);
 }
 
 .stats-section.dark-mode .stats-grid-card:hover {
