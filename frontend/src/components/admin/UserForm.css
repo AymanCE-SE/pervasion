@@ -13,79 +13,104 @@
   font-weight: 700;
   margin-bottom: 0.5rem;
   font-size: 1.75rem;
+  color: var(--main);
+}
+
+.dark-mode .page-header h1 {
+  color: var(--main-light);
 }
 
 .page-header p {
-  color: #6c757d;
+  color: var(--text-secondary-light);
   margin-bottom: 0;
 }
 
 .dark-mode .page-header p {
-  color: #adb5bd;
+  color: var(--text-secondary-dark);
 }
 
 .back-btn {
   display: flex;
   align-items: center;
   padding: 0.5rem 1rem;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
+  background: var(--bg-primary-light);
+  color: var(--main);
+  border: 1px solid var(--border-light);
   transition: all 0.3s ease;
+}
+
+.dark-mode .back-btn {
+  background: var(--bg-primary-dark);
+  color: var(--main-light);
+  border-color: var(--border-dark);
 }
 
 .back-btn:hover {
   transform: translateY(-2px);
+  background: var(--main-gradient);
+  color: #fff;
 }
 
 .form-card {
   border: none;
-  border-radius: 15px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 5px 15px var(--shadow-light);
   overflow: hidden;
   margin-bottom: 2rem;
+  background: var(--bg-secondary-light);
 }
 
 .dark-mode .form-card {
-  background-color: #333;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  background: var(--bg-secondary-dark);
+  box-shadow: 0 5px 15px var(--shadow-dark);
 }
 
 .form-label {
   font-weight: 500;
+  color: var(--main);
+}
+
+.dark-mode .form-label {
+  color: var(--main-light);
 }
 
 .form-control,
 .form-select {
   padding: 0.75rem 1rem;
-  border-radius: 8px;
-  border: 1px solid #ced4da;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+  background: var(--bg-primary-light);
+  color: var(--text-primary-light);
   transition: all 0.3s ease;
 }
 
 .dark-mode .form-control,
 .dark-mode .form-select {
-  background-color: #444;
-  border-color: #555;
-  color: #f8f9fa;
+  background: var(--bg-secondary-dark);
+  border-color: var(--border-dark);
+  color: var(--text-primary-dark);
 }
 
 .form-control:focus,
 .form-select:focus {
-  box-shadow: 0 0 0 0.25rem rgba(74, 0, 224, 0.25);
-  border-color: #4a00e0;
+  box-shadow: 0 0 0 0.25rem var(--overlay-light);
+  border-color: var(--main);
 }
 
 .dark-mode .form-control:focus,
 .dark-mode .form-select:focus {
-  box-shadow: 0 0 0 0.25rem rgba(142, 45, 226, 0.25);
-  border-color: #8e2de2;
+  box-shadow: 0 0 0 0.25rem var(--overlay-dark);
+  border-color: var(--accent);
 }
 
 .form-text {
   font-size: 0.85rem;
+  color: var(--text-secondary-light);
 }
 
 .dark-mode .form-text {
-  color: #adb5bd !important;
+  color: var(--text-secondary-dark) !important;
 }
 
 .form-actions {
@@ -98,21 +123,21 @@
   display: flex;
   align-items: center;
   padding: 0.5rem 1.5rem;
-  border-radius: 8px;
-  background: linear-gradient(45deg, #4a00e0, #8e2de2);
+  border-radius: var(--radius-md);
+  background: var(--main-gradient);
   border: none;
-  box-shadow: 0 4px 10px rgba(74, 0, 224, 0.3);
+  box-shadow: 0 4px 10px var(--shadow-light);
+  color: #fff;
   transition: all 0.3s ease;
 }
 
 .save-btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(74, 0, 224, 0.4);
-  background: linear-gradient(45deg, #5f00ff, #a64dff);
+  box-shadow: 0 6px 15px var(--shadow-md);
+  background: var(--primary-gradient);
 }
 
 .save-btn:disabled {
-  background: linear-gradient(45deg, #4a00e0, #8e2de2);
   opacity: 0.7;
 }
 
@@ -121,32 +146,44 @@
   height: 1.25em;
   margin-top: 0.25em;
   cursor: pointer;
+  background: var(--bg-primary-light);
+  border: 1px solid var(--border-light);
+}
+
+.dark-mode .form-check-input {
+  background: var(--bg-secondary-dark);
+  border-color: var(--border-dark);
 }
 
 .form-check-input:checked {
-  background-color: #4a00e0;
-  border-color: #4a00e0;
+  background-color: var(--main-light);
+  border-color: var(--main-light);
 }
 
 .dark-mode .form-check-input:checked {
-  background-color: #8e2de2;
-  border-color: #8e2de2;
+  background-color: var(--accent);
+  border-color: var(--accent);
 }
 
 .form-check-label {
   cursor: pointer;
   user-select: none;
   margin-left: 0.5rem;
+  color: var(--main);
+}
+
+.dark-mode .form-check-label {
+  color: var(--main-light);
 }
 
 .status-group {
-  background: rgba(0, 0, 0, 0.02);
+  background: var(--bg-overlay-light);
   padding: 1rem;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
 }
 
 .dark-mode .status-group {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--bg-overlay-dark);
 }
 
 /* RTL Support */

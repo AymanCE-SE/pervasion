@@ -1,5 +1,12 @@
 .users-list-page {
   width: 100%;
+  background: var(--bg-secondary-light);
+  color: var(--text-primary-light);
+}
+
+.dark-mode .users-list-page {
+  background: var(--bg-secondary-dark);
+  color: var(--text-primary-dark);
 }
 
 .page-header {
@@ -13,89 +20,105 @@
   font-weight: 700;
   margin-bottom: 0.5rem;
   font-size: 1.75rem;
+  color: var(--main);
+}
+
+.dark-mode .page-header h1 {
+  color: var(--main-light);
 }
 
 .page-header p {
-  color: #6c757d;
+  color: var(--text-secondary-light);
   margin-bottom: 0;
 }
 
 .dark-mode .page-header p {
-  color: #adb5bd;
+  color: var(--text-secondary-dark);
 }
 
 .add-btn {
   display: flex;
   align-items: center;
   padding: 0.5rem 1rem;
-  border-radius: 8px;
-  background: linear-gradient(45deg, #4a00e0, #8e2de2);
+  border-radius: var(--radius-md);
+  background: var(--main-gradient);
   border: none;
-  box-shadow: 0 4px 10px rgba(74, 0, 224, 0.3);
+  box-shadow: 0 4px 10px var(--shadow-light);
+  color: #fff;
   transition: all 0.3s ease;
 }
 
 .add-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(74, 0, 224, 0.4);
-  background: linear-gradient(45deg, #5f00ff, #a64dff);
+  box-shadow: 0 6px 15px var(--shadow-md);
+  background: var(--primary-gradient);
 }
 
 .list-card {
   border: none;
-  border-radius: 15px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 5px 15px var(--shadow-light);
   overflow: hidden;
+  background: var(--bg-primary-light);
 }
 
 .dark-mode .list-card {
-  background-color: #333;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  background: var(--bg-primary-dark);
+  box-shadow: 0 5px 15px var(--shadow-dark);
 }
 
 .list-card .card-header {
   background-color: transparent;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid var(--border-light);
   padding: 1.25rem 1.5rem;
 }
 
 .dark-mode .list-card .card-header {
-  border-bottom-color: rgba(255, 255, 255, 0.05);
+  border-bottom-color: var(--border-dark);
 }
 
 .list-card .card-header h5 {
   font-weight: 600;
+  color: var(--main);
+}
+
+.dark-mode .list-card .card-header h5 {
+  color: var(--main-light);
 }
 
 .search-input {
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   padding: 0.5rem 1rem;
-  border: 1px solid #ced4da;
+  border: 1px solid var(--border-light);
+  background: var(--bg-primary-light);
+  color: var(--text-primary-light);
   transition: all 0.3s ease;
 }
 
 .dark-mode .search-input {
-  background-color: #444;
-  border-color: #555;
-  color: #f8f9fa;
+  background: var(--bg-secondary-dark);
+  border-color: var(--border-dark);
+  color: var(--text-primary-dark);
 }
 
 .search-input:focus {
-  box-shadow: 0 0 0 0.25rem rgba(74, 0, 224, 0.25);
-  border-color: #4a00e0;
+  box-shadow: 0 0 0 0.25rem var(--overlay-light);
+  border-color: var(--main);
 }
 
 .dark-mode .search-input:focus {
-  box-shadow: 0 0 0 0.25rem rgba(142, 45, 226, 0.25);
-  border-color: #8e2de2;
+  box-shadow: 0 0 0 0.25rem var(--overlay-dark);
+  border-color: var(--accent);
 }
 
 .table {
   margin-bottom: 0;
+  color: var(--text-primary-light);
+  background: transparent;
 }
 
 .dark-mode .table {
-  color: #f8f9fa;
+  color: var(--text-primary-dark);
 }
 
 .table thead th {
@@ -103,22 +126,24 @@
   border-bottom-width: 1px;
   font-weight: 600;
   font-size: 0.9rem;
-  color: #6c757d;
+  color: var(--text-secondary-light);
+  background: transparent;
 }
 
 .dark-mode .table thead th {
-  color: #adb5bd;
-  border-bottom-color: rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary-dark);
+  border-bottom-color: var(--border-dark);
 }
 
 .table td {
   vertical-align: middle;
   padding: 0.75rem 1.5rem;
-  border-color: rgba(0, 0, 0, 0.05);
+  border-color: var(--border-light);
+  background: transparent;
 }
 
 .dark-mode .table td {
-  border-color: rgba(255, 255, 255, 0.05);
+  border-color: var(--border-dark);
 }
 
 .role-badge {
@@ -127,14 +152,17 @@
   display: inline-flex;
   align-items: center;
   gap: 0.35em;
+  border-radius: var(--radius-full);
 }
 
 .role-badge.bg-primary {
-  background: linear-gradient(45deg, #0d6efd, #0a58ca) !important;
+  background: var(--main-gradient) !important;
+  color: #fff;
 }
 
 .role-badge.bg-secondary {
-  background: linear-gradient(45deg, #6c757d, #565e64) !important;
+  background: var(--secondary-gradient) !important;
+  color: #fff;
 }
 
 .action-buttons {
@@ -149,21 +177,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 6px;
+  border-radius: var(--radius-md);
 }
 
 /* Modal Dark Mode */
 .modal.dark-mode .modal-content {
-  background-color: #333;
-  color: #f8f9fa;
+  background-color: var(--bg-secondary-dark);
+  color: var(--text-primary-dark);
 }
 
 .modal.dark-mode .modal-header {
-  border-bottom-color: rgba(255, 255, 255, 0.1);
+  border-bottom-color: var(--border-dark);
 }
 
 .modal.dark-mode .modal-footer {
-  border-top-color: rgba(255, 255, 255, 0.1);
+  border-top-color: var(--border-dark);
 }
 
 .modal.dark-mode .btn-close {
@@ -208,6 +236,7 @@
   display: inline-flex;
   align-items: center;
   gap: 0.35em;
+  border-radius: var(--radius-full);
 }
 
 .verification-badge svg,
@@ -218,6 +247,7 @@
 /* Status colors */
 .badge.bg-success {
   background: linear-gradient(45deg, #28a745, #34ce57) !important;
+  color: #fff;
 }
 
 .badge.bg-warning {
@@ -227,9 +257,9 @@
 
 .badge.bg-danger {
   background: linear-gradient(45deg, #dc3545, #e4606d) !important;
+  color: #fff;
 }
 
-/* Dark mode adjustments */
 .dark-mode .verification-badge.bg-warning {
   color: #fff;
   background: linear-gradient(45deg, #b78500, #cc9600) !important;
