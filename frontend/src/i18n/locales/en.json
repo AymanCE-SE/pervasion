@@ -125,6 +125,14 @@
         "child2": "Portraits",
         "child3": "Event Photography"
       }
+    },
+    "partners": {
+      "title": "Our Partners",
+      "desc": "We collaborate with leading brands and agencies",
+      "partner1": "Partner 1",
+      "partner2": "Partner 2",
+      "partner3": "Partner 3",
+      "partner4": "Partner 4"
     }
   },
   "contact": {

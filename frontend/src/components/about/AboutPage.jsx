@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { selectDarkMode } from '../../redux/slices/themeSlice';
 import { selectLanguage } from '../../redux/slices/languageSlice';
 import './AboutPage.css';
+import OurPartners from './OurPartners';
 
 const AboutPage = () => {
   const { t } = useTranslation();
@@ -164,7 +165,7 @@ const AboutPage = () => {
                 <motion.div variants={itemVariants}>
                   <h3 className="section-subtitle">{t('about.services.title', 'Our Services')}</h3>
                 </motion.div>
-                <Row>
+                <Row className='mt-3'>
                   {services.map((service, idx) => (
                     <Col md={6} lg={4} key={idx} className="mb-4">
                       <motion.div
@@ -229,13 +230,13 @@ const AboutPage = () => {
               </Col>
             </Row>
 
-            <Row className="skills-section">
+            <Row className="skills-section ">
               <Col lg={12}>
                 <motion.div variants={itemVariants}>
                   <h3 className="section-subtitle">{t('about.skills.title')}</h3>
                 </motion.div>
                 
-                <Row>
+                <Row className="mt-3 ">
                   {skills.map((skill, index) => (
                     <Col md={6} key={index} className="mb-4">
                       <motion.div 
@@ -257,13 +258,13 @@ const AboutPage = () => {
               </Col>
             </Row>
 
-            <Row className="stats-section">
+            <Row className="stats-section m-1 py-5">
               <Col lg={12}>
                 <motion.div variants={itemVariants}>
                   <h3 className="section-subtitle">{t('about.experience.title')}</h3>
                 </motion.div>
                 
-                <Row className="text-center">
+                <Row className="text-center mt-3">
                   {stats.map((stat, index) => (
                     <Col md={4} key={index}>
                       <motion.div 
@@ -278,6 +279,9 @@ const AboutPage = () => {
                 </Row>
               </Col>
             </Row>
+            
+            <OurPartners />
+
           </motion.div>
         </Container>
       </section>
