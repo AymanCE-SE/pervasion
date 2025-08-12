@@ -47,20 +47,12 @@ const NavLinks = memo(({ isAuthenticated, closeMenu, isMobile = false, user }) =
     });
   }
 
-
-  // Combine related callbacks
-const handleMenuActions = useCallback(() => {
-  setIsMenuOpen(false);
-  setShowUserMenu(false);
-}, []);
-
-// Use it for both closeMenu and toggle
-const toggleMenu = useCallback(() => {
-  setIsMenuOpen(prev => !prev);
-}, []);
-
   return (
-    <ul className={`nav-links ${isMobile ? 'mobile-nav' : 'desktop-nav'}`}>
+    <ul className={`nav-links ${isMobile    
+      ? (isAuthenticated && (user?.role === 'admin' || user?.is_staff || user?.is_superuser)
+          ? 'mobile-nav-column'
+          : 'mobile-nav-row')
+      : 'desktop-nav'}`}>
       {navItems.map((item, index) => (
         <motion.li 
           key={item.path}
