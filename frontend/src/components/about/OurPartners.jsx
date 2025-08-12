@@ -6,14 +6,17 @@ import { motion, useAnimation } from 'framer-motion';
 import './OurPartners.css';
 
 const partners = [
-  { name: 'Hadef Company for International Trading and Logistics', img: '/images/partners/hadef.webp' },
-  { name: 'Partner Two With A Long Name', img: '/images/partners/hadef.webp' },
-  { name: 'Partner Three', img: '/images/partners/hadef.webp' },
-  { name: 'Partner Four', img: '/images/partners/hadef.webp' },
-  { name: 'Partner Five', img: '/images/partners/hadef.webp' },
-  { name: 'Partner Six', img: '/images/partners/hadef.webp' },
-  { name: 'Partner Seven', img: '/images/partners/hadef.webp' },
-  { name: 'Partner Eight', img: '/images/partners/hadef.webp' },
+    { name: 'riyadh-parking', img: '/images/partners/riyadh-parking.png' },
+  { name: 'Hadef Company for International Trading and Logistics', img: '/images/partners/hadef.png' },
+  { name: 'jac-motors', img: '/images/partners/jac-motors.png' },
+  { name: 'kif-mossafer', img: '/images/partners/kif-mossafer.png' },
+  { name: 'the9national-quality-conf', img: '/images/partners/the9national-quality-conf.png' },
+  { name: 'arab-cup', img: '/images/partners/arab-cup.png' },
+  { name: 'literature-association', img: '/images/partners/literature-association.png' },
+  { name: 'yssr-company', img: '/images/partners/yssr-company.png' },
+  { name: 'fadaat-nakdya', img: '/images/partners/fadaat-nakdya.png' },
+  { name: 'algortithm-schools', img: '/images/partners/algortithm-schools.png' },
+  { name: 'Pervasion', img: '/images/partners/Pervasion.png' },
 ];
 
 const OurPartners = () => {
