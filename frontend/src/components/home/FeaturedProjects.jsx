@@ -163,7 +163,7 @@ const FeaturedProjects = () => {
                   ? 'Check back soon for exciting featured projects!' 
                   : 'تحقق قريبًا من المشاريع المميزة المثيرة!'}
               </p>
-              <Link to="/projects" className="btn btn-primary mt-3">
+              <Link to="/projects" className="btn mt-3">
                 {t('projects.viewProject', 'View All Projects')}
               </Link>
             </div>
