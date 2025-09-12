@@ -1,0 +1,116 @@
+.notfound-page {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-primary-light);
+  color: var(--text-primary-light);
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.notfound-page.dark-mode {
+  background: var(--bg-primary-dark);
+  color: var(--text-primary-dark);
+}
+
+.notfound-content {
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 3rem 2rem 2.5rem 2rem;
+  border-radius: 1.5rem;
+  background: var(--bg-secondary-light);
+  box-shadow: 0 4px 24px var(--shadow-light);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.notfound-page.dark-mode .notfound-content {
+  background: var(--bg-secondary-dark);
+  box-shadow: 0 4px 24px var(--shadow-dark);
+}
+
+.notfound-img {
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  margin-bottom: 2rem;
+  opacity: 0.95;
+  border-radius: 1rem;
+  box-shadow: 0 2px 12px var(--shadow-light);
+  object-fit: contain;
+}
+
+.notfound-content h1 {
+  font-size: 4rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  color: var(--main);
+}
+
+.notfound-page.dark-mode .notfound-content h1 {
+  color: var(--main-light);
+}
+
+.notfound-content h2 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.notfound-content p {
+  color: var(--text-secondary-light);
+  margin-bottom: 2rem;
+}
+
+.notfound-page.dark-mode .notfound-content p {
+  color: var(--text-secondary-dark);
+}
+
+.notfound-home-btn {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  background: var(--main-gradient);
+  color: #fff;
+  border-radius: 50px;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 4px 15px var(--shadow-light);
+  transition: all 0.2s;
+  border: none;
+}
+
+.notfound-home-btn:hover {
+  background: var(--main-dark-gradient);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* Responsive styles */
+@media (max-width: 767.98px) {
+  .notfound-content {
+    max-width: 95vw;
+    padding: 2rem 0.5rem 2rem 0.5rem;
+  }
+  .notfound-img {
+    max-width: 220px;
+    margin-bottom: 1.5rem;
+  }
+  .notfound-content h1 {
+    font-size: 2.5rem;
+  }
+  .notfound-content h2 {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .notfound-img {
+    max-width: 140px;
+  }
+  .notfound-content {
+    padding: 1rem 0.2rem;
+  }
+}

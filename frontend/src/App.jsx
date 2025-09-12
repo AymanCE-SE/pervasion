@@ -38,6 +38,7 @@ const UsersList = React.lazy(() => import('./components/admin/UsersList'));
 const UserForm = React.lazy(() => import('./components/admin/UserForm'));
 const ContactList = React.lazy(() => import('./components/admin/ContactList'));
 const VerifyEmail = React.lazy(() => import('./components/auth/VerifyEmail'));
+import NotFound from './components/common/NotFound';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -199,7 +200,7 @@ const App = () => {
                 </Route>
 
                 {/* 404 Route */}
-                <Route path="*" element={<Navigate to="/" replace />} />
+                <Route path="*" element={<NotFound />} />
             </Routes>
             
             {/* Global Error Toast */}
