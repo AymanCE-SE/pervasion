@@ -8,7 +8,7 @@ import { selectDarkMode } from '../../redux/slices/themeSlice';
 import { selectLanguage } from '../../redux/slices/languageSlice';
 import './AboutPage.css';
 import OurPartners from './OurPartners';
-
+import aboutImg from '../../assets/aboutImg.jpeg';
 const AboutPage = () => {
   const { t } = useTranslation();
   const darkMode = useSelector(selectDarkMode);
@@ -145,7 +145,7 @@ const AboutPage = () => {
               <Col lg={6} className="mb-4 mb-lg-0">
                 <motion.div variants={itemVariants} className="about-image">
                   <img 
-                    src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
+                    src={aboutImg} 
                     alt={t('about.title')}
                     className="img-fluid"
                   />
