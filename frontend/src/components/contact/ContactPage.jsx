@@ -224,13 +224,13 @@ const ContactPage = () => {
                     </div>
                     <div className="info-text">
                       <h5>{t('contact.info.email')}</h5>
-                      <p>info@pervasion.com</p>
+                      <p>jumooh.media@gmail.com</p>
                     </div>
                   </div>
                   
                   <div className="map-container">
                     <iframe
-                      src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=New+York,NY"
+                      src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=Cairo,EG"
                       width="100%"
                       height="200"
                       style={{ border: 0 }}
@@ -353,7 +353,6 @@ const ContactPage = () => {
                     </Form.Group>
 
                     <Button 
-                      variant="primary" 
                       type="submit" 
                       className="submit-btn"
                       disabled={contactStatus === 'loading'}

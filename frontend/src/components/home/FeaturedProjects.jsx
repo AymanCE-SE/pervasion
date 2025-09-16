@@ -62,7 +62,7 @@ const FeaturedProjects = () => {
           className="section-header text-center"
         >
           <h2 className="section-title">{t('projects.title')}</h2>
-          <p className="section-subtitle">{t('projects.subtitle')}</p>
+          <p className="section-subtitle ms-2">{t('projects.subtitle')}</p>
         </motion.div>
 
         {status === 'loading' ? (

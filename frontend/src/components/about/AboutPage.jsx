@@ -9,6 +9,7 @@ import { selectLanguage } from '../../redux/slices/languageSlice';
 import './AboutPage.css';
 import OurPartners from './OurPartners';
 import aboutImg from '../../assets/aboutImg.jpeg';
+import { FaBullhorn, FaChartLine, FaPalette, FaSearch } from 'react-icons/fa';
 const AboutPage = () => {
   const { t } = useTranslation();
   const darkMode = useSelector(selectDarkMode);
@@ -55,57 +56,44 @@ const AboutPage = () => {
   // Services data
   const services = [
     {
-      name: 'branding',
-      headline: t('about.services.branding.headline', 'Brand Strategy & Identity'),
+      icon: <FaPalette />,
+      headline: t('home.services.branding.headline', 'Branding & Visual Identity'),
       children: [
-        t('about.services.branding.child1', 'Logo Design'),
-        t('about.services.branding.child2', 'Brand Guidelines'),
-        t('about.services.branding.child3', 'Naming & Messaging'),
+        t('home.services.branding.branch1', 'Logo Design'),
+        t('home.services.branding.branch2', 'Complete Brand Identity'),
+        t('home.services.branding.branch3', 'Company Profiles & Presentations'),
+        t('home.services.branding.branch4', 'Business Cards & Print Materials'),
+        t('home.services.branding.branch5', 'Packaging & Label Design'),
       ],
     },
     {
-      name: 'ui',
-      headline: t('about.services.ui.headline', 'UI/UX & Web Design'),
+      icon: <FaBullhorn />,
+      headline: t('home.services.social.headline', 'Social Media Marketing'),
       children: [
-        t('about.services.ui.child1', 'Website Design'),
-        t('about.services.ui.child2', 'Mobile App Design'),
-        t('about.services.ui.child3', 'Wireframing & Prototyping'),
+        t('home.services.social.branch1', 'Social Media Account Setup'),
+        t('home.services.social.branch2', 'Creative & Engaging Content Writing'),
+        t('home.services.social.branch3', 'Regular Post Design & Publishing'),
+        t('home.services.social.branch4', 'Monthly Performance Reports'),
       ],
     },
     {
-      name: 'print',
-      headline: t('about.services.print.headline', 'Print & Packaging'),
+      icon: <FaSearch />,
+      headline: t('home.services.seo.headline', 'SEO & Content Marketing'),
       children: [
-        t('about.services.print.child1', 'Brochures & Flyers'),
-        t('about.services.print.child2', 'Business Cards'),
-        t('about.services.print.child3', 'Product Packaging'),
+        t('home.services.seo.branch1', 'Website Analysis'),
+        t('home.services.seo.branch2', 'Keyword Research'),
+        t('home.services.seo.branch3', 'SEO-Friendly Article Writing'),
+        t('home.services.seo.branch4', 'Image & Metadata Optimization'),
       ],
     },
     {
-      name: 'motion',
-      headline: t('about.services.motion.headline', 'Motion Graphics'),
+      icon: <FaChartLine />,
+      headline: t('home.services.growth.headline', 'Growth Strategy'),
       children: [
-        t('about.services.motion.child1', 'Animated Videos'),
-        t('about.services.motion.child2', 'Social Media Animations'),
-        t('about.services.motion.child3', 'Explainer Videos'),
-      ],
-    },
-    {
-      name: 'illustration',
-      headline: t('about.services.illustration.headline', 'Illustration'),
-      children: [
-        t('about.services.illustration.child1', 'Custom Artwork'),
-        t('about.services.illustration.child2', 'Editorial Illustration'),
-        t('about.services.illustration.child3', 'Icon Design'),
-      ],
-    },
-    {
-      name: 'photography',
-      headline: t('about.services.photography.headline', 'Photography'),
-      children: [
-        t('about.services.photography.child1', 'Product Photography'),
-        t('about.services.photography.child2', 'Portraits'),
-        t('about.services.photography.child3', 'Event Photography'),
+        t('home.services.growth.branch1', 'Comprehensive Marketing Plans'),
+        t('home.services.growth.branch2', 'Brand Strategy Consulting'),
+        t('home.services.growth.branch3', 'Integration with Analytics & Tracking Tools'),
+        t('home.services.growth.branch4', 'Ongoing Brand Support'),
       ],
     },
   ];
@@ -163,7 +151,7 @@ const AboutPage = () => {
             <Row className="services-section">
               <Col lg={12}>
                 <motion.div variants={itemVariants}>
-                  <h3 className="section-subtitle">{t('about.services.title', 'Our Services')}</h3>
+                  <h3 className="section-subtitle">{t('home.services.title', 'Our Services')}</h3>
                 </motion.div>
                 <Row className='mt-3'>
                   {services.map((service, idx) => (
@@ -178,7 +166,12 @@ const AboutPage = () => {
                         onKeyPress={e => { if (e.key === 'Enter' || e.key === ' ') handleToggle(idx); }}
                       >
                         <div className="service-headline d-flex align-items-center justify-content-between">
-                          <span>{service.headline}</span>
+                          <div>
+
+                          <span className="service-icon ">{service.icon} </span>
+                          <span className='ms-2'>{service.headline}</span>
+                          </div>
+
                           <span className={`service-arrow${openIndex === idx ? ' rotated' : ''}`}>▼</span>
                         </div>
                         <motion.ul
@@ -230,7 +223,7 @@ const AboutPage = () => {
               </Col>
             </Row>
 
-            <Row className="skills-section ">
+            {/* <Row className="skills-section ">
               <Col lg={12}>
                 <motion.div variants={itemVariants}>
                   <h3 className="section-subtitle">{t('about.skills.title')}</h3>
@@ -256,7 +249,7 @@ const AboutPage = () => {
                   ))}
                 </Row>
               </Col>
-            </Row>
+            </Row> */}
 
             <Row className="stats-section m-1 py-5">
               <Col lg={12}>

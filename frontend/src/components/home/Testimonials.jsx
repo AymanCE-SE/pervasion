@@ -74,7 +74,7 @@ const Testimonials = () => {
           className="section-header text-center"
         >
           <h2 className="section-title">{t('testimonials.title')}</h2>
-          <p className="section-subtitle">{t('testimonials.subtitle')}</p>
+          <p className="section-subtitle ms-2">{t('testimonials.subtitle')}</p>
         </motion.div>
 
         <motion.div

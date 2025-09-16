@@ -173,7 +173,7 @@
   padding: 0.75rem 2rem;
   border-radius: 50px;
   font-weight: 600;
-  background: var(--main);
+  background: var(--main-gradient);
   border: none;
   box-shadow: 0 4px 15px var(--shadow-primary-light);
   transition: all var(--transition-normal);
@@ -182,7 +182,7 @@
 .submit-btn:hover:not(:disabled) {
   transform: translateY(-3px);
   box-shadow: 0 8px 20px var(--shadow-primary-dark);
-  background: var(--btn-primary-dark-mode-bg);
+  background: var(--main);
 }
 
 .submit-btn:disabled {

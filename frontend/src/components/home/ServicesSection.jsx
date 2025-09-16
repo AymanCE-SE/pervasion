@@ -69,7 +69,7 @@ const ServicesSection = () => {
           className="section-header text-center"
         >
           <h2 className="section-title">{t('home.services.title', 'Our Services')}</h2>
-          <p className="section-subtitle">{t('home.services.subtitle', 'What we offer for your brand growth')}</p>
+          <p className="section-subtitle ms-2">{t('home.services.subtitle', 'What we offer for your brand growth')}</p>
         </motion.div>
         <Row className="g-4 justify-content-center">
           {services.map((service, idx) => (
