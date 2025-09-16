@@ -262,19 +262,26 @@
   overflow: hidden;
   outline: none;
 }
+.service-icon{
+  background: none !important;
+  display: inline-block !important;
+}
+
 .service-card:hover, .service-card.open {
-  border-color: var(--main-light);
+  border-color: var(--main-light) ;
   transform: translateY(-4px) scale(1.025);
   box-shadow: 0 8px 32px var(--shadow-md);
 }
+
 .dark-mode .service-card {
   background: var(--bg-secondary-dark);
   border: 1.5px solid var(--border-dark);
   box-shadow: 0 2px 12px var(--shadow-dark);
 }
 .dark-mode .service-card:hover, .dark-mode .service-card.open {
-  border-color: var(--accent);
+  border-color: var(--accent) !important;
   box-shadow: 0 8px 32px var(--shadow-dark);
+  background: var(--bg-main-dark);
 }
 
 .service-headline {

@@ -168,7 +168,7 @@ const AboutPage = () => {
                         <div className="service-headline d-flex align-items-center justify-content-between">
                           <div>
 
-                          <span className="service-icon ">{service.icon} </span>
+                          <span className="service-icon">{service.icon} </span>
                           <span className='ms-2'>{service.headline}</span>
                           </div>
 

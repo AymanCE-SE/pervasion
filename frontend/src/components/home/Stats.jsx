@@ -11,24 +11,25 @@ import './Stats.css';
 const statsData = [
   {
     icon: <FaCheckCircle />,
-    value: 250,
+    value: 120,
     label: "projects.completed",
   },
   {
     icon: <FaUsers />,
-    value: 100,
+    value: 50,
     label: "clients.satisfied",
   },
   {
     icon: <FaClock />,
-    value: 10,
+    value: 5,
     label: "years.experience",
-  },
-  {
-    icon: <FaStar />,
-    value: 15,
-    label: "awards.won",
   }
+  // ,
+  // {
+  //   icon: <FaStar />,
+  //   value: 15,
+  //   label: "awards.won",
+  // }
 ];
 
 const containerVariants = {
@@ -69,7 +70,7 @@ const Stats = () => {
         >
           <Row>
             {statsData.map((stat, idx) => (
-              <Col key={idx} md={6} lg={3} className="mb-4">
+              <Col key={idx} md={4} lg={4} className="mb-4">
                 <motion.div
                   className="stats-grid-card"
                   variants={cardVariants}

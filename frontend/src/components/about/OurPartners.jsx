@@ -34,7 +34,7 @@ const OurPartners = () => {
           className="section-header text-center"
         >
           <h3 className="section-subtitle gradient-text">{t('about.partners.title', 'Our Partners')}</h3>
-          <p className="section-desc">{t('about.partners.desc', 'We are proud to collaborate with leading brands and organizations.')}</p>
+          <p className="section-desc mt-2">{t('about.partners.desc', 'We are proud to collaborate with leading brands and organizations.')}</p>
         </motion.div>
         <div className="partners-grid">
           {partners.map((partner, idx) => (
