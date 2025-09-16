@@ -21,6 +21,9 @@ const Hero = () => {
         <div className="gradient-sphere sphere-2"></div>
       </div>
 
+      {/* Add mobile background image */}
+      <div className="hero-mobile-background d-lg-none"></div>
+
       <Container>
         <Row className="hero-row">
           <Col lg={6} className="hero-text-col">
@@ -32,7 +35,7 @@ const Hero = () => {
             >
               <div className="hero-badge">
                 <span className="badge-dot"></span>
-                {t('hero.badge', 'Award-winning design studio')}
+                {t('hero.badge', 'slogan design studio')}
               </div>
 
               <h1 className="hero-title">
@@ -46,7 +49,7 @@ const Hero = () => {
             </motion.div>
           </Col>
 
-          {/* Move image column here - it will show after text on mobile */}
+          {/* Desktop only image */}
           <Col lg={6} className="hero-image-col d-none d-lg-block">
             <motion.div
               className="hero-image-wrapper"
@@ -56,29 +59,15 @@ const Hero = () => {
             >
               <div className="image-container">
                 <img src={heroImg} alt="Horse brand" className="hero-image" />
-                <div className="effect-circle"></div>
+                <div className="effect-rectangular"></div>
                 <div className="effect-dots"></div>
               </div>
             </motion.div>
           </Col>
 
-          {/* Mobile image - shows between text and buttons */}
-          <Col xs={12} className="d-lg-none mobile-hero-image">
-            <motion.div
-              className="hero-image-wrapper"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, delay: 0.2 }}
-            >
-              <div className="image-container">
-                <img src={heroImg} alt="Horse brand" className="hero-image" />
-                <div className="effect-circle"></div>
-                <div className="effect-dots"></div>
-              </div>
-            </motion.div>
-          </Col>
+          {/* Remove mobile image column since it's now a background */}
 
-          {/* Actions column - always shows last on mobile */}
+          {/* Actions column */}
           <Col xs={12} lg={6} className="hero-actions-col">
             <div className="hero-actions">
               <Button as={Link} to="/projects" className="cta-primary">

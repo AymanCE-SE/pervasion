@@ -24,6 +24,11 @@
   position: absolute;
   border-radius: 50%;
   filter: blur(80px);
+  opacity: 0.15;
+}
+
+.dark-mode .gradient-sphere {
+  opacity: 0.2;
 }
 
 .sphere-1 {
@@ -36,7 +41,6 @@
   );
   top: -200px;
   right: -200px;
-  opacity: 0.15;
 }
 
 .sphere-2 {
@@ -49,14 +53,9 @@
   );
   bottom: -100px;
   left: -100px;
-  opacity: 0.1;
 }
 
-.dark-mode .gradient-sphere {
-  opacity: 0.2;
-}
-
-/* Content */
+/* Content Styles */
 .hero-row {
   position: relative;
   z-index: 1;
@@ -64,6 +63,10 @@
 
 .hero-content {
   max-width: 600px;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 2rem;
 }
 
 .hero-badge {
@@ -71,20 +74,29 @@
   align-items: center;
   gap: 8px;
   padding: 8px 16px;
-  background: var(--bg-secondary-light);
+  background: var(--sandstone);
   border-radius: 100px;
   margin-bottom: 2rem;
   border: 1px solid var(--border-light);
-  font-size: 0.9rem;
+  font-size: 1.3rem;
   font-weight: 500;
   color: var(--text-secondary-light);
 }
 
 .badge-dot {
-  width: 8px;
-  height: 8px;
-  background: var(--main-gradient);
+  width: 10px;
+  height: 10px;
+  background: linear-gradient(135deg, var(--sandstone), var(--text-secondary-light));
   border-radius: 50%;
+  box-shadow: 0 0 6px 2px var(--sandstone), 0 1px 4px var(--text-secondary-light);
+  border: 2px solid var(--sandstone);
+  display: inline-block;
+  margin-right: 4px;
+  transition: box-shadow 0.3s;
+}
+
+.hero-badge:hover .badge-dot {
+  box-shadow: 0 0 12px 4px var(--sandstone), 0 2px 8px var(--text-secondary-light);
 }
 
 .hero-title {
@@ -107,7 +119,7 @@
   font-size: 1.2rem;
   line-height: 1.6;
   color: var(--text-secondary-light);
-  margin-bottom: 2rem;
+  /* margin-bottom: 0.1rem; */
   max-width: 540px;
 }
 
@@ -116,6 +128,7 @@
   display: flex;
   gap: 1rem;
   margin-bottom: 2rem;
+  margin-top: -4rem;
 }
 
 .cta-primary {
@@ -134,7 +147,7 @@
 .cta-secondary {
   padding: 1rem 2rem;
   background: transparent;
-  border: 2px solid var(--main) !important;
+  border: 2px solid var(--main);
   border-radius: 100px;
   color: var(--main);
   font-weight: 600;
@@ -168,19 +181,17 @@
 }
 
 .hero-image {
-  width: 92%;
-  height: 92%;
-  object-fit: contain;
-  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10%;
   position: relative;
   z-index: 2;
-  background: var(--bg-primary-light) ;
-  padding: 1rem;
- box-shadow: 
+  background: var(--bg-primary-light);
+  padding: 0.01rem;
+  box-shadow: 
     0 10px 30px var(--shadow-light),
-    0 0 0 2px var(--main-light),
-    inset 0 0 20px rgba(0, 0, 0, 0.1) !important; /* Added depth with multiple shadows */ 
- /* box-shadow: var(--shadow-light) !important; */
+    0 0 0 2px var(--main-light);
   transition: transform 0.6s, box-shadow 0.4s;
 }
 
@@ -188,112 +199,51 @@
   background: var(--bg-primary-dark);
   box-shadow: 
     0 10px 30px var(--shadow-dark),
-    0 0 0 2px var(--main),
-    inset 0 0 20px rgba(255, 255, 255, 0.05) !important;
+    0 0 0 2px var(--main);
 }
 
 .hero-image-wrapper:hover .hero-image {
   transform: scale(1.02) rotate(1deg) translate(0, -5px);
   box-shadow: 
     0 15px 40px var(--shadow-light),
-    0 0 0 3px var(--main),
-    inset 0 0 25px rgba(0, 0, 0, 0.15) !important;
+    0 0 0 3px var(--main);
 }
 
 .dark-mode .hero-image-wrapper:hover .hero-image {
   box-shadow: 
     0 15px 40px var(--shadow-dark),
-    0 0 0 3px var(--main-light),
-    inset 0 0 25px rgba(255, 255, 255, 0.08) !important;
+    0 0 0 3px var(--main-light);
 }
 
-.effect-circle {
+/* Image Effects */
+.effect-rectangular,
+.effect-dots {
   position: absolute;
+  border-radius: 10%;
+  opacity: 0.2;
+  z-index: 1;
+}
+
+.effect-rectangular {
   inset: -20px;
   border: 2px dashed var(--main);
-  border-radius: 50%;
   animation: rotate 20s linear infinite;
-  opacity: 0.4;
-  z-index: 1;
 }
 
 .effect-dots {
-  position: absolute;
   inset: -40px;
   border: 2px dotted var(--main);
-  border-radius: 50%;
-  opacity: 0.4;
   animation: rotate 30s linear infinite reverse;
-  z-index: 1;
 }
 
-.dark-mode .effect-circle {
-  border-color: var(--main-light);
-  opacity: 0.5;
-}
-
+.dark-mode .effect-rectangular,
 .dark-mode .effect-dots {
   border-color: var(--main-light);
-  opacity: 0.5;
 }
 
-/* Add a glow effect */
-.image-container::before,
-.image-container::after {
-  content: '';
-  position: absolute;
-  border-radius: 50%;
-  z-index: 0;
-}
-.image-container::before {
-  inset: -10px;
-  background: var(--main-gradient);
-  filter: blur(30px);
-  opacity: 0.2;
-  animation: pulseGlow 4s ease-in-out infinite;
-}
-.image-container::after {
-  inset: -30px;
-  background: var(--main-gradient);
-  filter: blur(60px);
-  opacity: 0.1;
-}
-.dark-mode .image-container::after {
-  opacity: 0.15;
-  filter: blur(40px);
-}
-.dark-mode .image-container::after {
-  opacity: 0.25;
-  filter: blur(60px);
-}
-@keyframes pulseGlow {
-  0%, 100% { 
-    transform: scale(1);
-    opacity: 0.2;
-  }
-  50% { 
-    transform: scale(1.1);
-    opacity: 0.3;
-  }
-}
-
-/* Update hover effect to enhance glow */
-.hero-image-wrapper:hover .image-container::before {
-  filter: blur(40px);
-  opacity: 0.3;
-}
-
-.hero-image-wrapper:hover .image-container::after {
-  filter: blur(70px);
-  opacity: 0.25;
-}
-
-.dark-mode .hero-image-wrapper:hover .image-container::before {
-  opacity: 0.4;
-}
-
-.dark-mode .hero-image-wrapper:hover .image-container::after {
-  opacity: 0.35;
+/* Mobile Background */
+.hero-mobile-background {
+  display: none;
 }
 
 @keyframes rotate {
@@ -308,12 +258,19 @@
   color: var(--text-secondary-dark);
 }
 
-.dark-mode .hero-title { color: var(--text-primary-dark); }
-.dark-mode .hero-description { color: var(--text-secondary-dark); }
+.dark-mode .hero-title { 
+  color: var(--text-primary-dark); 
+}
+
+.dark-mode .hero-description { 
+  color: var(--text-secondary-dark); 
+}
+
 .dark-mode .cta-secondary {
   border-color: var(--main-light);
   color: var(--main-light);
 }
+
 .dark-mode .cta-secondary:hover {
   background: var(--main-light);
   color: var(--bg-primary-dark);
@@ -321,53 +278,72 @@
 
 /* RTL Support */
 [dir="rtl"] .hero-title,
-[dir="rtl"] .hero-description { text-align: right; }
-[dir="rtl"] .icon-rtl { transform: rotate(180deg); margin-right: 0.5rem; }
+[dir="rtl"] .hero-description { 
+  text-align: right; 
+}
+
+[dir="rtl"] .icon-rtl { 
+  transform: rotate(180deg);
+  margin-right: 0.5rem; 
+}
 
 /* Responsive */
 @media (max-width: 991.98px) {
-  .hero-section { 
-    padding: 3rem 0 !important; 
+  .hero-mobile-background {
+    display: block;
+    position: absolute;
+    inset: 0;
+    background-image: url('../../assets/Horses_in_Moonlight.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.65;
+    z-index: 1;
   }
-  
-  .hero-content { 
-    margin: 0 auto;
+
+  .hero-section {
+    background: linear-gradient(
+      to bottom,
+      rgba(var(--bg-primary-light-rgb), 0.9) 0%,
+      rgba(var(--bg-primary-light-rgb), 0.95) 100%
+    );
+  }
+
+  .hero-content {
+    z-index: 2;
+    backdrop-filter: blur(2px);
+    margin: 0 auto 3rem;
     text-align: center;
   }
 
-  .mobile-hero-image {
-    margin: 1rem 0 3rem 0 !important;
-  }
-  
-  .hero-actions-col {
-    text-align: center;
-  }
-  
   .hero-actions {
-    justify-content: center;
     flex-direction: column;
     max-width: 300px;
-    margin: 0 auto;
-    gap: 1rem;
+    margin: 0 auto 1.5rem;
   }
-  
-  .image-container { 
-    width: 300px !important;
-    height: 300px !important;
-    margin: 0 auto;
+
+  .hero-badge {
+    margin: 0 auto 1.5rem;
   }
 }
 
 @media (max-width: 767.98px) {
-  .hero-section { padding: 3rem 0; }
-  .hero-title { font-size: 2.25rem; }
-  .hero-description { font-size: 1.1rem; }
-  .hero-actions {
-    flex-direction: column;
-    max-width: 300px;
-    margin: 0 auto 2rem;
+  .hero-section { 
+    padding: 3rem 0; 
   }
-  .image-container { width: 320px; height: 320px; }
+  
+  .hero-content {
+    padding: 1rem;
+    margin: 0 auto ;
+  }
+  
+  .hero-title { 
+    font-size: 2.25rem; 
+  }
+  
+  .hero-description { 
+    font-size: 1.1rem; 
+  }
 }
 
 @media (max-width: 575.98px) {
@@ -375,12 +351,12 @@
     padding: 2rem 0; 
   }
   
-  .mobile-hero-image {
-    margin: 1.5rem 0;
+  .hero-content {
+    padding: 1rem;
+    /* margin: 0 0.5rem; */
   }
   
-  .image-container { 
-    width: 260px;
-    height: 260px;
+  .hero-actions {
+    margin-top: 1.5rem;
   }
 }
