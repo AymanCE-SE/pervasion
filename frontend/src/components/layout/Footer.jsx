@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { selectDarkMode } from '../../redux/slices/themeSlice';
-import { FaFacebookF, FaTwitter, FaInstagram, FaBehance, FaDribbble, FaLinkedinIn } from 'react-icons/fa';
+import { FaFacebookF, FaTwitter, FaInstagram, FaBehance, FaDribbble, FaLinkedinIn, FaWhatsapp } from 'react-icons/fa';
 import './Footer.css';
 
 const Footer = () => {
@@ -42,23 +42,26 @@ const Footer = () => {
           <Col lg={4} md={12} className="footer-social">
             <h4>{t('footer.follow')}</h4>
             <div className="social-links">
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+              <a href={t('footer.facebook')} target="_blank" rel="noopener noreferrer" aria-label="Facebook">
                 <FaFacebookF />
               </a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+              <a href={t('footer.twitter')} target="_blank" rel="noopener noreferrer" aria-label="Twitter">
                 <FaTwitter />
               </a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+              <a href={t('footer.instagram')} target="_blank" rel="noopener noreferrer" aria-label="Instagram">
                 <FaInstagram />
               </a>
-              <a href="https://behance.net" target="_blank" rel="noopener noreferrer" aria-label="Behance">
+              {/* <a href="https://behance.net" target="_blank" rel="noopener noreferrer" aria-label="Behance">
                 <FaBehance />
               </a>
               <a href="https://dribbble.com" target="_blank" rel="noopener noreferrer" aria-label="Dribbble">
                 <FaDribbble />
-              </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+              </a> */}
+              <a href={t('footer.linkedin')} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
                 <FaLinkedinIn />
+              </a>
+              <a href={`https://wa.me/${t('footer.whatsapp').replace(/\s+/g, '')}`} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+                <FaWhatsapp />
               </a>
             </div>
           </Col>

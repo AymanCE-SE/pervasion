@@ -1,0 +1,248 @@
+.mission-section,
+.ambitions-section {
+  position: relative;
+  padding: 4rem 0;
+  overflow: visible;
+}
+
+.mission-section {
+  margin-bottom: -2rem; /* Create overlap */
+}
+
+.ambitions-section {
+  background: linear-gradient(180deg, transparent 0%, var(--bg-secondary-light) 15%);
+  margin-top: -2rem; /* Create overlap */
+  padding-top: 6rem;
+}
+
+.dark-mode .ambitions-section {
+  background: linear-gradient(180deg, transparent 0%, var(--bg-secondary-dark) 15%);
+}
+
+/* Connection Line */
+.connection-line {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 100px;
+  background: var(--main-gradient);
+  opacity: 0.5;
+}
+
+/* Quote Styles */
+.quote-wrapper {
+  position: relative;
+  padding: 2rem;
+  margin: 2rem 0;
+  background: var(--bg-secondary-light);
+  border-radius: 15px;
+  box-shadow: 0 10px 30px var(--shadow-light);
+}
+
+.dark-mode .quote-wrapper {
+  background: var(--bg-secondary-dark);
+  box-shadow: 0 10px 30px var(--shadow-dark);
+}
+
+.quote-icon {
+  position: absolute;
+  top: -15px;
+  left: 20px;
+  font-size: 2rem;
+  color: var(--main);
+  background: var(--bg-primary-light);
+  padding: 0.5rem;
+  border-radius: 50%;
+}
+
+.dark-mode .quote-icon {
+  color: var(--main-light);
+  background: var(--bg-primary-dark);
+}
+
+.mission-quote,
+.ambitions-quote {
+  font-size: 1.25rem;
+  font-style: italic;
+  color: var(--text-primary-light);
+  margin: 0;
+  padding-left: 1rem;
+  border-left: 3px solid var(--main);
+}
+
+.dark-mode .mission-quote,
+.dark-mode .ambitions-quote {
+  color: var(--text-primary-dark);
+}
+
+/* Update Image Styles */
+.mission-image,
+.ambitions-image {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px var(--shadow-light);
+  transform: perspective(1000px) rotateY(0deg);
+  transition: transform 0.6s ease;
+  aspect-ratio: 16/9;
+  width: 100%;
+}
+
+.mission-image img,
+.ambitions-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+/* Update Responsive Styles */
+@media (max-width: 991.98px) {
+  .mission-section,
+  .ambitions-section {
+    padding: 3rem 0;
+  }
+
+  .quote-wrapper {
+    padding: 2rem 1.25rem 1.25rem;
+    margin: 2rem 0;
+  }
+
+  .mission-quote,
+  .ambitions-quote {
+    font-size: 1.1rem;
+    padding-left: 0.75rem;
+  }
+
+  .quote-icon {
+    font-size: 1.75rem;
+    top: -12px;
+    left: 15px;
+    padding: 0.4rem;
+  }
+
+  .mission-image,
+  .ambitions-image {
+    max-width: 600px;
+    margin: 0 auto;
+    aspect-ratio: 4/3;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .mission-section {
+    margin-bottom: 0;
+    padding: 2rem 0;
+  }
+
+  .ambitions-section {
+    margin-top: 0;
+    padding: 2rem 0;
+    background: var(--bg-secondary-light);
+  }
+
+  .dark-mode .ambitions-section {
+    background: var(--bg-secondary-dark);
+  }
+
+  .section-title {
+    font-size: 1.75rem;
+    text-align: center;
+    width: 100%;
+  }
+
+  .section-title::after {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .quote-wrapper {
+    padding: 2rem 1rem 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .mission-quote,
+  .ambitions-quote {
+    font-size: 1rem;
+    text-align: center;
+    padding-left: 0;
+    border-left: none;
+  }
+
+  .mission-image,
+  .ambitions-image {
+    margin: 1.5rem auto;
+    aspect-ratio: 1.2/1;
+    border-radius: 15px;
+  }
+
+  .image-overlay {
+    opacity: 0.15;
+  }
+
+  .connection-line {
+    display: none;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .mission-section,
+  .ambitions-section {
+    padding: 1.5rem 0;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .quote-wrapper {
+    padding: 1.75rem 0.875rem 0.875rem;
+    margin: 1.25rem 0;
+  }
+
+  .quote-icon {
+    font-size: 1.5rem;
+    top: -10px;
+    left: 12px;
+    padding: 0.3rem;
+  }
+
+  .mission-image,
+  .ambitions-image {
+    aspect-ratio: 1/1;
+    border-radius: 12px;
+    margin: 1rem auto;
+  }
+
+  .mission-image:hover,
+  .ambitions-image:hover {
+    transform: none;
+  }
+
+  .image-overlay {
+    background: linear-gradient(45deg, var(--main) 0%, transparent 70%);
+    opacity: 0.2;
+  }
+}
+
+/* Add RTL support for mobile */
+@media (max-width: 767.98px) {
+  [dir="rtl"] .section-title::after {
+    right: 50%;
+    left: auto;
+    transform: translateX(50%);
+  }
+
+  [dir="rtl"] .quote-icon {
+    right: 15px;
+    left: auto;
+  }
+
+  [dir="rtl"] .mission-quote,
+  [dir="rtl"] .ambitions-quote {
+    text-align: center;
+    padding-right: 0;
+  }
+}

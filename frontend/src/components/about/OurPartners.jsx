@@ -25,7 +25,7 @@ const OurPartners = () => {
 
   return (
     <section className={`partners-section${darkMode ? ' dark-mode' : ''} mt-5`}>
-      <div className="container">
+      <div className="container-xxl"> 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -46,10 +46,8 @@ const OurPartners = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: idx * 0.08 }}
               whileHover={{
-                scale: 1.08,
-                boxShadow: darkMode
-                  ? "0 8px 32px var(--shadow-dark)"
-                  : "0 8px 32px var(--shadow-md)",
+                scale: 1.05, 
+                transition: { duration: 0.3 }
               }}
             >
               <div className="partner-img-glow">

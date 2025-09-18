@@ -87,6 +87,34 @@
       "clients": "Clients",
       "projects": "Projects Completed"
     },
+    "mission": {
+      "title": "Our Mission",
+      "quote": "To craft innovative and impactful design solutions that elevate brands, engage audiences, and drive business growth through creativity and strategic thinking."
+    },
+    "ambitions": {
+      "title": "Our Ambitions",
+      "quote": "To be the premier digital partner for ambitious brands in the region, delivering innovative marketing solutions that make a real difference and achieve sustainable growth."
+    },
+    "values": {
+      "title": "Our Values",
+      "subtitle": "Guiding principles of our creative culture.",
+      "partnership": {
+        "headline": "Partnership",
+        "description": "Believing that customer success is an extension of our success."
+      },
+      "results": {
+        "headline": "Results",
+        "description": "We focus on achieving a tangible and measurable impact."
+      },
+      "transparency": {
+        "headline": "Transparency",
+        "description": "We share every step with our clients with clarity and honesty."
+      },
+      "innovation": {
+        "headline": "Innovation",
+        "description": "Constantly searching for ideas that make a tangible difference."
+      }
+    },
     "services": {
       "title": "Our Services",
       "branding": {
@@ -164,6 +192,12 @@
       "phone": "Phone",
       "email": "Email",
       "hours": "Working Hours"
+    },
+    "data": {
+      "address": "Sharjah media city, UAE",
+      "phone1": "UAE: +971 58 978 8677",
+      "phone2": "KSA: +966 53 558 8118",
+      "email": "info@jamouhmedia.com"
     }
   },
   "comments": {
@@ -267,7 +301,12 @@
   },
   "footer": {
     "rights": "All Rights Reserved",
-    "follow": "Follow Me"
+    "follow": "Follow Me",
+    "instagram": "https://www.instagram.com/jumooh.media/",
+    "linkedin": "https://www.linkedin.com/company/jumooh.media",
+    "facebook": "https://www.facebook.com/jumooh.media/",
+    "twitter": "https://x.com/jumooh.media",
+    "whatsapp": "+966 53 558 8118"
   },
   "theme": {
     "light": "Light Mode",

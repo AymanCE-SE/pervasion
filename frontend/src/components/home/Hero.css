@@ -44,14 +44,14 @@
 }
 
 .sphere-2 {
-  width: 500px;
-  height: 500px;
+  width: 350px;
+  height: 350px;
   background: radial-gradient(circle at center, 
     var(--accent) 0%,
     var(--main-light) 40%,
     transparent 70%
   );
-  bottom: -100px;
+  bottom: -60px;
   left: -100px;
 }
 
@@ -81,6 +81,7 @@
   font-size: 1.3rem;
   font-weight: 500;
   color: var(--text-secondary-light);
+  width: fit-content;
 }
 
 .badge-dot {
@@ -128,7 +129,7 @@
   display: flex;
   gap: 1rem;
   margin-bottom: 2rem;
-  margin-top: -4rem;
+  margin-top: 0.5rem;
 }
 
 .cta-primary {
@@ -343,6 +344,9 @@
   
   .hero-description { 
     font-size: 1.1rem; 
+  }
+  .hero-badge {
+    font-size: 1.1rem;
   }
 }
 

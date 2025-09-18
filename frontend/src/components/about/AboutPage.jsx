@@ -8,6 +8,9 @@ import { selectDarkMode } from '../../redux/slices/themeSlice';
 import { selectLanguage } from '../../redux/slices/languageSlice';
 import './AboutPage.css';
 import OurPartners from './OurPartners';
+import OurMission from './OurMission';
+import OurAmbitions from './OurAmbitions';
+import OurValues from './OurValues';
 import aboutImg from '../../assets/aboutImg.jpeg';
 import { FaBullhorn, FaChartLine, FaPalette, FaSearch } from 'react-icons/fa';
 const AboutPage = () => {
@@ -147,7 +150,11 @@ const AboutPage = () => {
                 </motion.div>
               </Col>
             </Row>
+            <OurMission />
+            <OurAmbitions /> 
+            <OurValues /> 
             
+            {/* Services  */}
             <Row className="services-section">
               <Col lg={12}>
                 <motion.div variants={itemVariants}>
@@ -272,7 +279,7 @@ const AboutPage = () => {
                 </Row>
               </Col>
             </Row>
-            
+ 
             <OurPartners />
 
           </motion.div>

@@ -204,7 +204,7 @@ const ContactPage = () => {
                     </div>
                     <div className="info-text">
                       <h5>{t('contact.info.address')}</h5>
-                      <p>Cairo, Egypt</p>
+                      <p>{t('contact.data.address')}</p>
                     </div>
                   </div>
                   
@@ -214,7 +214,9 @@ const ContactPage = () => {
                     </div>
                     <div className="info-text">
                       <h5>{t('contact.info.phone')}</h5>
-                      <p>+2 (11) 555-6666</p>
+                      {/* <p>+2 (11) 555-6666</p> */}
+                      <p>{t('contact.data.phone1')}</p>
+                      <p>{t('contact.data.phone2')}</p>
                     </div>
                   </div>
                   
@@ -224,13 +226,13 @@ const ContactPage = () => {
                     </div>
                     <div className="info-text">
                       <h5>{t('contact.info.email')}</h5>
-                      <p>jumooh.media@gmail.com</p>
+                      <p>{t('contact.data.email')}</p>
                     </div>
                   </div>
                   
                   <div className="map-container">
                     <iframe
-                      src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=Cairo,EG"
+                      src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=Sharjah,UAE"
                       width="100%"
                       height="200"
                       style={{ border: 0 }}
