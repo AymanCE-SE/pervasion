@@ -40,7 +40,9 @@ if DEBUG:
     ]
 else:
     CORS_ALLOWED_ORIGINS = [
-        "https://pervasionsa.com",
+        "https://jumoohmedia.com",
+        "https://jumooh.media",
+        "84.32.84.32"
     ]
 
 
@@ -215,7 +217,7 @@ CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:5173',
     'http://127.0.0.1:5174',
     'http://localhost:3000',  # Fallback
-    'https://pervasionsa.com',  # Production domain
+    'https://jumoohmedia.com',  # Production domain
 ]
 # Disable all origins for production
 CORS_ALLOW_ALL_ORIGINS = False
