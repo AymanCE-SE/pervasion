@@ -288,13 +288,13 @@ export const createCategory = createAsyncThunk(
 
 const initialState = {
   projects: [],
+  status: 'idle',
+  error: null,
   categories: [],
-  categoriesStatus: 'idle', // 'idle' | 'loading' | 'succeeded' | 'failed'
+  categoriesStatus: 'idle',
   categoriesError: null,
   currentProject: null,
-  status: 'idle', // 'idle' | 'loading' | 'succeeded' | 'failed'
-  error: null,
-  filteredCategory: 'all',
+  filteredCategory: 'all'
 };
 
 export const projectsSlice = createSlice({
@@ -326,20 +326,17 @@ export const projectsSlice = createSlice({
       // Fetch all projects
       .addCase(fetchProjects.pending, (state) => {
         state.status = 'loading';
-        state.projects = [];
       })
       .addCase(fetchProjects.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        // Accept both paginated and non-paginated
-        state.projects = Array.isArray(action.payload.results)
-          ? action.payload.results
-          : Array.isArray(action.payload)
-            ? action.payload
-            : [];
+        // Handle both array and paginated responses
+        state.projects = Array.isArray(action.payload) 
+          ? action.payload 
+          : (action.payload.results || []);
       })
       .addCase(fetchProjects.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.payload || 'Failed to fetch projects';
+        state.error = action.payload?.detail || action.error.message;
       })
       // Fetch project by ID
       .addCase(fetchProjectById.pending, (state) => {

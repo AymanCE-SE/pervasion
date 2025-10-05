@@ -2,7 +2,7 @@ import React, { Suspense, useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectIsAuthenticated, selectUserRole } from './redux/slices/authSlice';
+import { selectIsAuthenticated, selectUserRole, selectUser } from './redux/slices/authSlice';
 import { ErrorBoundary, DefaultErrorFallback } from './components/common/ErrorBoundary';
 import GlobalErrorHandler from './components/common/GlobalErrorHandler';
 import ErrorToast from './components/common/ErrorToast';
@@ -70,12 +70,19 @@ const App = () => {
   // Protected route component for admin
   const AdminProtectedRoute = ({ children }) => {
     const location = useLocation();
+    const isAuthenticated = useSelector(selectIsAuthenticated);
+    const userRole = useSelector(selectUserRole);
+    const user = useSelector(selectUser);
+
     if (!isAuthenticated) {
-      return <Navigate to="/login" replace state={{ from: location }} />;
+      // Change the redirect to /login instead of /admin/login
+      return <Navigate to="/login" state={{ from: location }} replace />;
     }
-    if (userRole !== 'admin') {
+    
+    if (userRole !== 'admin' && !user?.is_staff && !user?.is_superuser) {
       return <Navigate to="/" replace />;
     }
+    
     return children;
   };
 
@@ -100,7 +107,6 @@ const App = () => {
       <GlobalErrorHandler>
         <HelmetProvider>
           <Suspense fallback={<LoadingFallback />}>
-
             <Routes>
                 {/* Public Routes */}
                 <Route path="/" element={<Layout />}>
@@ -113,32 +119,33 @@ const App = () => {
 
                 {/* Auth Routes */}
                 <Route path="/login" element={<UserLoginPage />} />
-                <Route path="/register" element={<RegisterPage />} />
                 <Route path="/signup" element={<RegisterPage />} />
                 <Route path="/verify-email" element={<VerifyEmail />} />
 
                 {/* Admin Routes */}
-                <Route path="/admin" element={
-                  <AdminProtectedRoute>
-                    <AdminLayout />
-                  </AdminProtectedRoute>
-                }>
-                  {/* <Route path="login" element={<AdminLoginPage />} /> */}
-                  <Route
-                    index
+                <Route 
+                  path="/admin" 
+                  element={
+                    <AdminProtectedRoute>
+                      <AdminLayout />
+                    </AdminProtectedRoute>
+                  }
+                >
+                  <Route 
+                    index 
                     element={
                       <AdminProtectedRoute>
                         <Navigate to="/admin/dashboard" replace />
                       </AdminProtectedRoute>
-                    }
+                    } 
                   />
-                  <Route
-                    path="dashboard"
+                  <Route 
+                    path="dashboard" 
                     element={
                       <AdminProtectedRoute>
                         <Dashboard />
                       </AdminProtectedRoute>
-                    }
+                    } 
                   />
                   <Route
                     path="projects"

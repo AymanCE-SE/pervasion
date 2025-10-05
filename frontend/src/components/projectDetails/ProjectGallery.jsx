@@ -13,7 +13,7 @@ const preloadImage = (src) => {
   });
 };
 
-const ProjectGallery = ({ images: initialImages = [], title }) => {
+const ProjectGallery = ({ images: initialImages = [], mainImage, title }) => {
   const [preloadedImages, setPreloadedImages] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isViewerOpen, setIsViewerOpen] = useState(false);
@@ -32,20 +32,26 @@ const ProjectGallery = ({ images: initialImages = [], title }) => {
   // Process and preload images
   useEffect(() => {
     const processImages = async () => {
-      if (!initialImages || initialImages.length === 0) return;
-
       try {
         setIsLoading(true);
+        
+        // Create array with main image first if it exists
+        const allImages = mainImage 
+          ? [{ image: mainImage, isFeatured: true }, ...initialImages]
+          : initialImages;
+
+        if (!allImages || allImages.length === 0) return;
+
         const processed = await Promise.all(
-          initialImages.map(async (img) => {
-            // Handle both object with 'image' property and direct URL strings
+          allImages.map(async (img) => {
             const src = img?.image || img?.url || img;
             try {
               if (typeof src === 'string') {
                 await preloadImage(src);
                 return { 
                   src, 
-                  thumbnail: img.thumbnail || src, 
+                  thumbnail: img.thumbnail || src,
+                  isFeatured: img.isFeatured || false,
                   error: false 
                 };
               }
@@ -55,6 +61,7 @@ const ProjectGallery = ({ images: initialImages = [], title }) => {
               return { 
                 src: '/images/placeholder.jpg', 
                 thumbnail: '/images/placeholder.jpg',
+                isFeatured: false,
                 error: true 
               };
             }
@@ -72,7 +79,7 @@ const ProjectGallery = ({ images: initialImages = [], title }) => {
     };
 
     processImages();
-  }, [initialImages]);
+  }, [initialImages, mainImage]);
 
   const handlePrev = useCallback(() => {
     setCurrentIndex(prev => (prev === 0 ? preloadedImages.length - 1 : prev - 1));
@@ -157,6 +164,11 @@ const ProjectGallery = ({ images: initialImages = [], title }) => {
     setIsLoading(false);
   }, []);
 
+  const handleImageError = (e) => {
+    console.error('Image failed to load:', e.target.src);
+    e.target.src = '/images/placeholder.svg';
+  };
+
   // Add/remove event listeners
   useEffect(() => {
     if (isViewerOpen) {
@@ -230,9 +242,7 @@ const ProjectGallery = ({ images: initialImages = [], title }) => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.3, delay: 0.1 }}
-              onError={(e) => {
-                e.target.src = '/images/placeholder.jpg';
-              }}
+              onError={handleImageError}
             />
             
             <motion.button 
@@ -257,21 +267,21 @@ const ProjectGallery = ({ images: initialImages = [], title }) => {
           className="thumbnails-container"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.4 }}
+          transition={{ delay: 0.1, duration: 0.2 }}
         >
           <div className="thumbnails">
             <AnimatePresence>
               {preloadedImages.map((img, index) => (
                 <motion.div
                   key={index}
-                  className={`thumbnail ${currentIndex === index ? 'active' : ''}`}
+                  className={`thumbnail ${currentIndex === index ? 'active' : ''} ${img.isFeatured ? 'featured' : ''}`}
                   onClick={() => goToImage(index)}
                   aria-label={`View image ${index + 1}`}
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ 
                     opacity: 1, 
                     scale: 1,
-                    borderColor: currentIndex === index ? 'var(--primary)' : 'rgba(0,0,0,0)'
+                    // borderColor: currentIndex === index ? 'var(--primary)' : 'transparent'
                   }}
                   whileHover={{ 
                     y: -5,
@@ -279,13 +289,6 @@ const ProjectGallery = ({ images: initialImages = [], title }) => {
                     transition: { duration: 0.2 }
                   }}
                   whileTap={{ scale: 0.95 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ 
-                    type: 'spring',
-                    stiffness: 400,
-                    damping: 20,
-                    delay: index * 0.05
-                  }}
                 >
                   <motion.img 
                     src={img.thumbnail || img.src} 
@@ -298,6 +301,9 @@ const ProjectGallery = ({ images: initialImages = [], title }) => {
                       e.target.src = '/images/placeholder-thumb.jpg';
                     }}
                   />
+                  {img.isFeatured && (
+                    <div className="featured-badge">Main</div>
+                  )}
                 </motion.div>
               ))}
             </AnimatePresence>

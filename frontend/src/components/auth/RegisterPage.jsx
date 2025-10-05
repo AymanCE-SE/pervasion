@@ -326,11 +326,10 @@ const RegisterPage = () => {
                       
                       <div className="d-grid gap-2 mt-4">
                         <Button 
-                          variant="primary" 
                           type="submit" 
                           size="lg"
                           disabled={status === 'loading'}
-                          className="d-flex align-items-center justify-content-center gap-2"
+                          className="d-flex align-items-center justify-content-center gap-2 auth-btn"
                         >
                           {status === 'loading' ? (
                             <>
@@ -351,7 +350,7 @@ const RegisterPage = () => {
                       </div>
                     </Form>
                     
-                    <div className="text-center mt-4">
+                    <div className="text-center mt-4 auth-link">
                       <p>
                         {t('auth.alreadyHaveAccount')} <Link to="/login" className="auth-link">{t('auth.login')}</Link>
                       </p>

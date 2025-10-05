@@ -6,8 +6,8 @@
   "nav": {
     "home": "Home",
     "projects": "Projects",
-    "about": "About",
-    "contact": "Contact",
+    "about": "About us",
+    "contact": "Contact us",
     "admin": "Admin",
     "dashboard": "Dashboard",
     "login": "Login",
@@ -212,14 +212,19 @@
   },
   "auth": {
     "login": "Login",
+    "register": "Register",
     "signup": "Sign Up",
     "logout": "Logout",
     "username": "Username",
+    "usernamePlaceholder": "Enter Your Username",
     "enterEmail": "Enter your email",
     "email": "Email",
     "name": "Full Name",
+    "namePlaceholder": "Enter your full name",
     "password": "Password",
+    "passwordPlaceholder": "Enter your password",
     "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Re-enter your password",
     "welcomeBack": "Welcome back",
     "createAccount": "Create a new account",
     "alreadyHaveAccount": "Already have an account?",
@@ -239,8 +244,11 @@
     "nameRequired":"name is required",
     "errors": {
       "generic": "An error occurred. Please try again.",
-      "username": "Username error: {{error}}",
-      "password": "Password error: {{error}}",
+      "invalidCredentials": "Invalid email or password. Please check your credentials and try again.",
+      "invalidInput": "Please check your input and try again.",
+      "tooManyAttempts": "Too many login attempts. Please try again later.",
+      "emailNotVerified": "Please verify your email before logging in.",
+      "serverError": "Unable to connect to server. Please try again later.",
       "connection": "Connection error. Please check your internet connection."
     }
   },
@@ -322,14 +330,39 @@
     "retry": "Retry",
     "readMore": "Read More",
     "backToHome": "Back to Home",
-    "back": "Back to Projects"
+    "back": "Back to Projects",
+    "expand": "Expand",
+    "collapse": "Collapse"
   },
   "testimonials": {
     "title": "Testimonials",
     "subtitle": "What our clients say",
     "client": "Client",
     "comment": "Comment",
-    "date": "Date"
+    "date": "Date",
+ "items": [
+    {
+      "id": 1,
+      "name": "Mr. Eisa Shbair",
+      "role": "CEO - Yusur Recruitment Company",
+      "image": "/images/testimonials/eisa.jpg",
+      "text": "Jumouh understands the market and is fast in execution. They created an effective marketing strategy for us, and the results were clear from the start."
+    },
+    {
+      "id": 2,
+      "name": "Mr. hamad Al-Shubaili",
+      "role": "Director - Al-Khawarizmi Educational Complex",
+      "image": "/images/testimonials/hamad.jpg",
+      "text": "They excelled in content and design, and their campaigns intelligently and professionally attracted our target audience."
+    },
+    {
+      "id": 3,
+      "name": "Mr. Rakan Al-Otaibi",
+      "role": "Founder - Nathar Optics",
+      "image": "/images/testimonials/rakan.jpg",
+      "text": "A strong identity, professional content, and effective advertisements. The Jumouh team are true success partners."
+    }
+  ]
   },
   "clients": {
     "satisfied": "satified clients"

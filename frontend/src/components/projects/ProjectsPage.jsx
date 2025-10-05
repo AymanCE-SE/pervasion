@@ -29,14 +29,17 @@ const ProjectsPage = () => {
   const darkMode = useSelector(selectDarkMode);
   const currentLanguage = i18n.language; // Get current language code (e.g., 'en', 'ar')
 
+  // Update the useEffect to always fetch projects and categories on mount
   useEffect(() => {
-    if (status === 'idle') {
-      dispatch(fetchProjects());
-    }
-    if (categoriesStatus === 'idle') {
-      dispatch(fetchCategories());
-    }
-  }, [status, categoriesStatus, dispatch]);
+    // Always fetch data when component mounts
+    dispatch(fetchProjects());
+    dispatch(fetchCategories());
+
+    // Optional: Clean up function to reset status when unmounting
+    return () => {
+      // If you have actions to reset the status, call them here
+    };
+  }, [dispatch]); 
 
   const handleCategoryChange = (category) => {
     dispatch(setFilteredCategory(category));
@@ -84,17 +87,13 @@ const ProjectsPage = () => {
     return baseCategories;
   }, [categories]);
   
-  // Track language changes
-  React.useEffect(() => {
-    // Refresh UI when language changes
-  }, [currentLanguage]);
-  
   // Filter projects by selected category
   const filteredProjects = React.useMemo(() => {
+    if (!Array.isArray(projects)) return [];
+    
     if (!currentCategory || currentCategory === 'all') {
       return projects;
     }
-    // Convert project.category to string for comparison since currentCategory is a string
     return projects.filter(project => String(project.category) === currentCategory);
   }, [projects, currentCategory]);
   

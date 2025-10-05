@@ -11,32 +11,9 @@ const Testimonials = () => {
   const { t } = useTranslation();
   const darkMode = useSelector(selectDarkMode);
 
-  const testimonials = [
-    {
-      id: 1,
-      name: "Sarah Johnson",
-      role: "CEO, TechStart",
-      image: "https://randomuser.me/api/portraits/women/1.jpg",
-      text: "Working with this team has been an absolute pleasure. Their attention to detail and creative solutions have helped us achieve remarkable results.",
-      rating: 5
-    },
-    {
-      id: 2,
-      name: "Michael Chen",
-      role: "Art Director, DesignCo",
-      image: "https://randomuser.me/api/portraits/men/2.jpg",
-      text: "The level of professionalism and creativity is outstanding. They truly understand how to bring ideas to life while maintaining brand consistency.",
-      rating: 5
-    },
-    {
-      id: 3,
-      name: "Emma Davis",
-      role: "Founder, InnovateLab",
-      image: "https://randomuser.me/api/portraits/women/3.jpg",
-      text: "Exceptional work! Their innovative approach and technical expertise have significantly improved our digital presence.",
-      rating: 5
-    }
-  ];
+  // Get testimonials from translations
+  const testimonials = t('testimonials.items', { returnObjects: true });
+
 
   const containerVariants = {
     hidden: { opacity: 0 },

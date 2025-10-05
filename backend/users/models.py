@@ -17,8 +17,8 @@ class UserManager(BaseUserManager):
         email = self.normalize_email(email)
         user = self.model(email=email, username=username, **extra_fields)
         user.set_password(password)
-        user.is_active = False
-        user.email_verified = False
+        user.is_active = extra_fields.get('is_active', False)
+        user.email_verified = extra_fields.get('email_verified', False)
         user.save(using=self._db)
         return user
 
@@ -27,8 +27,14 @@ class UserManager(BaseUserManager):
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('role', 'admin')
         extra_fields.setdefault('is_active', True)
-        extra_fields.setdefault('email_verified', True)
-        return super().create_user(email, username, password, **extra_fields)
+        extra_fields.setdefault('email_verified', True)  # Make sure this is True
+        
+        if not extra_fields.get('is_staff'):
+            raise ValueError('Superuser must have is_staff=True.')
+        if not extra_fields.get('is_superuser'):
+            raise ValueError('Superuser must have is_superuser=True.')
+            
+        return self.create_user(email, username, password, **extra_fields)
 
 class User(AbstractUser):
     ROLE_CHOICES = (

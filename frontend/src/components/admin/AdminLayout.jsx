@@ -20,9 +20,12 @@ const AdminLayout = () => {
   // Check if user is authenticated
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate('/admin/login');
+      navigate('/login', { 
+        replace: true,
+        state: { from: location.pathname }
+      });
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, navigate, location]);
   
   // Get current active path
   const isActive = (path) => {

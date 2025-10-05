@@ -265,9 +265,9 @@ const SignupPage = () => {
                         whileTap={{ scale: 0.98 }}
                       >
                         <Button 
-                          variant="primary" 
                           type="submit" 
-                          className="auth-btn w-100"
+                          variant='none'
+                          className="auth-btn w-100 "
                           disabled={status === 'loading'}
                         >
                           {status === 'loading' ? (

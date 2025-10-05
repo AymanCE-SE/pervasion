@@ -42,26 +42,61 @@ const LoginPage = () => {
   };
   
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(login(formData));
+    
+    // Clear any previous errors
+    dispatch(clearError());
+
+    try {
+      const result = await dispatch(login(formData)).unwrap();
+      // Only navigate if login was successful
+      if (result && result.user) {
+        const isAdmin = result.user.role === 'admin' || result.user.is_staff || result.user.is_superuser;
+        const redirectPath = isAdmin ? '/admin/dashboard' : '/';
+        navigate(redirectPath, { replace: true });
+      }
+    } catch (err) {
+      // Just log the error, don't redirect
+      console.error('Login failed:', err);
+    }
   };
   
   // Redirect if authenticated and clear errors on mount
   useEffect(() => {
-    if (isAuthenticated) {
-      // If user is admin, redirect to dashboard, otherwise to home
-      const redirectPath = user?.role === 'admin' || user?.is_staff || user?.is_superuser 
-        ? '/admin/dashboard' 
-        : '/';
-      navigate(redirectPath);
+    if (isAuthenticated && user) {
+      const isAdmin = user.role === 'admin' || user.is_staff || user.is_superuser;
+      const redirectPath = isAdmin ? '/admin/dashboard' : '/';
+      navigate(redirectPath, { replace: true });
     }
-    // Clear errors on mount
-    if (error) {
-      dispatch(clearError());
+    // Remove error clearing from here since we handle it in handleSubmit
+  }, [isAuthenticated, user, navigate]);
+
+  const getErrorMessage = (error) => {
+    if (!error) return '';
+
+    // Handle email verification error
+    if (error.email_unverified) {
+      return t('auth.errors.emailNotVerified');
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthenticated, user, navigate, error, dispatch]);
+
+    // Handle specific error messages
+    if (error.detail?.includes('No active account')) {
+      return t('auth.errors.invalidCredentials');
+    }
+
+    // Handle other specific cases
+    switch (error.status) {
+      case 401:
+        return t('auth.errors.invalidCredentials');
+      case 400:
+        return t('auth.errors.invalidInput');
+      case 429:
+        return t('auth.errors.tooManyAttempts');
+      default:
+        return error.detail || t('auth.errors.generic');
+    }
+  };
 
   return (
     <>
@@ -103,19 +138,8 @@ const LoginPage = () => {
                         <Alert variant="danger" className="mb-4">
                           <div className="error-details">
                             <div className="error-message">
-                              {typeof error === 'string'
-                                ? error
-                                : error?.detail ||
-                                  error?.message ||
-                                  (error?.non_field_errors ? error.non_field_errors.join(', ') : '') ||
-                                  (Array.isArray(error) ? error.join(', ') : Object.entries(error).map(([k, v]) => `${k}: ${Array.isArray(v) ? v.join(', ') : v}`).join('; ')) ||
-                                  t('auth.loginError')}
+                              {getErrorMessage(error)}
                             </div>
-                            {process.env.NODE_ENV === 'development' && error?.data && (
-                              <pre className="mt-2 mb-0 text-muted small">
-                                {JSON.stringify(error.data, null, 2)}
-                              </pre>
-                            )}
                           </div>
                         </Alert>
                       </motion.div>

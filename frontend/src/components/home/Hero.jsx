@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { useSelector } from 'react-redux';
 import { selectDarkMode } from '../../redux/slices/themeSlice';
 import { BsArrowRight } from 'react-icons/bs';
-import heroImg from "../../assets/Horses_in_Moonlight.png";
+import heroImg from "/hero.jpg";
 import './Hero.css';
 
 const Hero = () => {

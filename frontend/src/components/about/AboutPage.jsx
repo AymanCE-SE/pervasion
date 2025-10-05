@@ -158,7 +158,7 @@ const AboutPage = () => {
             <Row className="services-section">
               <Col lg={12}>
                 <motion.div variants={itemVariants}>
-                  <h3 className="section-subtitle">{t('home.services.title', 'Our Services')}</h3>
+                  <h3 className="section-title">{t('home.services.title', 'Our Services')}</h3>
                 </motion.div>
                 <Row className='mt-3'>
                   {services.map((service, idx) => (
@@ -230,38 +230,11 @@ const AboutPage = () => {
               </Col>
             </Row>
 
-            {/* <Row className="skills-section ">
-              <Col lg={12}>
-                <motion.div variants={itemVariants}>
-                  <h3 className="section-subtitle">{t('about.skills.title')}</h3>
-                </motion.div>
-                
-                <Row className="mt-3 ">
-                  {skills.map((skill, index) => (
-                    <Col md={6} key={index} className="mb-4">
-                      <motion.div 
-                        variants={itemVariants}
-                        className="skill-item"
-                      >
-                        <div className="skill-info">
-                          <h5>{t(`about.skills.${skill.name}`)}</h5>
-                          <span>{skill.level}%</span>
-                        </div>
-                        <ProgressBar 
-                          now={skill.level} 
-                          className={`skill-progress ${darkMode ? 'dark-mode' : ''}`}
-                        />
-                      </motion.div>
-                    </Col>
-                  ))}
-                </Row>
-              </Col>
-            </Row> */}
 
             <Row className="stats-section m-1 py-5">
               <Col lg={12}>
                 <motion.div variants={itemVariants}>
-                  <h3 className="section-subtitle">{t('about.experience.title')}</h3>
+                  <h3 className="section-title">{t('about.experience.title')}</h3>
                 </motion.div>
                 
                 <Row className="text-center mt-3">

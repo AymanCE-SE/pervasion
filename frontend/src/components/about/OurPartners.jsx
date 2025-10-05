@@ -33,7 +33,7 @@ const OurPartners = () => {
           transition={{ duration: 0.6 }}
           className="section-header text-center"
         >
-          <h3 className="section-subtitle gradient-text">{t('about.partners.title', 'Our Partners')}</h3>
+          <h3 className="section-title gradient-text">{t('about.partners.title', 'Our Partners')}</h3>
           <p className="section-desc mt-2">{t('about.partners.desc', 'We are proud to collaborate with leading brands and organizations.')}</p>
         </motion.div>
         <div className="partners-grid">
@@ -50,11 +50,11 @@ const OurPartners = () => {
                 transition: { duration: 0.3 }
               }}
             >
-              <div className="partner-img-glow">
+              <div className="">
                 <img
                   src={partner.img}
                   alt={partner.name}
-                  className="partner-img-modern"
+                  className="partner-img-glow"
                   loading="lazy"
                 />
               </div>

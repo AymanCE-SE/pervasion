@@ -165,13 +165,19 @@ def verify_email(request):
         }, status=status.HTTP_400_BAD_REQUEST)
     
     try:
-        decoded_token = AccessToken(token)
-        user_id = decoded_token['user_id']
+        # Remove token validation from request context
+        decoded_token = AccessToken(token, verify=True)
+        user_id = decoded_token.get('user_id')
+        
+        if not user_id:
+            raise ValidationError('Invalid token: no user_id claim')
+            
         user = User.objects.get(id=user_id)
         
         if user.email_verified:
             return Response({
-                'detail': 'Email is already verified'
+                'detail': 'Email is already verified',
+                'status': 'success'
             })
         
         user.email_verified = True
@@ -179,14 +185,17 @@ def verify_email(request):
         user.save()
         
         return Response({
-            'detail': 'Email verified successfully'
+            'detail': 'Email verified successfully',
+            'status': 'success'
         })
         
     except User.DoesNotExist:
         return Response({
-            'detail': 'User not found'
+            'detail': 'User not found',
+            'status': 'error'
         }, status=status.HTTP_404_NOT_FOUND)
-    except Exception:
+    except Exception as e:
         return Response({
-            'detail': 'Invalid or expired verification token'
+            'detail': f'Invalid or expired verification token: {str(e)}',
+            'status': 'error'
         }, status=status.HTTP_400_BAD_REQUEST)

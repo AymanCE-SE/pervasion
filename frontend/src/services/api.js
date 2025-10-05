@@ -56,13 +56,13 @@ api.interceptors.response.use(
           // Refresh failed, force logout
           localStorage.removeItem('token');
           localStorage.removeItem('refreshToken');
-          window.location.href = '/admin/login';
+          window.location.href = '/login';
         }
       } else {
         // No refresh token, force logout
         localStorage.removeItem('token');
         localStorage.removeItem('refreshToken');
-        window.location.href = '/admin/login';
+        window.location.href = '/login';
       }
     }
     return Promise.reject(error);
@@ -96,12 +96,13 @@ const apiService = {
           password: credentials.password
         });
         
-        if (!response.data) {
-          throw new Error('No data received from server');
+        if (response.data?.token) {
+          localStorage.setItem('token', response.data.token);
         }
         
         return response;
       } catch (error) {
+        console.error('Login error:', error);
         throw error;
       }
     },
@@ -122,13 +123,24 @@ const apiService = {
       const response = await api.get('/users/me/');
       return response;
     },
-    verifyEmail: (token) => api.get(`/auth/verify-email/?token=${token}`)
-  },
+    verifyEmail: async (token) => {
+      try {
+        const response = await api.get(`/auth/verify-email/?token=${token}`, {
+          headers: {
+            'X-Requested-From': 'verify-email'
+          }
+        });
+        return response;
+      } catch (error) {
+        throw error;
+      }
+    },
   
   // Contact
   contact: {
     send: (data) => api.post('/contacts/', data).then(res => res.data)
   }
+}
 };
 
 // Export both the raw API instance and the service methods

@@ -156,10 +156,11 @@ const ProjectDetails = () => {
             
             <Row className="project-content">
               <Col lg={8} className="mb-4 mb-lg-0">
-                <ProjectGallery 
-                  images={projectData.gallery} 
-                  title={projectData.title} 
-                />
+              <ProjectGallery 
+                images={project.images} 
+                mainImage={project.image}
+                title={currentLanguage === 'en' ? project.title : project.title_ar} 
+              />
                 
                 <ProjectDescription 
                   description={projectData.description}

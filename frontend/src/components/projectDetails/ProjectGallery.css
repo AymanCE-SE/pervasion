@@ -267,6 +267,30 @@ button:active {
   pointer-events: none;
 }
 
+/* Add styles for featured thumbnail */
+.thumbnail.featured {
+  position: relative;
+  border: 2px solid var(--primary);
+}
+
+.featured-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: var(--primary);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  z-index: 2;
+}
+
+[data-theme='dark'] .featured-badge {
+  background: var(--primary-dark);
+}
+
 /* Better touch feedback for mobile */
 @media (max-width: 768px) {
   .thumbnail {
