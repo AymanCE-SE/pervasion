@@ -6,10 +6,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { selectIsAuthenticated, logout } from '../../redux/slices/authSlice';
 import { selectDarkMode } from '../../redux/slices/themeSlice';
 import { FaTachometerAlt, FaImages, FaUsers, FaSignOutAlt, FaHome, FaTags, FaEnvelope } from 'react-icons/fa';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './AdminLayout.css';
 
 const AdminLayout = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   
@@ -44,6 +46,17 @@ const AdminLayout = () => {
 
   return (
     <div className={`admin-layout ${darkMode ? 'dark-mode' : ''}`}>
+      <ToastContainer 
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={i18n.language === 'ar'}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <Container fluid>
         <Row>
           {/* Sidebar */}
@@ -77,6 +90,15 @@ const AdminLayout = () => {
               >
                 <FaImages className="nav-icon" />
                 <span>{t('admin.projects')}</span>
+              </Nav.Link>
+              
+              <Nav.Link 
+                as={Link} 
+                to="/admin/categories" 
+                className={location.pathname.includes('/admin/categories') ? 'active' : ''}
+              >
+                <FaTags className="nav-icon" />
+                <span>{t('admin.categories') || 'Categories'}</span>
               </Nav.Link>
               
 

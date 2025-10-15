@@ -125,8 +125,10 @@ USE_TZ = True
 
 # Static files
 STATIC_URL = "/static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_ROOT = BASE_DIR / "static"
+STATICFILES_DIRS = [
+    
+]
 
 # Use whitenoise storage in production for compressed + manifest hashed files
 if not DEBUG:
@@ -192,7 +194,7 @@ SIMPLE_JWT = {
 # )
 # CORS_ALLOW_ALL_ORIGINS = env_bool("CORS_ALLOW_ALL_ORIGINS", False)
 if DEBUG:
-    CORS_ALLOW_ALL_ORIGINS = True   # مؤقتاً بس عشان تختبر بسرعة
+    CORS_ALLOW_ALL_ORIGINS = True   
 else:
     CORS_ALLOW_ALL_ORIGINS = False
     CORS_ALLOWED_ORIGINS = [

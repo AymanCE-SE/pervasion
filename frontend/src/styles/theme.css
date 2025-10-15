@@ -8,6 +8,8 @@
   --primary-dark: #1c2630;   /* Deep Blue */
   --secondary: #A28F7E;      /* Taupe */
   --accent: #4FB0A8;         /* Accent */
+  --success: #28a745;        /* Success Green */
+  --error: #dc3545;          /* Error Red */
   
   /* Light Theme */
   --bg-primary-light: #fff;
@@ -31,6 +33,7 @@
   --border-dark: rgba(208, 198, 185, 0.2);      /* Sandstone border */
   --shadow-dark: rgba(79, 176, 168, 0.2);       /* Accent shadow */
   --overlay-dark: rgba(79, 176, 168, 0.12);     /* Accent overlay */
+  --text-dark: #222;
   
   /* Gradients */
   --primary-gradient: linear-gradient(45deg, var(--main), var(--main-light));
@@ -296,15 +299,18 @@ button {
 
 .dark-mode .card {
   background-color: var(--bg-secondary-dark);
+  color: var(--text-primary-dark);
 }
 
 .card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 25px var(--shadow-light);
+  
 }
 
 .dark-mode .card:hover {
   box-shadow: 0 10px 25px var(--shadow-dark);
+  color: var(--text-primary-dark);
 }
 
 /* Form Elements */
@@ -338,6 +344,25 @@ textarea:focus {
 .dark-mode select:focus, 
 .dark-mode textarea:focus {
   box-shadow: 0 0 0 3px var(--overlay-dark);
+}
+
+/* Toast Customization */
+.Toastify__toast {
+  border-radius: var(--radius-lg);
+  font-family: var(--font-family);
+}
+
+.Toastify__toast--success {
+  background: var(--success);
+}
+
+.Toastify__toast--error {
+  background: var(--error);
+}
+
+.dark-mode .Toastify__toast {
+  background: var(--bg-secondary-dark);
+  color: var(--text-dark);
 }
 
 [data-theme="dark"] {

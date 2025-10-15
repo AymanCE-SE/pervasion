@@ -29,6 +29,26 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+    @classmethod
+    def get_default_category(cls):
+        category, created = cls.objects.get_or_create(
+            name='Uncategorized',
+            name_ar='غير مصنف'
+        )
+        return category
+
+    def delete(self, *args, **kwargs):
+        if self.projects.exists():
+            default_category = self.get_default_category()
+            if self.id != default_category.id:
+                self.projects.update(category=default_category)
+            else:
+                raise models.ProtectedError(
+                    _("Cannot delete the default category"),
+                    self.projects.all()
+                )
+        super().delete(*args, **kwargs)
+
 class Project(models.Model):
     title = models.CharField(_('title'), max_length=200)
     title_ar = models.CharField(_('title in Arabic'), max_length=200)
@@ -36,7 +56,9 @@ class Project(models.Model):
     description_ar = models.TextField(_('description in Arabic'))
     category = models.ForeignKey(
         Category, 
-        on_delete=models.CASCADE, 
+        on_delete=models.SET_NULL, 
+        null=True,
+        blank=True,
         related_name='projects',
         verbose_name=_('category')
     )
@@ -54,6 +76,14 @@ class Project(models.Model):
     
     def __str__(self):
         return self.title
+
+    @property
+    def category_name(self):
+        return self.category.name if self.category else _('Uncategorized')
+    
+    @property
+    def category_name_ar(self):
+        return self.category.name_ar if self.category else _('غير مصنف')
 
     def save(self, *args, **kwargs):
         is_new = self.pk is None
@@ -90,7 +120,7 @@ class ProjectImage(models.Model):
     order = models.PositiveSmallIntegerField(_('order'), default=0)
     
     class Meta:
-        verbose_name = _('project image')
+        verbose_name = _('project image') 
         verbose_name_plural = _('project images')
         ordering = ['order']
     

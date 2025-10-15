@@ -3,8 +3,9 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 import logging
+import json
 
-from .models import Project, Category
+from .models import Project, Category, ProjectImage
 from .serializers import ProjectSerializer, CategorySerializer
 from users.permissions import IsAdminOrStaff
 
@@ -42,13 +43,38 @@ class ProjectViewSet(viewsets.ModelViewSet):
                 instance.save()  # This will trigger the path update
                 # Re-serialize to get updated paths
                 response.data = self.get_serializer(instance).data
-            return response
+            return response 
         except Exception as e:
             logger.error(f"Error creating project: {str(e)}")
             return Response(
                 {"detail": "Error creating project", "error": str(e)},
                 status=status.HTTP_400_BAD_REQUEST
             )
+
+    def update(self, request, *args, **kwargs):
+        """
+        Handle deletion of existing gallery images when frontend sends
+        'deleted_image_ids' (JSON array string or array).
+        """
+        # parse deleted ids early so they are removed before serializer.update adds new images
+        deleted_raw = request.data.get('deleted_image_ids', None)
+        if deleted_raw:
+            try:
+                if isinstance(deleted_raw, str):
+                    deleted_ids = json.loads(deleted_raw)
+                else:
+                    deleted_ids = list(deleted_raw)
+                # Ensure ints
+                deleted_ids = [int(i) for i in deleted_ids]
+                # Delete only images belonging to this project
+                project_pk = kwargs.get('pk') or request.data.get('id')
+                ProjectImage.objects.filter(id__in=deleted_ids, project_id=project_pk).delete()
+            except Exception as e:
+                # log and continue - don't abort update for parsing error
+                logger.exception("Failed to parse/delete deleted_image_ids: %s", e)
+
+        # proceed with normal update flow (this will add any new additional_images)
+        return super().update(request, *args, **kwargs)
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all().order_by('name')  # Explicitly set ordering

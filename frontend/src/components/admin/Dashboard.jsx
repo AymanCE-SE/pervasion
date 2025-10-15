@@ -4,7 +4,14 @@ import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchProjects, selectAllProjects } from '../../redux/slices/projectsSlice';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { 
+  fetchProjects, 
+  selectAllProjects, 
+  selectProjectStatus, 
+  resetFormState 
+} from '../../redux/slices/projectsSlice';
 import { fetchUsers, selectAllUsers } from '../../redux/slices/usersSlice';
 import { fetchContacts, selectAllContacts } from '../../redux/slices/contactSlice';
 import { selectUser } from '../../redux/slices/authSlice';
@@ -16,6 +23,7 @@ import { Link } from 'react-router-dom';
 const Dashboard = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const status = useSelector(selectProjectStatus);
   
   const projects = useSelector(selectAllProjects);
   const users = useSelector(selectAllUsers);
@@ -29,6 +37,14 @@ const Dashboard = () => {
     dispatch(fetchUsers());
     dispatch(fetchContacts());
   }, [dispatch]);
+  
+  // Show success toast/notification on project status change
+  // useEffect(() => {
+  //   if (status === 'succeeded') {
+  //     toast.success('Operation completed successfully');
+  //     dispatch(resetFormState());
+  //   }
+  // }, [status, dispatch]);
   
   // Calculate dashboard stats
   const totalProjects = projects.length;
@@ -72,7 +88,18 @@ const Dashboard = () => {
       <Helmet>
         <title>{t('app.title')} - {t('admin.dashboard')}</title>
       </Helmet>
-
+      <ToastContainer 
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={i18n.language === 'ar'}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
+      
       <div className="dashboard-page">
         <div className="page-header">
           <h1>{t('admin.dashboard')}</h1>
@@ -161,7 +188,7 @@ const Dashboard = () => {
                 <h5 className="mb-0">{t('admin.recentProjects')}</h5>
                 <Link 
                   to="/admin/projects" 
-                  className="btn btn-sm btn-primary"
+                  className="view-all-btn"
                 >
                   {t('admin.viewAll')}
                 </Link>

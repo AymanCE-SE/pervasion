@@ -1,0 +1,129 @@
+/* CategoriesList page styles - matches admin design system */
+.admin-categories {
+  background: var(--bg-secondary-light);
+  color: var(--text-primary-light);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: var(--spacing-xl);
+  margin-top: var(--spacing-xl);
+  transition: background var(--transition-normal), color var(--transition-normal);
+}
+.dark-mode .admin-categories {
+  background: var(--bg-secondary-dark);
+  color: var(--text-primary-dark);
+  box-shadow: var(--shadow-dark);
+}
+
+.admin-categories .page-header {
+  margin-bottom: var(--spacing-lg);
+}
+.admin-categories h2 {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--main);
+}
+.dark-mode .admin-categories h2 {
+  color: var(--accent);
+}
+.admin-categories .text-muted {
+  color: var(--text-secondary-light) !important;
+}
+.dark-mode .admin-categories .text-muted {
+  color: var(--text-secondary-dark) !important;
+}
+
+.admin-categories .btn-primary {
+  background: var(--main-gradient);
+  border: none;
+  color: #fff;
+  font-weight: 500;
+  border-radius: var(--radius-full);
+  transition: background var(--transition-fast);
+}
+.admin-categories .btn-primary:hover {
+  background: var(--main-dark);
+  color: #fff;
+}
+
+.admin-categories .table {
+  background: var(--bg-primary-light);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.dark-mode .admin-categories .table {
+  background: var(--bg-secondary-dark);
+  color: var(--text-primary-dark);
+}
+.admin-categories th {
+  background: var(--main-gradient);
+  color: #fff;
+  font-weight: 600;
+  border: none;
+}
+.dark-mode .admin-categories th {
+  background: var(--main-dark-gradient);
+  color: var(--accent);
+}
+.admin-categories td {
+  vertical-align: middle;
+  border: none;
+}
+
+.admin-categories .btn-outline-secondary {
+  border-color: var(--main);
+  color: var(--main);
+  border-radius: var(--radius-full);
+}
+.admin-categories .btn-outline-secondary:hover {
+  background: var(--main);
+  color: #fff;
+}
+.dark-mode .admin-categories .btn-outline-secondary {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.dark-mode .admin-categories .btn-outline-secondary:hover {
+  background: var(--accent);
+  color: var(--main-dark);
+}
+
+.admin-categories .btn-outline-danger {
+  border-radius: var(--radius-full);
+}
+
+.admin-categories .modal-content {
+  border-radius: var(--radius-lg);
+  background: var(--bg-primary-light);
+  color: var(--text-primary-light);
+  box-shadow: var(--shadow-md);
+}
+.dark-mode .admin-categories .modal-content {
+  background: var(--bg-secondary-dark);
+  color: var(--text-primary-dark);
+  box-shadow: var(--shadow-dark);
+}
+
+.admin-categories .form-label {
+  font-weight: 500;
+  color: var(--main);
+}
+.dark-mode .admin-categories .form-label {
+  color: var(--accent);
+}
+
+@media (max-width: 900px) {
+  .admin-categories {
+    padding: var(--spacing-md);
+    margin-top: var(--spacing-md);
+  }
+}
+@media (max-width: 600px) {
+  .admin-categories {
+    padding: var(--spacing-sm);
+    margin-top: var(--spacing-sm);
+  }
+  .admin-categories h2 {
+    font-size: var(--text-lg);
+  }
+}

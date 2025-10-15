@@ -22,6 +22,7 @@ import {
 import { selectDarkMode } from '../../redux/slices/themeSlice';
 import { FaSave, FaArrowLeft } from 'react-icons/fa';
 import './ProjectForm.css';
+import { toast } from 'react-toastify';
 
 const ProjectForm = () => {
   const { id } = useParams();
@@ -53,9 +54,11 @@ const ProjectForm = () => {
   // File state
   const [mainImageFile, setMainImageFile] = useState(null);
   const [additionalImageFiles, setAdditionalImageFiles] = useState([]);
-  const [imagePreview, setImagePreview] = useState('');
-  const [additionalImagePreviews, setAdditionalImagePreviews] = useState([]);
-  
+  const [additionalImagePreviews, setAdditionalImagePreviews] = useState([]); // new files previews (URLs)
+  const [existingImages, setExistingImages] = useState([]); // [{ id, url }]
+  const [deletedExistingImageIds, setDeletedExistingImageIds] = useState([]);
+  const [imagePreview, setImagePreview] = useState(null); 
+
   // Form validation state
   const [validated, setValidated] = useState(false);
   // Field-specific validation errors from backend
@@ -101,10 +104,16 @@ const ProjectForm = () => {
         setImagePreview(project.image);
       }
       
-      // Set additional image previews
+      // Existing gallery images: map to {id, url}
       if (project.images && project.images.length > 0) {
-        setAdditionalImagePreviews(project.images);
+        setExistingImages(project.images.map(img => ({ id: img.id, url: img.image })));
+      } else {
+        setExistingImages([]);
       }
+
+      // new-file previews should be empty initially in edit mode
+      setAdditionalImagePreviews([]);
+      setAdditionalImageFiles([]);
     }
   }, [isEditMode, project]);
   
@@ -121,35 +130,11 @@ const ProjectForm = () => {
   const handleMainImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      console.log('Selected main image file:', {
-        name: file.name,
-        type: file.type,
-        size: file.size
-      });
-      
-      // Clear any previous image validation errors
-      setFieldErrors(prev => ({...prev, image: null}));
-      
-      // Validate image file type
-      const validImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-      if (!validImageTypes.includes(file.type)) {
-        setFieldErrors(prev => ({
-          ...prev, 
-          image: 'Invalid file type. Please upload a JPEG, PNG, GIF, or WebP image.'
-        }));
-        return;
+      // revoke previous object URL if it was created
+      if (imagePreview && typeof imagePreview === 'string' && imagePreview.startsWith('blob:')) {
+        URL.revokeObjectURL(imagePreview);
       }
-      
-      // Validate image file size (max 5MB)
-      const maxSize = 5 * 1024 * 1024; // 5MB in bytes
-      if (file.size > maxSize) {
-        setFieldErrors(prev => ({
-          ...prev, 
-          image: 'Image file is too large. Maximum size is 5MB.'
-        }));
-        return;
-      }
-      
+
       // Store the file object itself
       setMainImageFile(file);
       
@@ -159,13 +144,34 @@ const ProjectForm = () => {
     }
   };
   
-  // Handle additional images file upload
+  // Remove a new additional image (file selected in this session)
+  const removeAdditionalImage = (index) => {
+    const newFiles = [...additionalImageFiles];
+    newFiles.splice(index, 1);
+    setAdditionalImageFiles(newFiles);
+
+    const newPreviews = [...additionalImagePreviews];
+    // revoke object URL if applicable
+    URL.revokeObjectURL(newPreviews[index]);
+    newPreviews.splice(index, 1);
+    setAdditionalImagePreviews(newPreviews);
+  };
+
+  // Remove an existing image (already saved on server)
+  const removeExistingImage = (id) => {
+    if (!id) return;
+    // mark for deletion
+    setDeletedExistingImageIds(prev => [...prev, id]);
+    // remove from existingImages state to update UI
+    setExistingImages(prev => prev.filter(img => img.id !== id));
+  };
+
+  // Handle additional images file upload (new files)
   const handleAdditionalImagesChange = (e) => {
-    // Reset the input value to ensure onChange fires even if same files are selected again
     const inputElement = e.target;
     const files = Array.from(inputElement.files);
     inputElement.value = null;
-    
+
     if (files.length > 0) {
       console.log(`Selected ${files.length} additional image files:`, 
         files.map(f => ({ name: f.name, type: f.type, size: f.size })));
@@ -198,32 +204,18 @@ const ProjectForm = () => {
       
       // All files are valid, proceed
       setAdditionalImageFiles(prevFiles => [...prevFiles, ...files]);
-      
-      // Create preview URLs
+
+      // Create preview URLs for new files
       const previewUrls = files.map(file => URL.createObjectURL(file));
       setAdditionalImagePreviews(prevPreviews => [...prevPreviews, ...previewUrls]);
     }
   };
   
-  // Remove an additional image
-  const removeAdditionalImage = (index) => {
-    const newFiles = [...additionalImageFiles];
-    newFiles.splice(index, 1);
-    setAdditionalImageFiles(newFiles);
-    
-    const newPreviews = [...additionalImagePreviews];
-    // Revoke the URL to prevent memory leaks
-    URL.revokeObjectURL(newPreviews[index]);
-    newPreviews.splice(index, 1);
-    setAdditionalImagePreviews(newPreviews);
-  };
-  
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.currentTarget;
     
-    // Form validation
     if (form.checkValidity() === false) {
       e.stopPropagation();
       setValidated(true);
@@ -233,114 +225,79 @@ const ProjectForm = () => {
     setValidated(true);
     setFieldErrors({});
     
-    // Create FormData object for file uploads
     const formDataObj = new FormData();
     
-    // Add basic form fields
-    formDataObj.append('title', formData.title);
-    formDataObj.append('title_ar', formData.title_ar);
-    formDataObj.append('description', formData.description);
-    formDataObj.append('description_ar', formData.description_ar);
-    formDataObj.append('category', String(formData.category)); // should be the ID
-    formDataObj.append('client', formData.client);
-    formDataObj.append('date', formData.date);
-    formDataObj.append('featured', formData.featured ? 'true' : 'false');
-    
-    // Skip image validation in edit mode if we already have an image preview
-    // and no new file was selected
-    const needsMainImage = !isEditMode || (!imagePreview && !mainImageFile);
-    
-    // Only validate main image if we're in create mode or if there's no existing image
-    if (needsMainImage && !mainImageFile) {
-      console.log('Main image validation failed: No image provided and one is required');
+    // Add basic form fields first
+    Object.keys(formData).forEach(key => {
+      // Exclude image fields from basic data
+      if (key !== 'image' && key !== 'additional_images') {
+        formDataObj.append(key, formData[key]);
+      }
+    });
+
+    // Handle main image - ensure it's a File object
+    if (mainImageFile instanceof File) {
+      console.log('Adding main image:', {
+        name: mainImageFile.name,
+        type: mainImageFile.type,
+        size: mainImageFile.size
+      });
+      formDataObj.append('image', mainImageFile, mainImageFile.name);
+    } else if (!isEditMode) {
       setFieldErrors(prev => ({
         ...prev,
         image: 'Main image is required'
       }));
       return;
     }
-    
-    // Add main image if we have one
-    if (mainImageFile instanceof File) {
-      console.log('Adding main image to FormData:', {
-        name: mainImageFile.name,
-        type: mainImageFile.type,
-        size: mainImageFile.size
-      });
-      formDataObj.append('image', mainImageFile);
-    }
-    
-    // Add additional images - simplified approach
-    if (additionalImageFiles && additionalImageFiles.length > 0) {
-      console.log(`Adding ${additionalImageFiles.length} additional images to FormData`);
-      
-      // Use a simpler loop for appending files
-      for (let i = 0; i < additionalImageFiles.length; i++) {
-        const file = additionalImageFiles[i];
+
+    // Handle additional images - ensure they're File objects
+    if (additionalImageFiles?.length > 0) {
+      console.log(`Adding ${additionalImageFiles.length} additional images`);
+      additionalImageFiles.forEach((file, index) => {
         if (file instanceof File) {
-          console.log(`Additional image ${i}:`, {
+          console.log(`Additional image ${index}:`, {
             name: file.name,
             type: file.type,
             size: file.size
           });
-          // Just append the file with no extra parameters
-          formDataObj.append('additional_images', file);
+          formDataObj.append('additional_images', file, file.name);
         }
-      }
+      });
     }
-    
-    // Log FormData for debugging
-    console.log('Final FormData contents:');
-    for (let [key, value] of formDataObj.entries()) {
-      if (value instanceof File) {
-        console.log(`${key}: File (${value.name}, ${value.type}, ${value.size} bytes)`);
+
+    // Handle deleted images in edit mode
+    if (isEditMode && deletedExistingImageIds.length > 0) {
+      formDataObj.append('deleted_image_ids', JSON.stringify(deletedExistingImageIds));
+    }
+
+    // Log final FormData for debugging
+    for (let pair of formDataObj.entries()) {
+      const value = pair[1] instanceof File 
+        ? `File: ${pair[1].name} (${pair[1].type}, ${pair[1].size} bytes)`
+        : pair[1];
+      console.log(`${pair[0]}: ${value}`);
+    }
+
+    // Submit form with proper content type
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    };
+
+    try {
+      if (isEditMode) {
+        await dispatch(updateProject({ id, projectData: formDataObj })).unwrap();
+        toast.success(t('admin.notifications.projectUpdateSuccess'));
       } else {
-        console.log(`${key}: ${value}`);
+        await dispatch(createProject(formDataObj)).unwrap();
+        toast.success(t('admin.notifications.projectCreateSuccess'));
       }
-    }
-    
-    // Special handling for empty file inputs in edit mode
-    // In edit mode, if we don't add any new files, we shouldn't include them in the FormData
-    // This prevents 400 errors from Django when empty files are submitted
-    
-    console.log('Form submission in', isEditMode ? 'EDIT' : 'CREATE', 'mode');
-    
-    // Handle form submission with better error handling
-    if (isEditMode) {
-      // Log what's being sent for update
-      console.log('Sending update request for project ID:', id);
-      
-      dispatch(updateProject({ id, projectData: formDataObj }))
-        .unwrap()
-        .then(() => {
-          console.log('Project updated successfully');
-          navigate('/admin/projects');
-        })
-        .catch(error => {
-          console.error('Project update error:', error);
-          
-          // Check if the error is a validation error (object with field names as keys)
-          if (error && typeof error === 'object' && !Array.isArray(error)) {
-            // Format and display validation errors
-            setFieldErrors(error);
-          }
-        });
-    } else {
-      // Create new project
-      dispatch(createProject(formDataObj))
-        .unwrap()
-        .then(() => {
-          console.log('Project created successfully');
-          navigate('/admin/projects');
-        })
-        .catch(error => {
-          console.error('Project creation error:', error);
-          
-          // Check if the error is a validation error (object with field names as keys)
-          if (error && typeof error === 'object' && !Array.isArray(error)) {
-            setFieldErrors(error);
-          }
-        });
+      navigate('/admin/projects');
+    } catch (error) {
+      toast.error(t(`admin.notifications.${isEditMode ? 'updateError' : 'createError'}`));
+      setFieldErrors(error);
     }
   };
   
@@ -383,6 +340,26 @@ const ProjectForm = () => {
       setCreatingCategory(false);
     }
   };
+
+  // Cleanup object URLs on unmount to avoid memory leaks
+  useEffect(() => {
+    return () => {
+      try {
+        // revoke any created blob: URLs for additional previews
+        additionalImagePreviews.forEach(url => {
+          if (typeof url === 'string' && url.startsWith('blob:')) {
+            URL.revokeObjectURL(url);
+          }
+        });
+        // revoke main image preview if it is a blob URL
+        if (imagePreview && typeof imagePreview === 'string' && imagePreview.startsWith('blob:')) {
+          URL.revokeObjectURL(imagePreview);
+        }
+      } catch (err) {
+        // noop
+      }
+    };
+  }, [additionalImagePreviews, imagePreview]);
 
   return (
     <>
@@ -544,13 +521,13 @@ const ProjectForm = () => {
                       onChange={handleCategoryChange}
                       required
                     >
-                      <option value="">Select a category</option>
+                      <option value="">{t('admin.projectForm.selectCategory')}</option>
                       {categories.map((cat) => (
                         <option key={cat.id} value={cat.id}>
                           {cat.name}
                         </option>
                       ))}
-                      <option value="__new__">+ Create new category</option>
+                      <option value="__new__">{t('admin.projectForm.createNewCategory')}</option>
                     </Form.Select>
                   </Form.Group>
                 </Col>
@@ -663,16 +640,20 @@ const ProjectForm = () => {
                 <Form.Control.Feedback type="invalid">
                   At least one additional image is required
                 </Form.Control.Feedback>
-                {additionalImagePreviews.length > 0 && (
+                { (existingImages.length || additionalImagePreviews.length) && (
                   <div className="images-preview mt-2">
+                    {existingImages.map((img) => (
+                      <div key={`existing-${img.id}`} className="preview-item">
+                        <img src={img.url} alt={`Existing ${img.id}`} />
+                        <button type="button" className="remove-image-btn" onClick={() => removeExistingImage(img.id)}>
+                          &times;
+                        </button>
+                      </div>
+                    ))}
                     {additionalImagePreviews.map((url, index) => (
-                      <div key={index} className="preview-item">
+                      <div key={`new-${index}`} className="preview-item">
                         <img src={url} alt={`Preview ${index + 1}`} />
-                        <button 
-                          type="button" 
-                          className="remove-image-btn" 
-                          onClick={() => removeAdditionalImage(index)}
-                        >
+                        <button type="button" className="remove-image-btn" onClick={() => removeAdditionalImage(index)}>
                           &times;
                         </button>
                       </div>

@@ -1,37 +1,38 @@
-# Portfolio Project
+# Jumooh Media Portfolio
 
-A modern portfolio application with a React frontend and Django REST backend.
+A modern platform application showcasing creative design works, deployed at [jumoohmedia.com](https://jumoohmedia.com).
 
-## Project Structure
+## Production Deployment
 
-```
-Portfolio/
-├── frontend/         # React frontend application (Vite + React)
-├── backend/          # Django REST API backend (Django + DRF)
-│   ├── apps/         # Django apps
-│   ├── portfolio_backend/  # Django project settings
-│   ├── .env          # Environment variables
-│   ├── manage.py     # Django management script
-│   └── requirements/ # Python dependencies
-└── README.md         # This file
-```
+- **Frontend**: [jumoohmedia.com](https://jumoohmedia.com)
+- **API**: [jumoohmedia.com/api](https://jumoohmedia.com/api)
+- **Admin**: [jumoohmedia.com/admin](https://jumoohmedia.com/admin)
 
-## Features
 
-- **Frontend**:
-  - Modern React application with Vite
-  - Responsive design
-  - Dark/light theme support
-  - Internationalization (i18n)
-  - Interactive UI components
+## Technology Stack
+- React with Vite
+- Redux Toolkit for state management
+- i18next for Arabic/English localization
+- Framer Motion for animations
+- Bootstrap 5 for responsive layout
 
 - **Backend**:
-  - RESTful API with Django REST Framework
-  - JWT Authentication
-  - PostgreSQL database (SQLite for development)
-  - File uploads
-  - API documentation with Swagger/ReDoc
-  - CORS support
+- Django REST Framework
+- PostgreSQL database
+- JWT Authentication
+- Custom user model
+- Media file handling
+- Multi-language support
+
+## Features
+- Responsive design with dark/light theme
+- Bilingual support (Arabic/English)
+- Project portfolio with image galleries
+- Contact form with email notifications
+- Admin dashboard for content management
+- Secure file upload and management
+- Social media integration
+
 
 ## Prerequisites
 

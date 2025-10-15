@@ -18,8 +18,8 @@
 
 .page-header h1 {
   font-weight: 700;
-  margin-bottom: 0.5rem;
-  font-size: 1.75rem;
+  margin-bottom: var(--spacing-sm);
+  font-size: var(--text-2xl);
   color: var(--main);
 }
 
@@ -39,13 +39,13 @@
 .add-btn {
   display: flex;
   align-items: center;
-  padding: 0.5rem 1rem;
-  border-radius: var(--radius-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-full);
   background: var(--main-gradient);
   border: none;
-  box-shadow: 0 4px 10px var(--shadow-light);
+  box-shadow: var(--shadow-md);
   color: #fff;
-  transition: all 0.3s ease;
+  transition: var(--transition-normal);
 }
 
 .add-btn:hover {

@@ -18,8 +18,9 @@
 
 .page-header h1 {
   margin: 0;
-  font-size: 1.75rem;
+  font-size: var(--text-2xl);
   color: var(--main);
+  font-weight: 700;
 }
 
 .dark-mode .page-header h1 {
@@ -38,10 +39,11 @@
 .list-card {
   background: var(--bg-primary-light);
   border-radius: var(--radius-lg);
-  box-shadow: 0 5px 15px var(--shadow-light);
+  box-shadow: var(--shadow-md);
   color: var(--text-primary-light);
-  border: none;
+  border: 1px solid var(--border-light);
   overflow: hidden;
+  transition: var(--transition-normal);
 }
 
 .dark-mode .list-card {

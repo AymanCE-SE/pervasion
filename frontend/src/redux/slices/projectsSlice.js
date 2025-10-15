@@ -99,71 +99,41 @@ export const fetchProjectById = createAsyncThunk(
   }
 );
 
+// Add a custom error handler
+const handleApiError = (error, fallbackMessage) => {
+  console.error('API Error:', {
+    status: error.response?.status,
+    data: error.response?.data,
+    message: error.message
+  });
+  
+  return error.response?.data || { 
+    detail: error.message || fallbackMessage 
+  };
+};
+
 export const createProject = createAsyncThunk(
   'projects/createProject',
   async (projectData, { rejectWithValue, extra }) => {
     try {
-      let data = null;
+      if (!extra?.api) {
+        throw new Error('API client not available');
+      }
+
       const isFormData = projectData instanceof FormData;
-      
-      // Log what we're sending to help with debugging
-      console.log('Creating project with FormData:', isFormData);
-      
-      if (isFormData) {
-        // For debugging - log files in FormData
-        if (process.env.NODE_ENV !== 'production') {
-          console.log('FormData contents:');
-          for (let [key, value] of projectData.entries()) {
-            if (value instanceof File) {
-              console.log(`${key}: File (${value.name}, ${value.type}, ${value.size} bytes)`);
-            } else {
-              console.log(`${key}: ${value}`);
-            }
-          }
+      const config = {
+        headers: {
+          'Content-Type': isFormData ? 'multipart/form-data' : 'application/json'
         }
-      }
-      
-      if (extra?.apiService?.projects?.create) {
-        try {
-          data = await extra.apiService.projects.create(projectData);
-        } catch (e) {
-          console.warn('ApiService create failed, falling back to direct API');
-        }
-      }
-      
-      if (!data && extra?.api) {
-        // Configure request properly for FormData
-        const config = isFormData ? {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          }
-        } : { 
-          headers: { 'Content-Type': 'application/json' } 
-        };
-        
-        console.log('Sending request with config:', {
-          url: '/projects/',
-          method: 'POST',
-          isFormData,
-          headers: config.headers
-        });
-        
-        const response = await extra.api.post('/projects/', projectData, config);
-        data = response.data;
-      }
-      
-      if (!data) throw new Error('Failed to create project');
-      return data;
+      };
+
+      const response = await extra.api.post('/projects/', projectData, config);
+      return response.data;
     } catch (error) {
-      console.error('Project creation error:', {
-        status: error.response?.status,
-        data: error.response?.data,
-        message: error.message
-      });
-      
-      return rejectWithValue(
-        error.response?.data || { detail: error.message || 'Failed to create project' }
-      );
+      if (!error.response) {
+        throw error; // Network or other errors
+      }
+      return rejectWithValue(handleApiError(error, 'Failed to create project'));
     }
   }
 );
@@ -286,6 +256,32 @@ export const createCategory = createAsyncThunk(
   }
 );
 
+export const updateCategory = createAsyncThunk(
+  'projects/updateCategory',
+  async ({ id, data }, { rejectWithValue, extra }) => {
+    try {
+      if (!extra?.api) throw new Error('API client not available');
+      const res = await extra.api.put(`/categories/${id}/`, data);
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(err.response?.data || err.message);
+    }
+  }
+);
+
+export const deleteCategory = createAsyncThunk(
+  'projects/deleteCategory',
+  async (id, { rejectWithValue, extra }) => {
+    try {
+      if (!extra?.api) throw new Error('API client not available');
+      await extra.api.delete(`/categories/${id}/`);
+      return id;
+    } catch (err) {
+      return rejectWithValue(err.response?.data || err.message);
+    }
+  }
+);
+
 const initialState = {
   projects: [],
   status: 'idle',
@@ -307,6 +303,26 @@ export const projectsSlice = createSlice({
     clearCurrentProject: (state) => {
       state.currentProject = null;
     },
+    // Add resetFormState reducer
+    resetFormState: (state) => {
+      state.status = 'idle';
+      state.error = null;
+      state.currentProject = null;
+    },
+    // Add action to reset form state
+    // resetFormState: (state) => {
+    //   state.error = null;
+    //   state.status = 'idle';
+    // },
+    // Add action to handle file validation errors
+    setFileErrors: (state, action) => {
+      state.error = action.payload;
+    },
+    cleanupProjectState: (state) => {
+      state.error = null;
+      state.status = 'idle';
+      state.currentProject = null;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -353,18 +369,25 @@ export const projectsSlice = createSlice({
       // Create project
       .addCase(createProject.pending, (state) => {
         state.status = 'loading';
+        state.error = null;
       })
       .addCase(createProject.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.projects.push(action.payload);
+        state.error = null;
       })
       .addCase(createProject.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload || 'Failed to create project';
       })
       // Update project
-      .addCase(updateProject.pending, (state) => {
+      .addCase(updateProject.pending, (state, action) => {
         state.status = 'loading';
+        // Store previous state for rollback
+        state.previousState = {
+          projects: [...state.projects],
+          currentProject: state.currentProject
+        };
       })
       .addCase(updateProject.fulfilled, (state, action) => {
         state.status = 'succeeded';
@@ -376,7 +399,12 @@ export const projectsSlice = createSlice({
       })
       .addCase(updateProject.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.payload || 'Failed to update project';
+        state.error = action.payload;
+        // Rollback on failure
+        if (state.previousState) {
+          state.projects = state.previousState.projects;
+          state.currentProject = state.previousState.currentProject;
+        }
       })
       // Delete project
       .addCase(deleteProject.pending, (state) => {
@@ -404,11 +432,29 @@ export const projectsSlice = createSlice({
       .addCase(createCategory.rejected, (state, action) => {
         state.categoriesStatus = 'failed';
         state.categoriesError = action.payload?.detail || 'Failed to create category';
+      })
+      .addCase(updateCategory.fulfilled, (state, action) => {
+        const idx = state.categories.findIndex(c => String(c.id) === String(action.payload.id));
+        if (idx !== -1) state.categories[idx] = action.payload;
+      })
+      .addCase(updateCategory.rejected, (state, action) => {
+        state.categoriesError = action.payload || action.error.message;
+      })
+      .addCase(deleteCategory.pending, (state) => {
+        state.categoriesStatus = 'loading';
+      })
+      .addCase(deleteCategory.fulfilled, (state, action) => {
+        state.categories = state.categories.filter(c => String(c.id) !== String(action.payload));
+        state.categoriesStatus = 'succeeded';
+      })
+      .addCase(deleteCategory.rejected, (state, action) => {
+        state.categoriesStatus = 'failed';
+        state.categoriesError = action.payload || action.error.message;
       });
   },
 });
 
-export const { setFilteredCategory, clearCurrentProject } = projectsSlice.actions;
+export const { setFilteredCategory, clearCurrentProject, resetFormState } = projectsSlice.actions;
 
 // Base selectors
 const selectProjectsState = state => state.projects;
@@ -484,5 +530,9 @@ export const selectFilteredCategory = createSelector(
   [selectProjectsState],
   (projectsState) => projectsState.filteredCategory
 );
+
+
+
+
 
 export default projectsSlice.reducer;

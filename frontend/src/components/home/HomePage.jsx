@@ -22,8 +22,8 @@ const HomePage = () => {
         <Hero />
         <Stats />
         <ServicesSection />
-        <FeaturedProjects />
         <Testimonials />
+        <FeaturedProjects />
       </div>
     </>
   );

@@ -177,10 +177,14 @@
     "loggedInAs": "You are logged in as",
     "form": {
       "name": "Name",
+      "placeholderName": "Enter Your Name",
       "email": "Email",
+      "placeholderEmail": "Enter Your Email",
       "message": "Message",
+      "placeholderMessage": "Enter Your Message",
       "submit": "Send Message",
-      "subject": "Subject"
+      "subject": "Subject",
+      "placeholderSubject": "Enter Your Subject"
     },
     "validation": {
       "required": "This field is required",
@@ -268,6 +272,10 @@
     "welcome": "Welcome",
     "addNew": "Add New",
     "edit": "Edit",
+    "categoryName": "Category Name",
+    "categoryNamePlaceholder": "Enter English category name",
+    "categoryNameAr": "Category Name (Arabic)",
+    "categoryNameArPlaceholder": "Enter Arabic category name",
     "categories": "Categories",
     "recentProjects": "Recent Projects",
     "messages": "Messages",
@@ -292,6 +300,10 @@
       "title": "Project Title",
       "description": "Description",
       "category": "Category",
+      "selectCategory": "Select a category",
+      "createNewCategory": "+ Create New Category",
+      "categoryNameEnglish": "Category name (English)",
+      "categoryNameArabic": "Category name (Arabic)",
       "client": "Client",
       "date": "Date",
       "featured": "Featured Project",
@@ -305,6 +317,29 @@
       "email": "Email",
       "name": "Full Name",
       "role": "Role"
+    },
+    "manageCategories": "Create, edit and delete categories",
+    "editCategory": "Edit Category",
+    "nameAr": "Arabic Name",
+    "actions": "Actions",
+    "update": "Update",
+    "create": "Create",
+    "deleteCategoryWarning": "Deleting this category will not delete projects. Reassign projects first if needed.",
+    "namePlaceholder": "Enter category name",
+    "nameArPlaceholder": "Enter Arabic name",
+    "notifications": {
+      "createSuccess": "Item created successfully",
+      "updateSuccess": "Item updated successfully",
+      "deleteSuccess": "Item deleted successfully",
+      "createError": "Failed to create item",
+      "updateError": "Failed to update item",
+      "deleteError": "Failed to delete item",
+      "projectCreateSuccess": "Project created successfully",
+      "projectUpdateSuccess": "Project updated successfully",
+      "projectDeleteSuccess": "Project deleted successfully",
+      "categoryCreateSuccess": "Category created successfully",
+      "categoryUpdateSuccess": "Category updated successfully",
+      "categoryDeleteSuccess": "Category deleted successfully"
     }
   },
   "footer": {

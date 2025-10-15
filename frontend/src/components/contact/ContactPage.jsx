@@ -295,7 +295,7 @@ const ContactPage = () => {
                         value={formData.name}
                         onChange={handleInputChange}
                         required
-                        placeholder={t('contact.form.name')}
+                        placeholder={t('contact.form.placeholderName')}
                         disabled={false}
                         className="bg-white"
                       />
@@ -312,7 +312,7 @@ const ContactPage = () => {
                         value={formData.email}
                         onChange={handleInputChange}
                         required
-                        placeholder={t('contact.form.email')}
+                        placeholder={t('contact.form.placeholderEmail')}
                         disabled={isAuthenticated}
                         className={isAuthenticated ? 'bg-muted' : ''}
                       />
@@ -329,7 +329,7 @@ const ContactPage = () => {
                         value={formData.subject}
                         onChange={handleInputChange}
                         required
-                        placeholder={t('contact.form.subject')}
+                        placeholder={t('contact.form.placeholderSubject')}
                         className="bg-white text-dark"
                       />
                       <Form.Control.Feedback type="invalid">
@@ -346,7 +346,7 @@ const ContactPage = () => {
                         value={formData.message}
                         onChange={handleInputChange}
                         required
-                        placeholder={t('contact.form.message')}
+                        placeholder={t('contact.form.placeholderMessage')}
                         className="bg-white text-dark"
                       />
                       <Form.Control.Feedback type="invalid">

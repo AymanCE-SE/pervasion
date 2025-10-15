@@ -17,6 +17,7 @@ import { selectDarkMode } from '../../redux/slices/themeSlice';
 import { selectLanguage } from '../../redux/slices/languageSlice';
 import { FaPlus, FaEdit, FaTrash, FaEye } from 'react-icons/fa';
 import './ProjectsList.css';
+import { toast } from 'react-toastify';
 
 const ProjectsList = () => {
   const { t } = useTranslation();
@@ -67,11 +68,13 @@ const ProjectsList = () => {
   };
   
   // Handle delete project
-  const handleDeleteProject = () => {
-    if (projectToDelete) {
-      dispatch(deleteProject(projectToDelete.id));
+  const handleDeleteProject = async () => {
+    try {
+      await dispatch(deleteProject(projectToDelete.id)).unwrap();
+      toast.success(t('admin.notifications.projectDeleteSuccess'));
       setShowDeleteModal(false);
-      setProjectToDelete(null);
+    } catch (error) {
+      toast.error(t('admin.notifications.deleteError'));
     }
   };
   

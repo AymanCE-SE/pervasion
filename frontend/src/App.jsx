@@ -39,6 +39,7 @@ const UserForm = React.lazy(() => import('./components/admin/UserForm'));
 const ContactList = React.lazy(() => import('./components/admin/ContactList'));
 const VerifyEmail = React.lazy(() => import('./components/auth/VerifyEmail'));
 import NotFound from './components/common/NotFound';
+import CategoriesList from './components/admin/CategoriesList';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -200,6 +201,14 @@ const App = () => {
                     element={
                       <AdminProtectedRoute>
                         <ContactList />
+                      </AdminProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="categories"
+                    element={
+                      <AdminProtectedRoute>
+                        <CategoriesList />
                       </AdminProtectedRoute>
                     }
                   />
