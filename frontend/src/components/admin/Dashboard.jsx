@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Row, Col, Card, Badge } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
@@ -16,9 +16,10 @@ import { fetchUsers, selectAllUsers } from '../../redux/slices/usersSlice';
 import { fetchContacts, selectAllContacts } from '../../redux/slices/contactSlice';
 import { selectUser } from '../../redux/slices/authSlice';
 import { selectDarkMode } from '../../redux/slices/themeSlice';
-import { FaImages, FaUsers, FaEye, FaStar, FaCheck, FaTimes, FaEnvelope } from 'react-icons/fa';
+import { FaImages, FaUsers, FaEye, FaStar, FaCheck, FaTimes, FaEnvelope, FaFileAlt } from 'react-icons/fa';
 import './Dashboard.css';
 import { Link } from 'react-router-dom';
+import api from '../../utils/api'; // keep same path; ensure it imports the same module
 
 const Dashboard = () => {
   const { t } = useTranslation();
@@ -31,20 +32,31 @@ const Dashboard = () => {
   const currentUser = useSelector(selectUser);
   const darkMode = useSelector(selectDarkMode);
   
+  const [jobApplications, setJobApplications] = useState([]);
+  
   // Fetch data on component mount
   useEffect(() => {
     dispatch(fetchProjects());
     dispatch(fetchUsers());
     dispatch(fetchContacts());
+    
+    const fetchJobApplications = async () => {
+      try {
+        const response = await api.get('/job-applications/');
+        // Handle both array and paginated responses
+        const data = Array.isArray(response.data) 
+          ? response.data 
+          : response.data.results || response.data.data || [];
+        
+        console.log('Job Applications:', data);
+        setJobApplications(data);
+      } catch (error) {
+        console.error('Error fetching job applications:', error);
+        setJobApplications([]); // ensure array
+      }
+    };
+    fetchJobApplications();
   }, [dispatch]);
-  
-  // Show success toast/notification on project status change
-  // useEffect(() => {
-  //   if (status === 'succeeded') {
-  //     toast.success('Operation completed successfully');
-  //     dispatch(resetFormState());
-  //   }
-  // }, [status, dispatch]);
   
   // Calculate dashboard stats
   const totalProjects = projects.length;
@@ -115,68 +127,99 @@ const Dashboard = () => {
           <Row className="stats-cards">
             <Col md={6} lg={3} className="mb-4">
               <motion.div variants={itemVariants}>
-                <Card className={`stat-card ${darkMode ? 'dark-mode' : ''}`}>
-                  <Card.Body>
-                    <div className="stat-icon projects-icon">
-                      <FaImages />
-                    </div>
-                    <h3 className="stat-value">{totalProjects}</h3>
-                    <p className="stat-label">{t('admin.projects')}</p>
-                  </Card.Body>
-                </Card>
+                <Link to="/admin/projects" style={{ textDecoration: 'none' }}>
+                  <Card className={`stat-card clickable ${darkMode ? 'dark-mode' : ''}`}>
+                    <Card.Body>
+                      <div className="stat-icon projects-icon">
+                        <FaImages />
+                      </div>
+                      <h3 className="stat-value">{totalProjects}</h3>
+                      <p className="stat-label">{t('admin.projects')}</p>
+                    </Card.Body>
+                  </Card>
+                </Link>
               </motion.div>
             </Col>
             
             <Col md={6} lg={3} className="mb-4">
               <motion.div variants={itemVariants}>
-                <Card className={`stat-card ${darkMode ? 'dark-mode' : ''}`}>
-                  <Card.Body>
-                    <div className="stat-icon featured-icon">
-                      <FaStar />
-                    </div>
-                    <h3 className="stat-value">{featuredProjects}</h3>
-                    <p className="stat-label">Featured Projects</p>
-                  </Card.Body>
-                </Card>
+                <Link to="/admin/projects?filter=featured" style={{ textDecoration: 'none' }}>
+                  <Card className={`stat-card clickable ${darkMode ? 'dark-mode' : ''}`}>
+                    <Card.Body>
+                      <div className="stat-icon featured-icon">
+                        <FaStar />
+                      </div>
+                      <h3 className="stat-value">{featuredProjects}</h3>
+                      <p className="stat-label">Featured Projects</p>
+                    </Card.Body>
+                  </Card>
+                </Link>
               </motion.div>
             </Col>
             
             <Col md={6} lg={3} className="mb-4">
               <motion.div variants={itemVariants}>
-                <Card className={`stat-card ${darkMode ? 'dark-mode' : ''}`}>
-                  <Card.Body>
-                    <div className="stat-icon users-icon">
-                      <FaUsers />
-                    </div>
-                    <h3 className="stat-value">{totalUsers}</h3>
-                    <p className="stat-label">{t('admin.users')}</p>
-                  </Card.Body>
-                </Card>
+                <Link to="/admin/users" style={{ textDecoration: 'none' }}>
+                  <Card className={`stat-card clickable ${darkMode ? 'dark-mode' : ''}`}>
+                    <Card.Body>
+                      <div className="stat-icon users-icon">
+                        <FaUsers />
+                      </div>
+                      <h3 className="stat-value">{totalUsers}</h3>
+                      <p className="stat-label">{t('admin.users')}</p>
+                    </Card.Body>
+                  </Card>
+                </Link>
               </motion.div>
             </Col>
             
             <Col md={6} lg={3} className="mb-4">
               <motion.div variants={itemVariants}>
-                <Card className={`stat-card ${darkMode ? 'dark-mode' : ''}`}>
-                  <Card.Body>
-                    <div className="stat-icon messages-icon">
-                      <FaEnvelope />
-                    </div>
-                    <h3 className="stat-value">
-                      {totalMessages}
-                      {unreadMessages > 0 && (
-                        <Badge 
-                          bg="warning" 
-                          text="dark" 
-                          className="ms-2 unread-badge"
-                        >
-                          {unreadMessages} new
-                        </Badge>
-                      )}
-                    </h3>
-                    <p className="stat-label">{t('admin.messages')}</p>
-                  </Card.Body>
-                </Card>
+                <Link to="/admin/contacts" style={{ textDecoration: 'none' }}>
+                  <Card className={`stat-card clickable ${darkMode ? 'dark-mode' : ''}`}>
+                    <Card.Body>
+                      <div className="stat-icon messages-icon">
+                        <FaEnvelope />
+                      </div>
+                      <h3 className="stat-value">
+                        {totalMessages}
+                        {unreadMessages > 0 && (
+                          <Badge 
+                            bg="warning" 
+                            text="dark" 
+                            className="ms-2 unread-badge"
+                          >
+                            {unreadMessages} new
+                          </Badge>
+                        )}
+                      </h3>
+                      <p className="stat-label">{t('admin.messages')}</p>
+                    </Card.Body>
+                  </Card>
+                </Link>
+              </motion.div>
+            </Col>
+
+            <Col md={6} lg={3} className="mb-4">
+              <motion.div variants={itemVariants}>
+                <Link to="/admin/job-applications" style={{ textDecoration: 'none' }}>
+                  <Card className={`stat-card clickable ${darkMode ? 'dark-mode' : ''}`}>
+                    <Card.Body>
+                      <div className="stat-icon applications-icon">
+                        <FaFileAlt />
+                      </div>
+                      <h3 className="stat-value">
+                        {jobApplications.length || 0}
+                        {jobApplications.length > 0 && (
+                          <Badge bg="info" className="ms-2 new-badge">
+                            New
+                          </Badge>
+                        )}
+                      </h3>
+                      <p className="stat-label">{t('admin.jobApplications') || 'Job Applications'}</p>
+                    </Card.Body>
+                  </Card>
+                </Link>
               </motion.div>
             </Col>
           </Row>

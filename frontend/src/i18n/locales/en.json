@@ -13,7 +13,9 @@
     "login": "Login",
     "logout": "Logout",
     "signup": "Sign Up",
-    "profile": "Profile"
+    "profile": "Profile",
+    "joinUs": "Join us"
+
   },
   "hero": {
     "titleStart": "Creative Design Solutions",
@@ -266,7 +268,9 @@
   "admin": {
     "dashboard": "Dashboard",
     "projects": "Projects",
+    "projectSubtitle": "Manage platform projects",
     "users": "Users",
+    "userSubtitle": "Manage platform users",
     "login": "Admin Login",
     "logout": "Logout",
     "welcome": "Welcome",
@@ -279,6 +283,7 @@
     "categories": "Categories",
     "recentProjects": "Recent Projects",
     "messages": "Messages",
+    "jobApplications": "Job Applications",
     "unreadMessages": "{{count}} unread",
     "totalMessages": "{{count}} messages",
     "viewAll": "View All",
@@ -297,18 +302,36 @@
     "loginError": "Invalid username or password",
     "adminPanel": "Admin Panel",
     "projectForm": {
-      "title": "Project Title",
+      "title": "Title",
       "description": "Description",
       "category": "Category",
-      "selectCategory": "Select a category",
-      "createNewCategory": "+ Create New Category",
-      "categoryNameEnglish": "Category name (English)",
-      "categoryNameArabic": "Category name (Arabic)",
       "client": "Client",
       "date": "Date",
       "featured": "Featured Project",
-      "image": "Main Image URL",
-      "images": "Additional Images URLs (comma separated)"
+      "image": "Main Image",
+      "images": "Additional Images",
+      "selectCategory": "Select a category",
+      "createNewCategory": "Create New Category",
+      "editMode": "Edit Project",
+      "createMode": "Create New Project",
+      "requiredField": "This field is required",
+      "backToProjects": "Back to Projects",
+      "atLeastOneAdditionalImage": "At least one additional image is required",
+
+      "placeholders": {
+        "title": "Enter project title in English",
+        "titleAr": "Enter project title in Arabic",
+        "description": "Enter project description in English",
+        "descriptionAr": "Enter project description in Arabic",
+        "client": "Enter client name",
+        "newCategory": "New category name",
+        "newCategoryAr": "New category name in Arabic"
+      },
+      "help": {
+        "mainImage": "Upload the main image for the project (JPEG, PNG, GIF, WebP, max 5MB)",
+        "additionalImages": "Upload additional images for the project (JPEG, PNG, GIF, WebP, max 5MB each)",
+        "currentImage": "Current image (will not change unless you select a new file)"
+      }
     },
     "userForm": {
       "username": "Username",
@@ -340,6 +363,136 @@
       "categoryCreateSuccess": "Category created successfully",
       "categoryUpdateSuccess": "Category updated successfully",
       "categoryDeleteSuccess": "Category deleted successfully"
+    },
+    "jobApplicationsList": {
+      "title": "Job Applications",
+      "subtitle": "Manage and review job applicants",
+      "refresh": "Refresh",
+      "allApplications": "All Applications",
+      "searchPlaceholder": "Search by name, email, or position...",
+      "tableHeaders": {
+        "id": "#",
+        "name": "Name",
+        "email": "Email",
+        "position": "Position",
+        "experience": "Experience",
+        "agencyExperience": "Agency Experience",
+        "dateApplied": "Date Applied",
+        "actions": "Actions"
+      },
+      "noApplications": "No applications found",
+      "details": {
+        "title": "Application Details",
+        "fullName": "Full Name",
+        "email": "Email",
+        "phone": "Phone",
+        "location": "Location",
+        "position": "Position",
+        "workType": "Work Type",
+        "experience": "Experience",
+        "agencyExperience": "Agency Experience",
+        "portfolio": "Portfolio",
+        "toolsAndSoftware": "Tools & Software",
+        "aboutYou": "About You",
+        "applied": "Applied",
+        "close": "Close"
+      },
+      "confirmDelete": "Confirm Delete",
+      "deleteMessage": "Are you sure you want to delete the application from",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "deletedSuccessfully": "Application deleted successfully",
+      "experienceLabels": {
+        "0_1": "<1 year",
+        "1_3": "1-3 years",
+        "3_5": "3-5 years",
+        "5_plus": "5+ years"
+      },
+      "yes": "Yes",
+      "no": "No"
+    },
+    "usersList": {
+      "title": "All Users",
+      "subtitle": "Manage user accounts",
+      "searchPlaceholder": "Search users...",
+      "tableHeaders": {
+        "id": "#",
+        "username": "Username",
+        "name": "Name",
+        "email": "Email",
+        "status": "Status",
+        "role": "Role",
+        "actions": "Actions"
+      },
+      "noUsers": "No users found.",
+      "tryDifferentSearch": "Try a different search term.",
+      "confirmDelete": "Confirm Delete",
+      "deleteMessage": "Are you sure you want to delete this user?",
+      "deleteSuccess": "User deleted successfully",
+      "deleteError": "Failed to delete user",
+      "edit": "Edit",
+      "delete": "Delete",
+      "verified": "Verified",
+      "unverified": "Unverified",
+      "active": "Active",
+      "inactive": "Inactive",
+      "admin": "Admin",
+      "user": "User",
+      "adminWarning": "Warning: You are about to delete an admin user."
+    },
+    "contactsList": {
+      "title": "Contact Messages",
+      "subtitle": "Manage contact form submissions",
+      "searchPlaceholder": "Search messages...",
+      "allMessages": "All Messages",
+      "tableHeaders": {
+        "id": "#",
+        "name": "Name",
+        "email": "Email",
+        "subject": "Subject",
+        "date": "Date",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "noMessages": "No messages found.",
+      "tryDifferentSearch": "Try a different search term.",
+      "messageDetails": "Message Details",
+      "confirmDelete": "Confirm Delete",
+      "deleteMessage": "Are you sure you want to delete this message from",
+      "deleteSuccess": "Message deleted successfully",
+      "deleteError": "Failed to delete message",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "from": "From",
+      "messageSubject": "Subject",
+      "message": "Message",
+      "received": "Received",
+      "read": "Read",
+      "new": "New",
+      "alreadyRead": "Already read",
+      "markAsRead": "Mark as read"
+    },
+    "projectsList": {
+      "title": "All Projects",
+      "searchPlaceholder": "Search projects...",
+      "tableHeaders": {
+        "id": "#",
+        "image": "Image",
+        "title": "Title",
+        "category": "Category",
+        "date": "Date",
+        "featured": "Featured",
+        "actions": "Actions"
+      },
+      "noProjects": "No projects found.",
+      "tryDifferentSearch": "Try a different search term.",
+      "confirmDelete": "Confirm Delete",
+      "deleteMessage": "Are you sure you want to delete this project?",
+      "deleteSuccess": "Project deleted successfully",
+      "deleteError": "Failed to delete project",
+      "view": "View",
+      "edit": "Edit",
+      "delete": "Delete"
     }
   },
   "footer": {
@@ -442,5 +595,60 @@
         "branch4": "Ongoing Brand Support"
       }
     }
+  },
+  "jobApplicant": {
+    "title": "Join Our Team",
+    "subtitle": "Submit your application to work with us",
+    "heroSubtitle": "We're always looking for talented people — tell us about yourself",
+    "formHeader": {
+      "title": "Apply to Join",
+      "subtitle": "Fill out the form below — we'll review and contact qualified candidates"
+    },
+    "form": {
+      "fullName": "Full Name",
+      "email": "Email Address",
+      "phone": "Phone Number",
+      "cityCountry": "City, Country",
+      "position": "Position",
+      "work_type": "Work Type",
+      "experience": "Years of Experience",
+      "portfolio": "Portfolio URL",
+      "workedInAgencyBefore": "Have you worked in an agency before?",
+      "aboutYou": "Tell us about yourself",
+      "selectPosition": "Select a position",
+      "tools": "Tools & Software",
+      "yes": "Yes",
+      "no": "No",
+      "submit": "Submit Application",
+      "placeholders": {
+        "fullName": "Enter your full name",
+        "email": "Enter your email address",
+        "phone": "Enter your phone number",
+        "cityCountry": "Enter your city and country",
+        "work_type": "Select work type",
+        "experience": "Years of experience",
+        "portfolio": "https://yourportfolio.com",
+        "aboutYou": "Tell us about your experience and why you want to join our team"
+      },
+      "sections": {
+        "personalInfo": "Personal Information",
+        "jobDetails": "Job Details",
+        "additionalInfo": "Additional Information"
+      }
+    },
+    "sections": {
+      "basicInformation": "Basic Information",
+      "basicInformationDesc": "Tell us who you are and how to reach you.",
+      "professionalBackground": "Professional Background",
+      "professionalBackgroundDesc": "Share your role, experience and tools you use."
+    },
+    "positions": {
+      "graphic_designer": "Graphic Designer",
+      "motion_designer": "Motion Designer",
+      "content_creator": "Content Creator",
+      "media_buyer": "Media Buyer"
+    },
+    "success": "Application submitted successfully! We'll review it and get back to you soon.",
+    "error": "Failed to submit application. Please try again."
   }
 }

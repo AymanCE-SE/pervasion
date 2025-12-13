@@ -385,7 +385,7 @@ const ProjectForm = () => {
                 ? `${t('admin.edit')} ${t('admin.projects')}` 
                 : `${t('admin.addNew')} ${t('admin.projects')}`}
             </h1>
-            <p>{isEditMode ? 'Update project details' : 'Create a new project'}</p>
+            <p>{t(isEditMode ? 'admin.projectForm.editMode' : 'admin.projectForm.createMode')}</p>
           </div>
           <Button 
             variant="outline-secondary" 
@@ -393,7 +393,7 @@ const ProjectForm = () => {
             onClick={() => navigate('/admin/projects')}
           >
             <FaArrowLeft className="me-2" />
-            Back to Projects
+            {t('admin.projectForm.backToProjects')}
           </Button>
         </div>
         
@@ -423,6 +423,7 @@ const ProjectForm = () => {
                       onChange={handleInputChange}
                       isInvalid={!!fieldErrors.title}
                       required
+                      placeholder={t('admin.projectForm.placeholders.title')}
                     />
                     {fieldErrors.title && (
                       <Form.Control.Feedback type="invalid">
@@ -430,7 +431,7 @@ const ProjectForm = () => {
                       </Form.Control.Feedback>
                     )}
                     <Form.Control.Feedback type="invalid">
-                      Project title is required
+                      {t('admin.projectForm.requiredField')}
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
@@ -445,7 +446,7 @@ const ProjectForm = () => {
                       onChange={handleInputChange}
                       isInvalid={!!fieldErrors.title_ar}
                       required
-                      placeholder="أدخل عنوان المشروع"
+                      placeholder={t('admin.projectForm.placeholders.titleAr')}
                       dir="rtl"
                     />
                     {fieldErrors.title_ar && (
@@ -454,7 +455,7 @@ const ProjectForm = () => {
                       </Form.Control.Feedback>
                     )}
                     <Form.Control.Feedback type="invalid">
-                      Arabic project title is required
+                      {t('admin.projectForm.requiredField')}
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
@@ -472,7 +473,7 @@ const ProjectForm = () => {
                       onChange={handleInputChange}
                       isInvalid={!!fieldErrors.description}
                       required
-                      placeholder="Enter project description"
+                      placeholder={t('admin.projectForm.placeholders.description')}
                     />
                     {fieldErrors.description && (
                       <Form.Control.Feedback type="invalid">
@@ -480,7 +481,7 @@ const ProjectForm = () => {
                       </Form.Control.Feedback>
                     )}
                     <Form.Control.Feedback type="invalid">
-                      Project description is required
+                      {t('admin.projectForm.requiredField')}
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
@@ -496,7 +497,7 @@ const ProjectForm = () => {
                       onChange={handleInputChange}
                       isInvalid={!!fieldErrors.description_ar}
                       required
-                      placeholder="أدخل وصف المشروع"
+                      placeholder={t('admin.projectForm.placeholders.descriptionAr')}
                       dir="rtl"
                     />
                     {fieldErrors.description_ar && (
@@ -505,7 +506,7 @@ const ProjectForm = () => {
                       </Form.Control.Feedback>
                     )}
                     <Form.Control.Feedback type="invalid">
-                      Arabic project description is required
+                      {t('admin.projectForm.requiredField')}
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
@@ -541,10 +542,10 @@ const ProjectForm = () => {
                       value={formData.client}
                       onChange={handleInputChange}
                       required
-                      placeholder="Enter client name"
+                      placeholder={t('admin.projectForm.placeholders.client')}
                     />
                     <Form.Control.Feedback type="invalid">
-                      Client name is required
+                      {t('admin.projectForm.requiredField')}
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
@@ -562,7 +563,7 @@ const ProjectForm = () => {
                       required
                     />
                     <Form.Control.Feedback type="invalid">
-                      Project date is required
+                      {t('admin.projectForm.requiredField')}
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
@@ -592,7 +593,7 @@ const ProjectForm = () => {
                   required={!isEditMode || !imagePreview}
                 />
                 <Form.Text className="text-muted">
-                  Upload the main image for the project (JPEG, PNG, GIF, WebP, max 5MB)
+                  {t('admin.projectForm.help.mainImage')}
                 </Form.Text>
                 {fieldErrors.image && (
                   <div className="text-danger mt-1">
@@ -600,13 +601,15 @@ const ProjectForm = () => {
                   </div>
                 )}
                 <Form.Control.Feedback type="invalid">
-                  Main image is required
+                  {t('admin.projectForm.requiredField')}
                 </Form.Control.Feedback>
                 {imagePreview && (
                   <div className="image-preview mt-2">
                     <img src={imagePreview} alt="Preview" />
                     {isEditMode && !mainImageFile && (
-                      <div className="current-image-note">Current image (will not change unless you select a new file)</div>
+                    <div className="current-image-note">
+                      {t('admin.projectForm.help.currentImage')}
+                    </div>
                     )}
                   </div>
                 )}
@@ -624,7 +627,7 @@ const ProjectForm = () => {
                   required={!isEditMode && additionalImagePreviews.length === 0}
                 />
                 <Form.Text className="text-muted">
-                  Upload additional images for the project (JPEG, PNG, GIF, WebP, max 5MB each, hold Ctrl to select multiple files)
+                {t('admin.projectForm.help.additionalImages')}
                 </Form.Text>
                 {fieldErrors.additional_images && (
                   <div className="text-danger mt-1">
@@ -638,7 +641,7 @@ const ProjectForm = () => {
                   </div>
                 )}
                 <Form.Control.Feedback type="invalid">
-                  At least one additional image is required
+                  {t('admin.projectForm.atLeastOneAdditionalImage')}
                 </Form.Control.Feedback>
                 { (existingImages.length || additionalImagePreviews.length) && (
                   <div className="images-preview mt-2">
@@ -666,15 +669,16 @@ const ProjectForm = () => {
                 <div className="mt-2">
                   <Form.Control
                     type="text"
-                    placeholder="New category name (English)"
+                    placeholder={t('admin.projectForm.placeholders.newCategory')}
                     value={newCategoryName}
                     onChange={e => setNewCategoryName(e.target.value)}
                   />
                   <Form.Control
                     type="text"
-                    placeholder="New category name (Arabic)"
+                    placeholder={t('admin.projectForm.placeholders.newCategoryAr')}
                     value={newCategoryNameAr}
                     onChange={e => setNewCategoryNameAr(e.target.value)}
+                    dir="rtl"
                   />
                   <Button
                     size="sm"
@@ -682,7 +686,7 @@ const ProjectForm = () => {
                     onClick={handleAddCategory}
                     disabled={creatingCategory || !newCategoryName || !newCategoryNameAr}
                   >
-                    {creatingCategory ? 'Adding...' : 'Add Category'}
+                    {creatingCategory ? t('common.adding') : t('admin.projectForm.addCategory')}
                   </Button>
                 </div>
               )}

@@ -29,6 +29,7 @@ const AboutPage = React.lazy(() => import('./components/about/AboutPage'));
 const ContactPage = React.lazy(() => import('./components/contact/ContactPage'));
 const UserLoginPage = React.lazy(() => import('./components/auth/LoginPage'));
 const RegisterPage = React.lazy(() => import('./components/auth/RegisterPage'));
+const JobApplicantPage = React.lazy(() => import('./components/jobApplicant/JobApplicantPage'));
 // const AdminLoginPage = React.lazy(() => import('./components/admin/LoginPage'));
 // const LogoutPage = React.lazy(() => import('./components/admin/LogoutPage'));
 const Dashboard = React.lazy(() => import('./components/admin/Dashboard'));
@@ -38,6 +39,8 @@ const UsersList = React.lazy(() => import('./components/admin/UsersList'));
 const UserForm = React.lazy(() => import('./components/admin/UserForm'));
 const ContactList = React.lazy(() => import('./components/admin/ContactList'));
 const VerifyEmail = React.lazy(() => import('./components/auth/VerifyEmail'));
+const JobApplicationsList = React.lazy(() => import('./components/admin/JobApplicantList'));
+
 import NotFound from './components/common/NotFound';
 import CategoriesList from './components/admin/CategoriesList';
 
@@ -116,6 +119,7 @@ const App = () => {
                   <Route path="projects/:id" element={<ProjectDetails />} />
                   <Route path="about" element={<AboutPage />} />
                   <Route path="contact" element={<ContactPage />} />
+                  <Route path="/join-us" element={<JobApplicantPage />} />
                 </Route>
 
                 {/* Auth Routes */}
@@ -212,6 +216,14 @@ const App = () => {
                       </AdminProtectedRoute>
                     }
                   />
+                  <Route
+                      path="job-applications"
+                      element={
+                        <AdminProtectedRoute>
+                          <JobApplicationsList />
+                        </AdminProtectedRoute>
+                      }
+                    />
                   {/* <Route path="logout" element={<LogoutPage />} /> */}
                 </Route>
 

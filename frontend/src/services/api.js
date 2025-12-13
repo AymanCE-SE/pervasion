@@ -11,8 +11,16 @@ const api = axios.create({
 
 // Add request interceptor for auth token
 api.interceptors.request.use(config => {
-  const path = config.url;
+  const path = config.url || '';
   const method = config.method?.toUpperCase();
+
+  // Ensure trailing slash to avoid redirects (important for POST/PUT/PATCH)
+  if (typeof config.url === 'string') {
+    const [p, q] = config.url.split('?');
+    if (p && !p.endsWith('/')) {
+      config.url = q ? `${p}/${'?' + q}` : `${p}/`;
+    }
+  }
 
   // Only GET requests to /projects and /categories are public
   const publicEndpoints = [
@@ -31,42 +39,21 @@ api.interceptors.request.use(config => {
   return config;
 }, error => Promise.reject(error));
 
+// Handle authentication error
+const handleAuthError = (error) => {
+  if (error.response?.status === 401) {
+    localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('user');
+    window.location.href = '/login';
+  }
+  return Promise.reject(error);
+};
+
 // Add response interceptor for error handling
 api.interceptors.response.use(
   response => response,
-  async error => {
-    const originalRequest = error.config;
-    if (
-      error.response &&
-      error.response.status === 401 &&
-      !originalRequest._retry
-    ) {
-      originalRequest._retry = true;
-      const refreshToken = localStorage.getItem('refreshToken');
-      if (refreshToken) {
-        try {
-          const res = await axios.post('http://localhost:8000/api/auth/refresh/', {
-            refresh: refreshToken
-          });
-          const newAccess = res.data.access;
-          localStorage.setItem('token', newAccess);
-          originalRequest.headers.Authorization = `Bearer ${newAccess}`;
-          return api(originalRequest);
-        } catch (refreshError) {
-          // Refresh failed, force logout
-          localStorage.removeItem('token');
-          localStorage.removeItem('refreshToken');
-          window.location.href = '/login';
-        }
-      } else {
-        // No refresh token, force logout
-        localStorage.removeItem('token');
-        localStorage.removeItem('refreshToken');
-        window.location.href = '/login';
-      }
-    }
-    return Promise.reject(error);
-  }
+  error => handleAuthError(error)
 );
 
 // Create API service with methods for different endpoints

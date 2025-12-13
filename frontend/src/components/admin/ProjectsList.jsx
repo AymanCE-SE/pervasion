@@ -20,7 +20,7 @@ import './ProjectsList.css';
 import { toast } from 'react-toastify';
 
 const ProjectsList = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   
   const projects = useSelector(selectAllProjects);
@@ -71,10 +71,10 @@ const ProjectsList = () => {
   const handleDeleteProject = async () => {
     try {
       await dispatch(deleteProject(projectToDelete.id)).unwrap();
-      toast.success(t('admin.notifications.projectDeleteSuccess'));
+      toast.success(t('admin.projectsList.deleteSuccess'));
       setShowDeleteModal(false);
     } catch (error) {
-      toast.error(t('admin.notifications.deleteError'));
+      toast.error(t('admin.projectsList.deleteError'));
     }
   };
   
@@ -104,7 +104,7 @@ const ProjectsList = () => {
         <div className="page-header">
           <div>
             <h1>{t('admin.projects')}</h1>
-            <p>Manage your portfolio projects</p>
+            <p>{t('admin.projectSubtitle')}</p>
           </div>
           <Button 
             as={Link} 
@@ -121,13 +121,13 @@ const ProjectsList = () => {
           <Card.Header>
             <Row className="align-items-center">
               <Col md={6}>
-                <h5 className="mb-0">All Projects</h5>
+                <h5 className="mb-0">{t('admin.projectsList.title')}</h5>
               </Col>
               <Col md={6}>
                 <Form.Group>
                   <Form.Control
                     type="text"
-                    placeholder="Search projects..."
+                    placeholder={t('admin.projectsList.searchPlaceholder')}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="search-input"
@@ -162,13 +162,13 @@ const ProjectsList = () => {
                 <Table hover>
                   <thead>
                     <tr>
-                      <th style={{ width: '50px' }}>#</th>
-                      <th>Image</th>
-                      <th>Title</th>
-                      <th>Category</th>
-                      <th>Date</th>
-                      <th>Featured</th>
-                      <th style={{ width: '150px' }}>Actions</th>
+                      <th style={{ width: '50px' }}>{t('admin.projectsList.tableHeaders.id')}</th>
+                      <th style={{ width: '80px' }}>{t('admin.projectsList.tableHeaders.image')}</th>
+                      <th>{t('admin.projectsList.tableHeaders.title')}</th>
+                      <th style={{ width: '150px' }}>{t('admin.projectsList.tableHeaders.category')}</th>
+                      <th style={{ width: '120px' }}>{t('admin.projectsList.tableHeaders.date')}</th>
+                      <th style={{ width: '100px' }}>{t('admin.projectsList.tableHeaders.featured')}</th>
+                      <th style={{ width: '120px' }}>{t('admin.projectsList.tableHeaders.actions')}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -184,17 +184,17 @@ const ProjectsList = () => {
                           {language === 'en' ? project.title : project.title_ar}
                         </td>
                         <td>
-                        <Badge bg="info" className="category-badge">
-                          {language === 'en' ? project.category_name : project.category_name_ar}
-                        </Badge>
+                          <Badge bg="info" className="category-badge">
+                            {language === 'en' ? project.category_name : project.category_name_ar}
+                          </Badge>
                         </td>
-                        <td>{new Date(project.date).toLocaleDateString()}</td>
-                        <td>
+                        <td>{new Date(project.date).toLocaleDateString(i18n.language)}</td>
+                        <td className="text-center">
                           <Badge 
                             bg={project.featured ? 'success' : 'secondary'}
                             className="featured-badge"
                           >
-                            {project.featured ? 'Yes' : 'No'}
+                            <span>{project.featured ? t('admin.yes') : t('admin.no')}</span>
                           </Badge>
                         </td>
                         <td>
@@ -203,9 +203,8 @@ const ProjectsList = () => {
                               as={Link}
                               to={`/projects/${project.id}`}
                               variant="outline-info" 
-                              size="sm" 
                               className="action-btn"
-                              title="View"
+                              title={t('admin.projectsList.view')}
                             >
                               <FaEye />
                             </Button>
@@ -213,17 +212,15 @@ const ProjectsList = () => {
                               as={Link}
                               to={`/admin/projects/edit/${project.id}`}
                               variant="outline-primary" 
-                              size="sm" 
                               className="action-btn"
-                              title="Edit"
+                              title={t('admin.projectsList.edit')}
                             >
                               <FaEdit />
                             </Button>
                             <Button 
                               variant="outline-danger" 
-                              size="sm" 
                               className="action-btn"
-                              title="Delete"
+                              title={t('admin.projectsList.delete')}
                               onClick={() => confirmDelete(project)}
                             >
                               <FaTrash />
@@ -237,7 +234,9 @@ const ProjectsList = () => {
               </div>
             ) : (
               <div className="text-center py-5">
-                <p>No projects found. {searchTerm && 'Try a different search term.'}</p>
+                <p>
+                  {t('admin.projectsList.noProjects')} {searchTerm && t('admin.projectsList.tryDifferentSearch')}
+                </p>
               </div>
             )}
           </Card.Body>
@@ -251,11 +250,11 @@ const ProjectsList = () => {
           className={darkMode ? 'dark-mode' : ''}
         >
           <Modal.Header closeButton>
-            <Modal.Title>Confirm Delete</Modal.Title>
+            <Modal.Title>{t('admin.projectsList.confirmDelete')}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <p>
-              {t('admin.confirmDelete')}
+              {t('admin.projectsList.deleteMessage')}
               <br />
               <strong>
                 {projectToDelete && (language === 'en' ? projectToDelete.title : projectToDelete.title_ar)}

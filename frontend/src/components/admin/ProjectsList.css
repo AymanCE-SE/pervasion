@@ -111,10 +111,20 @@
   border-color: var(--accent);
 }
 
+/* Table improvements */
+.table-responsive {
+  border-radius: var(--radius-lg);
+  overflow: auto;
+  margin: 0 -1px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--main) transparent;
+}
+
 .table {
   margin-bottom: 0;
   color: var(--text-primary-light);
   background: transparent;
+  min-width: 800px;
 }
 
 .dark-mode .table {
@@ -137,36 +147,33 @@
 
 .table td {
   vertical-align: middle;
-  padding: 0.75rem 1.5rem;
+  padding: 1rem;
   border-color: var(--border-light);
   background: transparent;
+  white-space: nowrap;
 }
 
 .dark-mode .table td {
   border-color: var(--border-dark);
 }
 
+/* Project thumbnail improvements */
 .project-thumbnail {
   width: 60px;
   height: 40px;
   border-radius: var(--radius-md);
   overflow: hidden;
+  border: 2px solid var(--border-light);
+}
+
+.dark-mode .project-thumbnail {
+  border-color: var(--border-dark);
 }
 
 .project-thumbnail img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-.category-badge,
-.featured-badge {
-  font-weight: 500;
-  font-size: 0.75rem;
-  padding: 0.35rem 0.65rem;
-  border-radius: var(--radius-full);
-  background: var(--secondary-gradient);
-  color: #fff;
 }
 
 .action-buttons {

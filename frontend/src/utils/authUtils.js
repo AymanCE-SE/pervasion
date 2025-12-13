@@ -1,3 +1,4 @@
+// This file not used anymore. Kept for reference.
 import axios from 'axios';
 import store from '../redux/store';
 import { selectRefreshToken } from '../redux/slices/authSlice';

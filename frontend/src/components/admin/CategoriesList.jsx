@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './CategoriesList.css';
 import { Table, Button, Modal, Form, Alert } from 'react-bootstrap';
-import { FaPlus, FaEdit, FaTrash } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaTrash, FaSave } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import {
@@ -114,13 +114,25 @@ const CategoriesList = () => {
                   <td>{cat.id}</td>
                   <td>{cat.name}</td>
                   <td>{cat.name_ar}</td>
-                  <td style={{ width: 180 }}>
-                    <Button size="sm" variant="outline-secondary" className="me-2 d-flex align-items-center gap-1" onClick={() => openEdit(cat)}>
-                      <FaEdit /> {t('admin.edit')}
-                    </Button>
-                    <Button size="sm" variant="outline-danger" className="d-flex align-items-center gap-1" onClick={() => confirmDelete(cat.id)}>
-                      <FaTrash /> {t('admin.delete')}
-                    </Button>
+                  <td>
+                    <div className="action-buttons">
+                      <Button 
+                        size="sm" 
+                        variant="outline-secondary" 
+                        className="d-flex align-items-center gap-1" 
+                        onClick={() => openEdit(cat)}
+                      >
+                        <FaEdit size={14} /> {t('admin.edit')}
+                      </Button>
+                      <Button 
+                        size="sm" 
+                        variant="outline-danger" 
+                        className="d-flex align-items-center gap-1" 
+                        onClick={() => confirmDelete(cat.id)}
+                      >
+                        <FaTrash size={14} /> {t('admin.delete')}
+                      </Button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -153,12 +165,35 @@ const CategoriesList = () => {
                   onChange={(e) => setForm({ ...form, name_ar: e.target.value })}
                   required
                   placeholder={t('admin.categoryNameArPlaceholder')}
+                  className="arabic-input"
                 />
               </Form.Group>
             </Modal.Body>
             <Modal.Footer>
-              <Button variant="secondary" onClick={() => setShowModal(false)}>{t('admin.cancel')}</Button>
-              <Button type="submit" variant="primary">{editing ? t('admin.update') : t('admin.create')}</Button>
+              <Button 
+                variant="secondary" 
+                onClick={() => setShowModal(false)}
+                className="px-4"
+              >
+                {t('admin.cancel')}
+              </Button>
+              <Button 
+                type="submit" 
+                variant="primary"
+                className="save-btn"
+              >
+                {status === 'loading' ? (
+                  <>
+                    <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    {t('common.loading')}
+                  </>
+                ) : (
+                  <>
+                    <FaSave className="me-2" />
+                    {editing ? t('admin.update') : t('admin.create')}
+                  </>
+                )}
+              </Button>
             </Modal.Footer>
           </Form>
         </Modal>

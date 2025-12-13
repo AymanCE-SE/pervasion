@@ -13,7 +13,8 @@
     "login": "تسجيل الدخول",
     "signup": "تسجيل جديد",
     "logout": "تسجيل الخروج",
-    "profile": "الصفحةالشخصيه"
+    "profile": "الصفحةالشخصيه",
+    "joinUs": "انضم إلينا"
   },
   "hero": {
     "titleStart": "حلول تصميم إبداعية",
@@ -266,6 +267,7 @@
     "dashboard": "لوحة التحكم",
     "adminPanel": "لوحة التحكم الإدارية",
     "projects": "المشاريع",
+    "projectSubtitle": "إدارة المشاريع بالمنصه",
     "users": "المستخدمون",
     "login": "تسجيل دخول المدير",
     "logout": "تسجيل الخروج",
@@ -275,6 +277,7 @@
     "recentProjects": "المشاريع الأخيرة",
     "viewAll": "عرض الكل",
     "messages": "الرسائل",
+    "jobApplications": "طلبات التوظيف",
     "unreadMessages": "{{count}} غير مفروءه",
     "totalMessages": "{{count}} رسائل",
     "edit": "تعديل",
@@ -296,18 +299,35 @@
     "contacts": "الرسائل",
     "loginError": "اسم المستخدم أو كلمة المرور غير صحيحة",
     "projectForm": {
-      "title": "عنوان المشروع",
+      "title": "العنوان",
       "description": "الوصف",
       "category": "الفئة",
-      "selectCategory": "اختر فئة",
-      "createNewCategory": "إنشاء فئة جديدة",
-      "categoryNameEnglish": "اسم الفئة (بالإنجليزية)",
-      "categoryNameArabic": "اسم الفئة (بالعربية)",
       "client": "العميل",
       "date": "التاريخ",
       "featured": "مشروع مميز",
-      "image": "رابط الصورة الرئيسية",
-      "images": "روابط الصور الإضافية (مفصولة بفواصل)"
+      "image": "الصورة الرئيسية",
+      "images": "صور إضافية",
+      "selectCategory": "اختر فئة",
+      "createNewCategory": "إنشاء فئة جديدة",
+      "editMode": "تعديل المشروع",
+      "createMode": "إنشاء مشروع جديد",
+      "requiredField": "هذا الحقل مطلوب",
+      "backToProjects": "العودة إلى المشاريع",
+      "atLeastOneAdditionalImage": "يجب تحميل صورة إضافية واحدة على الأقل",
+      "placeholders": {
+        "title": "أدخل عنوان المشروع بالإنجليزية",
+        "titleAr": "أدخل عنوان المشروع",
+        "description": "أدخل وصف المشروع بالإنجليزية",
+        "descriptionAr": "أدخل وصف المشروع",
+        "client": "أدخل اسم العميل",
+        "newCategory": "اسم الفئة الجديدة بالإنجليزية",
+        "newCategoryAr": "اسم الفئة الجديدة"
+      },
+      "help": {
+        "mainImage": "قم بتحميل الصورة الرئيسية للمشروع (JPEG, PNG, GIF, WebP، الحد الأقصى 5 ميجابايت)",
+        "additionalImages": "قم بتحميل صور إضافية للمشروع (JPEG, PNG, GIF, WebP، الحد الأقصى 5 ميجابايت لكل صورة)",
+        "currentImage": "الصورة الحالية (لن تتغير إلا إذا اخترت صورة جديدة)"
+      }
     },
     "userForm": {
       "username": "اسم المستخدم",
@@ -339,6 +359,136 @@
       "categoryCreateSuccess": "تم إنشاء الفئة بنجاح",
       "categoryUpdateSuccess": "تم تحديث الفئة بنجاح",
       "categoryDeleteSuccess": "تم حذف الفئة بنجاح"
+    },
+    "jobApplicationsList": {
+      "title": "طلبات التوظيف",
+      "subtitle": "إدارة ومراجعة المتقدمين للوظائف",
+      "refresh": "تحديث",
+      "allApplications": "جميع الطلبات",
+      "searchPlaceholder": "ابحث بالاسم أو البريد الإلكتروني أو المنصب...",
+      "tableHeaders": {
+        "id": "#",
+        "name": "الاسم",
+        "email": "البريد الإلكتروني",
+        "position": "المنصب",
+        "experience": "الخبرة",
+        "agencyExperience": "خبرة الوكالة",
+        "dateApplied": "تاريخ الطلب",
+        "actions": "الإجراءات"
+      },
+      "noApplications": "لم يتم العثور على أي طلبات",
+      "details": {
+        "title": "تفاصيل الطلب",
+        "fullName": "الاسم الكامل",
+        "email": "البريد الإلكتروني",
+        "phone": "رقم الهاتف",
+        "location": "الموقع",
+        "position": "المنصب",
+        "workType": "نوع العمل",
+        "experience": "الخبرة",
+        "agencyExperience": "خبرة الوكالة",
+        "portfolio": "المحفظة",
+        "toolsAndSoftware": "الأدوات والبرامج",
+        "aboutYou": "عنك",
+        "applied": "تقديم الطلب",
+        "close": "إغلاق"
+      },
+      "confirmDelete": "تأكيد الحذف",
+      "deleteMessage": "هل أنت متأكد أنك تريد حذف طلب",
+      "cancel": "إلغاء",
+      "delete": "حذف",
+      "deletedSuccessfully": "تم حذف الطلب بنجاح",
+      "experienceLabels": {
+        "0_1": "أقل من سنة",
+        "1_3": "1-3 سنوات",
+        "3_5": "3-5 سنوات",
+        "5_plus": "5+ سنوات"
+      },
+      "yes": "نعم",
+      "no": "لا"
+    },
+    "usersList": {
+      "title": "جميع المستخدمين",
+      "subtitle": "إدارة حسابات المستخدمين",
+      "searchPlaceholder": "ابحث عن المستخدمين...",
+      "tableHeaders": {
+        "id": "#",
+        "username": "اسم المستخدم",
+        "name": "الاسم",
+        "email": "البريد الإلكتروني",
+        "status": "الحالة",
+        "role": "الدور",
+        "actions": "الإجراءات"
+      },
+      "noUsers": "لم يتم العثور على مستخدمين.",
+      "tryDifferentSearch": "جرب مصطلح بحث مختلف.",
+      "confirmDelete": "تأكيد الحذف",
+      "deleteMessage": "هل أنت متأكد أنك تريد حذف هذا المستخدم؟",
+      "deleteSuccess": "تم حذف المستخدم بنجاح",
+      "deleteError": "فشل حذف المستخدم",
+      "edit": "تعديل",
+      "delete": "حذف",
+      "verified": "تم التحقق",
+      "unverified": "لم يتم التحقق",
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "admin": "مدير",
+      "user": "مستخدم",
+      "adminWarning": "تحذير: أنت على وشك حذف مستخدم مسؤول."
+    },
+    "contactsList": {
+      "title": "رسائل الاتصال",
+      "subtitle": "إدارة طلبات نموذج الاتصال",
+      "searchPlaceholder": "ابحث في الرسائل...",
+      "allMessages": "جميع الرسائل",
+      "tableHeaders": {
+        "id": "#",
+        "name": "الاسم",
+        "email": "البريد الإلكتروني",
+        "subject": "الموضوع",
+        "date": "التاريخ",
+        "status": "الحالة",
+        "actions": "الإجراءات"
+      },
+      "noMessages": "لم يتم العثور على رسائل.",
+      "tryDifferentSearch": "جرب مصطلح بحث مختلف.",
+      "messageDetails": "تفاصيل الرسالة",
+      "confirmDelete": "تأكيد الحذف",
+      "deleteMessage": "هل أنت متأكد أنك تريد حذف هذه الرسالة من",
+      "deleteSuccess": "تم حذف الرسالة بنجاح",
+      "deleteError": "فشل حذف الرسالة",
+      "cancel": "إلغاء",
+      "delete": "حذف",
+      "from": "من",
+      "messageSubject": "الموضوع",
+      "message": "الرسالة",
+      "received": "تم الاستقبال",
+      "read": "مقروءة",
+      "new": "جديدة",
+      "alreadyRead": "تم قراءتها بالفعل",
+      "markAsRead": "وضع علامة كمقروءة"
+    },
+    "projectsList": {
+      "title": "جميع المشاريع",
+      "searchPlaceholder": "ابحث عن المشاريع...",
+      "tableHeaders": {
+        "id": "#",
+        "image": "الصورة",
+        "title": "العنوان",
+        "category": "الفئة",
+        "date": "التاريخ",
+        "featured": "مميز",
+        "actions": "الإجراءات"
+      },
+      "noProjects": "لم يتم العثور على مشاريع.",
+      "tryDifferentSearch": "جرب مصطلح بحث مختلف.",
+      "confirmDelete": "تأكيد الحذف",
+      "deleteMessage": "هل أنت متأكد أنك تريد حذف هذا المشروع؟",
+      "deleteSuccess": "تم حذف المشروع بنجاح",
+      "deleteError": "فشل حذف المشروع",
+      "view": "عرض",
+      "edit": "تعديل",
+      "delete": "حذف"
     }
   },
   "footer": {
@@ -440,5 +590,60 @@
         "branch4": "دعم العلامة التجارية المستمر"
       }
     }
+  },
+  "jobApplicant": {
+    "title": "انضم إلى فريقنا",
+    "subtitle": "قدم طلبك للعمل معنا",
+    "heroSubtitle": "نبحث دائمًا عن مواهب جديدة — شاركنا نبذة عنك",
+    "formHeader": {
+      "title": "قدّم طلبك",
+      "subtitle": "املأ النموذج أدناه وسنراجعه ونتواصل مع المرشحين المؤهلين"
+    },
+    "form": {
+      "fullName": "الاسم الكامل",
+      "email": "عنوان البريد الإلكتروني",
+      "phone": "رقم الهاتف",
+      "cityCountry": "المدينة والدولة",
+      "position": "المنصب",
+      "work_type": "نوع العمل",
+      "experience": "سنوات الخبرة",
+      "portfolio": "رابط المحفظة",
+      "tools": "الأدوات والبرامج",
+      "workedInAgencyBefore": "هل عملت في وكالة من قبل؟",
+      "aboutYou": "أخبرنا عن نفسك",
+      "selectPosition": "اختر المنصب",
+      "yes": "نعم",
+      "no": "لا",
+      "submit": "إرسال الطلب",
+      "placeholders": {
+        "fullName": "أدخل اسمك الكامل",
+        "email": "أدخل عنوان بريدك الإلكتروني",
+        "phone": "أدخل رقم هاتفك",
+        "cityCountry": "أدخل مدينتك ودولتك",
+        "experience": "سنوات الخبرة",
+        "work_type": "اختر نوع العمل",
+        "portfolio": "https://yourportfolio.com",
+        "aboutYou": "أخبرنا عن خبرتك وسبب رغبتك في الانضمام إلى فريقنا"
+      },
+      "sections": {
+        "personalInfo": "المعلومات الشخصية",
+        "jobDetails": "تفاصيل الوظيفة",
+        "additionalInfo": "معلومات إضافية"
+      }
+    },
+    "sections": {
+      "basicInformation": "المعلومات الأساسية",
+      "basicInformationDesc": "أخبرنا من أنت وكيف يمكننا التواصل معك.",
+      "professionalBackground": "الخلفية المهنية",
+      "professionalBackgroundDesc": "شارك دورك، خبرتك والأدوات التي تستخدمها."
+    },
+    "positions": {
+      "graphic_designer": "مصمم جرافيك",
+      "motion_designer": "مصمم حركة",
+      "content_creator": "منشئ محتوى",
+      "media_buyer": "مشتري إعلانات"
+    },
+    "success": "تم إرسال طلبك بنجاح! سنراجعه ونعود إليك قريباً.",
+    "error": "فشل إرسال الطلب. يرجى المحاولة مرة أخرى."
   }
 }

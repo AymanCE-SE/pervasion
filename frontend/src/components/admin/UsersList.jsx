@@ -15,6 +15,7 @@ import {
 import { selectDarkMode } from '../../redux/slices/themeSlice';
 import { FaPlus, FaEdit, FaTrash, FaUserShield, FaEnvelopeOpen, FaEnvelope, FaUserCheck, FaUserSlash, FaUser } from 'react-icons/fa';
 import './UsersList.css';
+import { toast } from 'react-toastify';
 
 const UsersList = () => {
   const { t } = useTranslation();
@@ -64,6 +65,7 @@ const UsersList = () => {
   const handleDeleteUser = () => {
     if (userToDelete) {
       dispatch(deleteUser(userToDelete.id));
+      toast.success(t('admin.usersList.deleteSuccess'));
       setShowDeleteModal(false);
       setUserToDelete(null);
     }
@@ -95,7 +97,7 @@ const UsersList = () => {
         <div className="page-header">
           <div>
             <h1>{t('admin.users')}</h1>
-            <p>Manage user accounts</p>
+            <p>{t('admin.usersList.subtitle')}</p>
           </div>
           <Button 
             as={Link} 
@@ -112,13 +114,13 @@ const UsersList = () => {
           <Card.Header>
             <Row className="align-items-center">
               <Col md={6}>
-                <h5 className="mb-0">All Users</h5>
+                <h5 className="mb-0">{t('admin.usersList.title')}</h5>
               </Col>
               <Col md={6}>
                 <Form.Group>
                   <Form.Control
                     type="text"
-                    placeholder="Search users..."
+                    placeholder={t('admin.usersList.searchPlaceholder')}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="search-input"
@@ -153,13 +155,13 @@ const UsersList = () => {
                 <Table hover>
                   <thead>
                     <tr>
-                      <th style={{ width: '50px' }}>#</th>
-                      <th>Username</th>
-                      <th>Name</th>
-                      <th>Email</th>
-                      <th>Status</th>
-                      <th>Role</th>
-                      <th style={{ width: '120px' }}>Actions</th>
+                      <th style={{ width: '50px' }}>{t('admin.usersList.tableHeaders.id')}</th>
+                      <th>{t('admin.usersList.tableHeaders.username')}</th>
+                      <th>{t('admin.usersList.tableHeaders.name')}</th>
+                      <th>{t('admin.usersList.tableHeaders.email')}</th>
+                      <th>{t('admin.usersList.tableHeaders.status')}</th>
+                      <th>{t('admin.usersList.tableHeaders.role')}</th>
+                      <th style={{ width: '120px' }}>{t('admin.usersList.tableHeaders.actions')}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -176,9 +178,9 @@ const UsersList = () => {
                               className="verification-badge"
                             >
                               {Boolean(user.email_verified) ? (
-                                <><FaEnvelopeOpen size="0.8em" /> Verified</>
+                                <><FaEnvelopeOpen size="0.8em" /> {t('admin.usersList.verified')}</>
                               ) : (
-                                <><FaEnvelope size="0.8em" /> Unverified</>
+                                <><FaEnvelope size="0.8em" /> {t('admin.usersList.unverified')}</>
                               )}
                             </Badge>
                           </div>
@@ -189,9 +191,9 @@ const UsersList = () => {
                             className="status-badge"
                           >
                             {Boolean(user.is_active) ? (
-                              <><FaUserCheck size="0.8em" /> Active</>
+                              <><FaUserCheck size="0.8em" /> {t('admin.usersList.active')}</>
                             ) : (
-                              <><FaUserSlash size="0.8em" /> Inactive</>
+                              <><FaUserSlash size="0.8em" /> {t('admin.usersList.inactive')}</>
                             )}
                           </Badge>
                         </td>
@@ -201,9 +203,9 @@ const UsersList = () => {
                             className="role-badge"
                           >
                             {user.role === 'admin' ? (
-                              <><FaUserShield size="0.8em" /> Admin</>
+                              <><FaUserShield size="0.8em" /> {t('admin.usersList.admin')}</>
                             ) : (
-                              <><FaUser size="0.8em" /> User</>
+                              <><FaUser size="0.8em" /> {t('admin.usersList.user')}</>
                             )}
                           </Badge>
                         </td>
@@ -213,17 +215,15 @@ const UsersList = () => {
                               as={Link}
                               to={`/admin/users/edit/${user.id}`}
                               variant="outline-primary" 
-                              size="sm" 
                               className="action-btn"
-                              title="Edit"
+                              title={t('admin.usersList.edit')}
                             >
                               <FaEdit />
                             </Button>
                             <Button 
                               variant="outline-danger" 
-                              size="sm" 
                               className="action-btn"
-                              title="Delete"
+                              title={t('admin.usersList.delete')}
                               onClick={() => confirmDelete(user)}
                               disabled={user.role === 'admin' && users.filter(u => u.role === 'admin').length === 1}
                             >
@@ -238,7 +238,9 @@ const UsersList = () => {
               </div>
             ) : (
               <div className="text-center py-5">
-                <p>No users found. {searchTerm && 'Try a different search term.'}</p>
+                <p>
+                  {t('admin.usersList.noUsers')} {searchTerm && t('admin.usersList.tryDifferentSearch')}
+                </p>
               </div>
             )}
           </Card.Body>
@@ -252,11 +254,11 @@ const UsersList = () => {
           className={darkMode ? 'dark-mode' : ''}
         >
           <Modal.Header closeButton>
-            <Modal.Title>Confirm Delete</Modal.Title>
+            <Modal.Title>{t('admin.usersList.confirmDelete')}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <p>
-              {t('admin.confirmDelete')}
+              {t('admin.usersList.deleteMessage')}
               <br />
               <strong>
                 {userToDelete && userToDelete.username}
@@ -265,7 +267,7 @@ const UsersList = () => {
             {userToDelete && userToDelete.role === 'admin' && (
               <Alert variant="warning">
                 <FaUserShield className="me-2" />
-                Warning: You are about to delete an admin user.
+                {t('admin.usersList.adminWarning')}
               </Alert>
             )}
           </Modal.Body>

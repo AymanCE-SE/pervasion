@@ -36,6 +36,7 @@ const NavLinks = memo(({ isAuthenticated, closeMenu, isMobile = false, user }) =
     { path: "/projects", label: t('nav.projects') },
     { path: "/about", label: t('nav.about') },
     { path: "/contact", label: t('nav.contact') },
+    { path: "/join-us", label: t('nav.joinUs') },
   ];
   
   // Add dashboard link for admin users

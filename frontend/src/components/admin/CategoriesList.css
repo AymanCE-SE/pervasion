@@ -45,71 +45,151 @@
   color: #fff;
 }
 
+/* Table improvements */
 .admin-categories .table {
   background: var(--bg-primary-light);
   border-radius: var(--radius-md);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
+  margin-bottom: 0;
 }
-.dark-mode .admin-categories .table {
-  background: var(--bg-secondary-dark);
-  color: var(--text-primary-dark);
-}
-.admin-categories th {
-  background: var(--main-gradient);
-  color: #fff;
+
+.admin-categories .table th {
+  background: var(--bg-secondary-light);
+  color: var(--text-primary-light);
   font-weight: 600;
   border: none;
+  padding: 1rem;
 }
-.dark-mode .admin-categories th {
-  background: var(--main-dark-gradient);
-  color: var(--accent);
+.dark-mode .admin-categories .table th {
+  background: var(--bg-overlay-dark);
+  color: var(--text-primary-dark);
 }
-.admin-categories td {
+.admin-categories .table td {
   vertical-align: middle;
+  padding: 1rem;
+  border-color: var(--border-light);
+  background: transparent;
+}
+.dark-mode .admin-categories .table td {
+  border-color: var(--border-dark);
+}
+
+/* Action buttons in table */
+.admin-categories .action-buttons {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+/* Form submit button improvements */
+.admin-categories .modal-footer .btn-primary {
+  background: var(--main-gradient);
   border: none;
+  color: white;
+  padding: 0.625rem 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all var(--transition-fast);
 }
 
-.admin-categories .btn-outline-secondary {
-  border-color: var(--main);
-  color: var(--main);
-  border-radius: var(--radius-full);
-}
-.admin-categories .btn-outline-secondary:hover {
-  background: var(--main);
-  color: #fff;
-}
-.dark-mode .admin-categories .btn-outline-secondary {
-  border-color: var(--accent);
-  color: var(--accent);
-}
-.dark-mode .admin-categories .btn-outline-secondary:hover {
-  background: var(--accent);
-  color: var(--main-dark);
+.admin-categories .modal-footer .btn-primary:hover:not(:disabled) {
+  background: var(--primary-gradient);
+  transform: translateY(-2px);
 }
 
-.admin-categories .btn-outline-danger {
-  border-radius: var(--radius-full);
+.dark-mode .admin-categories .modal-footer .btn-primary {
+  opacity: 0.95;
 }
 
-.admin-categories .modal-content {
-  border-radius: var(--radius-lg);
+.dark-mode .admin-categories .modal-footer .btn-primary:hover:not(:disabled) {
+  opacity: 1;
+}
+
+/* Modal footer improvements */
+.admin-categories .modal-footer {
+  padding: 1rem;
+  gap: 0.5rem;
+  border-top: 1px solid var(--border-light);
+}
+.dark-mode .admin-categories .modal-footer {
+  border-top-color: var(--border-dark);
+}
+
+/* Table hover states */
+.admin-categories .table tr:hover td {
+  background: var(--bg-overlay-light);
+}
+.dark-mode .admin-categories .table tr:hover td {
+  background: var(--bg-overlay-dark);
+}
+
+/* Form control and placeholder improvements */
+.admin-categories .form-control {
   background: var(--bg-primary-light);
   color: var(--text-primary-light);
-  box-shadow: var(--shadow-md);
-}
-.dark-mode .admin-categories .modal-content {
-  background: var(--bg-secondary-dark);
-  color: var(--text-primary-dark);
-  box-shadow: var(--shadow-dark);
+  border-color: var(--border-light);
 }
 
-.admin-categories .form-label {
-  font-weight: 500;
-  color: var(--main);
+.dark-mode .admin-categories .form-control {
+  background: var(--bg-primary-dark);
+  color: var(--text-primary-dark);
+  border-color: var(--border-dark);
 }
-.dark-mode .admin-categories .form-label {
-  color: var(--accent);
+
+.admin-categories .form-control::placeholder {
+  color: var(--text-secondary-light);
+  opacity: 0.7;
+}
+
+.dark-mode .admin-categories .form-control::placeholder {
+  color: var(--text-secondary-dark);
+  opacity: 0.7;
+}
+
+/* Modal improvements */
+.admin-categories .modal-header {
+  border-bottom-color: var(--border-light);
+}
+
+.dark-mode .admin-categories .modal-header {
+  border-bottom-color: var(--border-dark);
+}
+
+.admin-categories .modal-footer {
+  border-top-color: var(--border-light);
+}
+
+.dark-mode .admin-categories .modal-footer {
+  border-top-color: var(--border-dark);
+}
+
+/* Form text and label colors */
+.admin-categories .form-text {
+  color: var(--text-secondary-light) !important;
+  opacity: 0.9;
+}
+
+.dark-mode .admin-categories .form-text {
+  color: var(--text-secondary-dark) !important;
+  opacity: 0.9;
+}
+
+/* RTL Support for Arabic inputs */
+.admin-categories [dir="rtl"].form-control {
+  text-align: right;
+}
+
+/* Focus state improvements */
+.admin-categories .form-control:focus {
+  border-color: var(--main);
+  box-shadow: 0 0 0 0.2rem rgba(var(--main-rgb), 0.25);
+}
+
+.dark-mode .admin-categories .form-control:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 0.2rem rgba(var(--accent-rgb), 0.25);
 }
 
 @media (max-width: 900px) {

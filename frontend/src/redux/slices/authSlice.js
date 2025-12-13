@@ -183,25 +183,10 @@ export const login = createAsyncThunk(
 // Async thunk for logout
 export const logout = createAsyncThunk(
   'auth/logout',
-  async (_, { getState, extra }) => {
-    const { token } = getState().auth;
-    
-    try {
-      if (extra?.api && token) {
-        try {
-          await extra.api.post('/auth/logout/', {}, {
-            headers: { 'Authorization': `Bearer ${token}` }
-          });
-        } catch (error) {
-          console.warn('Logout API error (proceeding with client-side logout):', error);
-        }
-      }
-    } finally {
-      // Clear all auth data from localStorage
-      localStorage.removeItem('user');
-      localStorage.removeItem('token');
-      localStorage.removeItem('refreshToken');
-    }
+  async () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('user');
   }
 );
 

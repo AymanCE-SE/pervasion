@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     "users",
     "contact",
     "comments",
+    "jobapplicant"
 ]
 
 # Middleware ordering: Security -> WhiteNoise -> CORS -> Sessions -> Common -> ...
@@ -199,6 +200,7 @@ else:
     CORS_ALLOW_ALL_ORIGINS = False
     CORS_ALLOWED_ORIGINS = [
         "https://jumoohmedia.com",
+        "https://www.jumoohmedia.com",
         "https://jumooh.media",
         "http://localhost:5173",
         "http://127.0.0.1:5173",

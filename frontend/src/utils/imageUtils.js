@@ -1,6 +1,8 @@
 /**
  * Utility functions for handling images
- */
+ * Includes functions to get absolute URLs, handle image errors, and provide fallback images.
+ * used in various components to ensure robust image loading.
+*/
 
 /**
  * Checks if a URL is absolute (starts with http:// or https://)

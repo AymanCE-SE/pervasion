@@ -136,6 +136,28 @@
   color: var(--text-secondary-dark);
 }
 
+/* Clickable stat card */
+.stat-card.clickable {
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.stat-card.clickable:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* New badge styling */
+.stat-card .new-badge {
+  font-size: 0.65rem;
+  padding: 0.25rem 0.5rem;
+}
+
+/* Applications icon color */
+.applications-icon {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
 /* Recent Card */
 .recent-card {
   border: none;

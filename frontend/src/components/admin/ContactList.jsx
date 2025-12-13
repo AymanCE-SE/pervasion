@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Helmet } from 'react-helmet-async';
 import { FaTrash, FaEnvelope, FaEnvelopeOpen } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 import { 
   fetchContacts, 
   markAsRead,
@@ -15,8 +16,9 @@ import {
 } from '../../redux/slices/contactSlice';
 import { selectDarkMode } from '../../redux/slices/themeSlice';
 import './ContactList.css';
+
 const ContactList = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   
   // States
@@ -66,7 +68,6 @@ const ContactList = () => {
         await dispatch(markAsRead(contact.id)).unwrap();
       } catch (error) {
         console.error('Failed to mark message as read:', error);
-        // Optionally show error toast/alert here
       }
     }
   };
@@ -80,13 +81,14 @@ const ContactList = () => {
   const confirmDelete = () => {
     if (selectedContact) {
       dispatch(deleteContact(selectedContact.id));
+      toast.success(t('admin.contactsList.deleteSuccess'));
       setShowDeleteModal(false);
       setSelectedContact(null);
     }
   };
 
   const handleMarkAsRead = async (contact, e) => {
-    e.stopPropagation(); // Prevent row click event
+    e.stopPropagation();
     
     if (!contact.is_read) {
       try {
@@ -100,7 +102,7 @@ const ContactList = () => {
   return (
     <>
       <Helmet>
-        <title>{t('app.title')} - Contact Messages</title>
+        <title>{t('app.title')} - {t('admin.contactsList.title')}</title>
       </Helmet>
 
       <motion.div
@@ -110,7 +112,7 @@ const ContactList = () => {
       >
         <div className="page-header">
           <div>
-            <h1>{t('admin.contacts')}</h1>
+            <h1>{t('admin.contactsList.title')}</h1>
             <p>
               {t('admin.totalMessages', { count: contacts?.length || 0 })}
             </p>
@@ -121,13 +123,13 @@ const ContactList = () => {
           <Card.Header>
             <Row className="align-items-center">
               <Col md={6}>
-                <h5 className="mb-0">All Messages</h5>
+                <h5 className="mb-0">{t('admin.contactsList.allMessages')}</h5>
               </Col>
               <Col md={6}>
                 <Form.Group>
                   <Form.Control
                     type="text"
-                    placeholder="Search messages..."
+                    placeholder={t('admin.contactsList.searchPlaceholder')}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="search-input"
@@ -140,7 +142,7 @@ const ContactList = () => {
             {status === 'loading' ? (
               <div className="text-center py-5">
                 <div className="spinner-border" role="status">
-                  <span className="visually-hidden">Loading...</span>
+                  <span className="visually-hidden">{t('common.loading')}</span>
                 </div>
               </div>
             ) : status === 'failed' ? (
@@ -152,13 +154,13 @@ const ContactList = () => {
                 <Table hover>
                   <thead>
                     <tr>
-                      <th>#</th>
-                      <th>Name</th>
-                      <th>Email</th>
-                      <th>Subject</th>
-                      <th>Date</th>
-                      <th>Status</th>
-                      <th>Actions</th>
+                      <th>{t('admin.contactsList.tableHeaders.id')}</th>
+                      <th>{t('admin.contactsList.tableHeaders.name')}</th>
+                      <th>{t('admin.contactsList.tableHeaders.email')}</th>
+                      <th>{t('admin.contactsList.tableHeaders.subject')}</th>
+                      <th>{t('admin.contactsList.tableHeaders.date')}</th>
+                      <th>{t('admin.contactsList.tableHeaders.status')}</th>
+                      <th>{t('admin.contactsList.tableHeaders.actions')}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -172,27 +174,27 @@ const ContactList = () => {
                         <td>{contact.name}</td>
                         <td>{contact.email}</td>
                         <td>{contact.subject}</td>
-                        <td>{new Date(contact.created_at).toLocaleDateString()}</td>
+                        <td>{new Date(contact.created_at).toLocaleDateString(i18n.language)}</td>
                         <td>
                           <Badge 
                             bg={contact.is_read ? 'success' : 'warning'}
                             onClick={(e) => handleMarkAsRead(contact, e)}
                             style={{ cursor: 'pointer' }}
-                            title={contact.is_read ? 'Already read' : 'Mark as read'}
+                            title={contact.is_read ? t('admin.contactsList.alreadyRead') : t('admin.contactsList.markAsRead')}
                           >
                             {contact.is_read ? (
-                              <><FaEnvelopeOpen className="me-1" /> Read</>
+                              <><FaEnvelopeOpen className="me-1" /> {t('admin.contactsList.read')}</>
                             ) : (
-                              <><FaEnvelope className="me-1" /> New</>
+                              <><FaEnvelope className="me-1" /> {t('admin.contactsList.new')}</>
                             )}
                           </Badge>
                         </td>
                         <td>
                           <Button
                             variant="outline-danger"
-                            size="sm"
-                            onClick={(e) => handleDelete(contact, e)}
                             className="action-btn"
+                            onClick={(e) => handleDelete(contact, e)}
+                            title={t('admin.contactsList.delete')}
                           >
                             <FaTrash />
                           </Button>
@@ -204,7 +206,9 @@ const ContactList = () => {
               </div>
             ) : (
               <div className="text-center py-5">
-                <p>No messages found. {searchTerm && 'Try a different search term.'}</p>
+                <p>
+                  {t('admin.contactsList.noMessages')} {searchTerm && t('admin.contactsList.tryDifferentSearch')}
+                </p>
               </div>
             )}
           </Card.Body>
@@ -219,26 +223,26 @@ const ContactList = () => {
           className={darkMode ? 'dark-mode' : ''}
         >
           <Modal.Header closeButton>
-            <Modal.Title>Message Details</Modal.Title>
+            <Modal.Title>{t('admin.contactsList.messageDetails')}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             {selectedContact && (
               <div className="message-details">
                 <div className="detail-group">
-                  <label>From:</label>
+                  <label>{t('admin.contactsList.from')}:</label>
                   <p>{selectedContact.name} ({selectedContact.email})</p>
                 </div>
                 <div className="detail-group">
-                  <label>Subject:</label>
+                  <label>{t('admin.contactsList.messageSubject')}:</label>
                   <p>{selectedContact.subject}</p>
                 </div>
                 <div className="detail-group">
-                  <label>Message:</label>
+                  <label>{t('admin.contactsList.message')}:</label>
                   <p className="message-content">{selectedContact.message}</p>
                 </div>
                 <div className="detail-group">
-                  <label>Received:</label>
-                  <p>{new Date(selectedContact.created_at).toLocaleString()}</p>
+                  <label>{t('admin.contactsList.received')}:</label>
+                  <p>{new Date(selectedContact.created_at).toLocaleString(i18n.language)}</p>
                 </div>
               </div>
             )}
@@ -253,20 +257,19 @@ const ContactList = () => {
           className={darkMode ? 'dark-mode' : ''}
         >
           <Modal.Header closeButton>
-            <Modal.Title>Confirm Delete</Modal.Title>
+            <Modal.Title>{t('admin.contactsList.confirmDelete')}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <p>
-              Are you sure you want to delete this message from{' '}
-              <strong>{selectedContact?.name}</strong>?
+              {t('admin.contactsList.deleteMessage')} <strong>{selectedContact?.name}</strong>?
             </p>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
-              Cancel
+              {t('admin.contactsList.cancel')}
             </Button>
             <Button variant="danger" onClick={confirmDelete}>
-              Delete
+              {t('admin.contactsList.delete')}
             </Button>
           </Modal.Footer>
         </Modal>

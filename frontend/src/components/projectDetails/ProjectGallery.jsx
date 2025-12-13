@@ -286,7 +286,7 @@ const ProjectGallery = ({ images: initialImages = [], mainImage, title }) => {
                   whileHover={{ 
                     y: -5,
                     scale: 1.05,
-                    transition: { duration: 0.2 }
+                    transition: { duration: 0.1 }
                   }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -296,7 +296,7 @@ const ProjectGallery = ({ images: initialImages = [], mainImage, title }) => {
                     loading="lazy"
                     initial={{ opacity: 0.7 }}
                     animate={{ opacity: currentIndex === index ? 1 : 0.7 }}
-                    transition={{ duration: 0.2 }}
+                    transition={{ duration: 0.075 }}
                     onError={(e) => {
                       e.target.src = '/images/placeholder-thumb.jpg';
                     }}
