@@ -155,7 +155,7 @@ const ProjectDetails = () => {
             />
             
             <Row className="project-content">
-              <Col lg={8} className="mb-4 mb-lg-0">
+              <Col lg={8} xs={{ order: 1 }} className="mb-4 mb-lg-0 project-main-col">
               <ProjectGallery 
                 images={project.images} 
                 mainImage={project.image}
@@ -170,7 +170,7 @@ const ProjectDetails = () => {
                 />
               </Col>
               
-              <Col lg={4}>
+              <Col lg={4} xs={{ order: 2 }} className="project-info-col">
                 <ProjectInfo 
                   project={projectData} 
                   currentLanguage={currentLanguage} 

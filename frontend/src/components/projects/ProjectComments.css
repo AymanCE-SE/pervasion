@@ -241,10 +241,20 @@
 @media (max-width: 768px) {
   .project-comments {
     padding: var(--spacing-lg) var(--spacing-md);
+    /* Reduce the top gap so comments appear closer to the project info */
+    margin-top: 1rem;
+    max-width: 95vw;
+    margin-inline: 1rem;
   }
   
   .comment-card .card-body {
     padding: var(--spacing-md);
+  }
+
+  /* Increase comment text size/line-height for readability on small screens */
+  .comment-content, .comment-form textarea {
+    font-size: 1rem;
+    line-height: 1.7;
   }
 }
 

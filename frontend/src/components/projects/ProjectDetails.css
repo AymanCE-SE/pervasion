@@ -74,7 +74,7 @@
 }
 
 .project-title {
-  font-size: var(--text-4xl);
+  font-size: clamp(1.75rem, 2.8vw, var(--text-4xl));
   font-weight: 700;
   margin-bottom: var(--spacing-md);
   background: var(--primary-gradient);
@@ -105,7 +105,7 @@
 }
 
 .carousel-img-wrapper {
-  height: 600px;
+  height: min(60vh, 600px);
 }
 
 .carousel-img {
@@ -319,7 +319,7 @@
 /* Enhanced Mobile Responsiveness */
 @media (max-width: 991.98px) {
   .project-title {
-    font-size: 2.5rem;
+    font-size: clamp(1.6rem, 4.5vw, 2.5rem);
   }
   
   .carousel-img-wrapper {
@@ -331,6 +331,24 @@
     padding: 2rem;
   }
 }
+
+/* Make the Project Info sticky on wide screens so it stays visible while reading */
+@media (min-width: 992px) {
+  .project-info {
+    position: sticky;
+    top: 100px;
+    align-self: start;
+  }
+}
+
+/* Improve focus styles for keyboard users */
+button:focus-visible, .thumbnail:focus-visible {
+  outline: 3px solid rgba(66, 153, 225, 0.85);
+  outline-offset: 3px;
+}
+
+/* Slightly reduce gallery lift on hover when near top to avoid clipping */
+.project-gallery:hover { transform: translateY(-6px); }
 
 @media (max-width: 767.98px) {
   .back-link-container {
@@ -366,6 +384,22 @@
     margin-top: 0.5rem;
     padding-top: 1.5rem;
   }
+
+  /* Make info text slightly larger on small screens */
+  .info-label {
+    font-size: 0.95rem;
+  }
+
+  .info-value {
+    font-size: 1.05rem;
+  }
+
+  .view-comments {
+    display: inline-block;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+  }
 }
 
 @media (max-width: 575.98px) {
@@ -397,6 +431,48 @@
   
   .related-img-wrapper {
     height: 200px;
+  }
+
+  /* Make sections wider and increase readability on small phones */
+  .project-content {
+    max-width: 95vw;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .project-description {
+    font-size: 1rem;
+    line-height: 1.7;
+    padding: 1.25rem;
+  }
+
+  /* Stack order adjustments to ensure gallery is on top */
+  .project-content .project-main-col { order: 1 !important; }
+  .project-content .project-info-col { order: 2 !important; }
+
+  /* Ensure the info card is full width and not floating */
+  .project-info {
+    width: 100%;
+    margin: 0.75rem 0;
+    padding: 1rem;
+  }
+
+  .project-gallery {
+    margin-bottom: 0.5rem;
+  }
+
+  /* Reduce padding and font-size for iPhone5 narrow widths */
+  @media (max-width: 360px) {
+    .project-title { font-size: 1.5rem; }
+    .info-value { font-size: 1rem; }
+    .info-label { font-size: 0.9rem; }
+    .project-description { font-size: 0.95rem; }
+    .project-content { gap: 8px; padding: 0.75rem; }
+    /* Extra safeguard for very narrow devices (iPhone5 and similar) */
+    .project-content .project-main-col { order: 1 !important; }
+    .project-content .project-info-col { order: 2 !important; }
   }
 }
 

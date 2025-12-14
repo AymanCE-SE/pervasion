@@ -38,6 +38,7 @@ const ProjectDescription = ({ description, description_ar, currentLanguage, proj
       {/* Comments Section */}
       <motion.div 
         className="comments-section mt-5"
+        id="project-comments"
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.5, delay: 0.3 }}

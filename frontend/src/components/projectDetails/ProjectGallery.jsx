@@ -13,6 +13,10 @@ const preloadImage = (src) => {
   });
 };
 
+const MIN_SCALE = 1;
+const MAX_SCALE = 4;
+const AUTO_ZOOM_SCALE = 2;
+
 const ProjectGallery = ({ images: initialImages = [], mainImage, title }) => {
   const [preloadedImages, setPreloadedImages] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -20,7 +24,14 @@ const ProjectGallery = ({ images: initialImages = [], mainImage, title }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
   const [scale, setScale] = useState(1);
+  const [mainLoaded, setMainLoaded] = useState(false);
+  const [transformOrigin, setTransformOrigin] = useState('center center');
   const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const [openFromZoom, setOpenFromZoom] = useState(false);
+  const tapRef = useRef({ last: 0 });
+  const viewerRef = useRef(null);
+  const touchState = useRef({ startX: 0, startY: 0, tracking: false, startDistance: 0, pinchStartScale: 1 });
   
   // Use ref for drag state to avoid unnecessary re-renders
   const dragState = useRef({
@@ -28,6 +39,21 @@ const ProjectGallery = ({ images: initialImages = [], mainImage, title }) => {
     startX: 0,
     startY: 0
   });
+
+  // keep active thumbnail in view
+  const thumbsRef = useRef([]);
+  useEffect(() => {
+    if (thumbsRef.current && thumbsRef.current[currentIndex]) {
+      try { thumbsRef.current[currentIndex].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' }); } catch (e) {}
+    }
+  }, [currentIndex]);
+
+  // Detect touch-capable devices for mobile UI tweaks
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setIsTouchDevice(!!(('ontouchstart' in window) || (navigator.maxTouchPoints && navigator.maxTouchPoints > 0)));
+    }
+  }, []);
 
   // Process and preload images
   useEffect(() => {
@@ -110,18 +136,24 @@ const ProjectGallery = ({ images: initialImages = [], mainImage, title }) => {
     setScale(1);
     setPosition({ x: 0, y: 0 });
     document.body.style.overflow = 'unset';
+    try {
+      if (document.exitFullscreen) document.exitFullscreen();
+      else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+    } catch (e) {}
   }, []);
 
+  const clampScale = (s) => Math.max(MIN_SCALE, Math.min(s, MAX_SCALE));
+
   const zoomIn = useCallback(() => {
-    setScale(prev => Math.min(prev + 0.5, 3));
+    setScale(prev => clampScale(prev + 0.5));
   }, []);
 
   const zoomOut = useCallback(() => {
-    setScale(prev => Math.max(prev - 0.5, 1));
+    setScale(prev => clampScale(prev - 0.5));
   }, []);
 
   const resetZoom = useCallback(() => {
-    setScale(1);
+    setScale(MIN_SCALE);
     setPosition({ x: 0, y: 0 });
   }, []);
 
@@ -159,10 +191,133 @@ const ProjectGallery = ({ images: initialImages = [], mainImage, title }) => {
     }
   }, []);
 
+  // Touch handlers: swipe to navigate, pinch to zoom
+  const handleTouchStart = useCallback((e) => {
+    if (!e.touches) return;
+    if (e.touches.length === 1) {
+      const t = e.touches[0];
+      touchState.current.startX = t.clientX;
+      touchState.current.startY = t.clientY;
+      touchState.current.tracking = true;
+      // double tap detection
+      const now = Date.now();
+      if (now - tapRef.current.last < 300) {
+        if (!isViewerOpen) {
+          openViewer(currentIndex);
+          setTimeout(() => setScale(AUTO_ZOOM_SCALE), 60);
+        } else {
+          const rect = viewerRef.current?.getBoundingClientRect();
+          if (rect) {
+            const dx = t.clientX - (rect.left + rect.width / 2);
+            const dy = t.clientY - (rect.top + rect.height / 2);
+            if (scale === 1) {
+              setScale(AUTO_ZOOM_SCALE);
+              setPosition({ x: -dx, y: -dy });
+            } else {
+              resetZoom();
+            }
+          } else {
+            if (scale === 1) setScale(AUTO_ZOOM_SCALE); else resetZoom();
+          }
+        }
+      }
+      tapRef.current.last = now;
+    } else if (e.touches.length === 2) {
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      touchState.current.startDistance = Math.hypot(dx, dy);
+      touchState.current.pinchStartScale = scale;
+      touchState.current.tracking = false;
+      const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+      const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+      const rect = viewerRef.current?.getBoundingClientRect();
+      if (rect) {
+        const px = ((midX - rect.left) / rect.width) * 100;
+        const py = ((midY - rect.top) / rect.height) * 100;
+        setTransformOrigin(`${px}% ${py}%`);
+      }
+    }
+  }, [scale, isViewerOpen, currentIndex, openViewer, resetZoom]);
+
+  const handleTouchMove = useCallback((e) => {
+    if (!e.touches) return;
+    if (e.touches.length === 1 && touchState.current.tracking) {
+      const dx = e.touches[0].clientX - touchState.current.startX;
+      // don't update position here to avoid jitter, track for end
+      touchState.current.deltaX = dx;
+    } else if (e.touches.length === 2) {
+      // pinch
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      const dist = Math.hypot(dx, dy);
+      const ratio = dist / (touchState.current.startDistance || dist);
+      const newScale = clampScale(touchState.current.pinchStartScale * ratio);
+      setScale(newScale);
+      // update transform origin as pinch moves
+      const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+      const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+      const rect = viewerRef.current?.getBoundingClientRect();
+      if (rect) {
+        const px = ((midX - rect.left) / rect.width) * 100;
+        const py = ((midY - rect.top) / rect.height) * 100;
+        setTransformOrigin(`${px}% ${py}%`);
+      }
+    }
+  }, []);
+
+  const handleTouchEnd = useCallback((e) => {
+    if (touchState.current.tracking && typeof touchState.current.deltaX === 'number') {
+      const dx = touchState.current.deltaX;
+      const threshold = 60; // px
+      if (dx > threshold) handlePrev();
+      else if (dx < -threshold) handleNext();
+    }
+    touchState.current.tracking = false;
+    touchState.current.deltaX = 0;
+  }, [handleNext, handlePrev]);
+
+  // Fullscreen toggle
+  const toggleFullscreen = useCallback(() => {
+    const el = viewerRef.current;
+    if (!el) return;
+    if (!document.fullscreenElement) {
+      el.requestFullscreen?.();
+    } else {
+      document.exitFullscreen?.();
+    }
+  }, []);
+
   // Handle image load to update loading state
   const handleImageLoad = useCallback(() => {
     setIsLoading(false);
+    setMainLoaded(true);
   }, []);
+
+  // Small subcomponent for viewer controls (keeps main render smaller)
+  const ViewerControls = ({ hidden }) => (
+    <motion.div
+      className="viewer-controls"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0, transition: { delay: 0.3 } }}
+      exit={{ opacity: 0, y: 20 }}
+      aria-hidden={hidden}
+    >
+      <motion.button className="zoom-control" onClick={zoomIn} aria-label="Zoom in" whileTap={{ scale: 0.95 }}>
+        <FiZoomIn size={24} />
+      </motion.button>
+      <motion.button className="zoom-control" onClick={zoomOut} aria-label="Zoom out" disabled={scale <= MIN_SCALE} whileTap={{ scale: 0.95 }}>
+        <FiZoomOut size={24} />
+      </motion.button>
+      <motion.button className="zoom-control" onClick={resetZoom} aria-label="Reset zoom" disabled={scale === MIN_SCALE} whileTap={{ scale: 0.95 }}>
+        <FiMaximize size={20} />
+      </motion.button>
+      <motion.button className="zoom-control" onClick={toggleFullscreen} aria-label="Toggle fullscreen" whileTap={{ scale: 0.95 }}>
+        <FiMaximize size={20} />
+      </motion.button>
+    </motion.div>
+  );
+
+
 
   const handleImageError = (e) => {
     console.error('Image failed to load:', e.target.src);
@@ -175,15 +330,41 @@ const ProjectGallery = ({ images: initialImages = [], mainImage, title }) => {
       document.addEventListener('mouseup', handleMouseUp);
       document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('wheel', handleWheel, { passive: false });
+      document.addEventListener('touchstart', handleTouchStart, { passive: true });
+      document.addEventListener('touchmove', handleTouchMove, { passive: false });
+      document.addEventListener('touchend', handleTouchEnd, { passive: true });
       
       return () => {
         document.removeEventListener('mouseup', handleMouseUp);
         document.removeEventListener('mousemove', handleMouseMove);
         document.removeEventListener('wheel', handleWheel);
+        document.removeEventListener('touchstart', handleTouchStart);
+        document.removeEventListener('touchmove', handleTouchMove);
+        document.removeEventListener('touchend', handleTouchEnd);
         document.body.style.cursor = '';
       };
     }
   }, [isViewerOpen, handleMouseUp, handleMouseMove, handleWheel]);
+
+  // When opened via the zoom button, request fullscreen and set an initial zoom
+  useEffect(() => {
+    if (isViewerOpen && openFromZoom) {
+      const el = viewerRef.current;
+      const requestFull = () => {
+        if (!el) return;
+        if (el.requestFullscreen) el.requestFullscreen();
+        else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+        else if (el.msRequestFullscreen) el.msRequestFullscreen();
+      };
+      const t = setTimeout(() => {
+        try { requestFull(); } catch (e) {}
+        setScale(2);
+      }, 80);
+      // reset the trigger flag
+      setOpenFromZoom(false);
+      return () => clearTimeout(t);
+    }
+  }, [isViewerOpen, openFromZoom]);
 
   const handleKeyDown = useCallback((e) => {
     if (e.key === 'Escape') closeViewer();
@@ -202,6 +383,11 @@ const ProjectGallery = ({ images: initialImages = [], mainImage, title }) => {
   const currentSrc = currentImage?.src || '';
   const isDragging = dragState.current.isDragging;
 
+  // Reset mainLoaded whenever currentSrc changes so blur-up will show until image loads
+  useEffect(() => {
+    setMainLoaded(false);
+  }, [currentSrc]);
+
   if (isLoading) {
     return (
       <div className="image-loading-container">
@@ -210,7 +396,8 @@ const ProjectGallery = ({ images: initialImages = [], mainImage, title }) => {
       </div>
     );
   }
-  
+
+
   if (error || !preloadedImages || preloadedImages.length === 0) {
     return (
       <div className="no-images-placeholder">
@@ -226,6 +413,12 @@ const ProjectGallery = ({ images: initialImages = [], mainImage, title }) => {
         <AnimatePresence mode="wait">
           <motion.div 
             className="image-wrapper"
+            data-loaded={mainLoaded}
+            data-touch-zoomed={isTouchDevice && isViewerOpen && scale > 1}
+            style={{
+              backgroundImage: currentImage?.thumbnail ? `url(${currentImage.thumbnail})` : undefined,
+              ['--bg-image']: currentImage?.thumbnail ? `url(${currentImage.thumbnail})` : undefined
+            }}
             key={`image-${currentIndex}`}
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -236,7 +429,8 @@ const ProjectGallery = ({ images: initialImages = [], mainImage, title }) => {
               src={currentSrc}
               alt={`${title} - ${currentIndex + 1}`}
               className={`main-image ${isLoading ? 'loading' : ''}`}
-              onClick={openViewer}
+              onClick={() => openViewer(currentIndex)}
+              onTouchStart={(e) => handleTouchStart(e)}
               onLoad={handleImageLoad}
               loading="eager"
               initial={{ opacity: 0 }}
@@ -249,11 +443,14 @@ const ProjectGallery = ({ images: initialImages = [], mainImage, title }) => {
               className="zoom-button" 
               onClick={(e) => {
                 e.stopPropagation();
+                // If user clicks the zoom glass, open the viewer and request fullscreen/zoom
+                setOpenFromZoom(true);
                 openViewer(currentIndex);
               }}
               aria-label="Zoom image"
               whileHover={{ scale: 1.1, backgroundColor: 'rgba(0, 0, 0, 0.9)' }}
               whileTap={{ scale: 0.95 }}
+              aria-hidden={isTouchDevice && isViewerOpen && scale > 1}
             >
               <FiZoomIn size={24} />
             </motion.button>
@@ -274,9 +471,13 @@ const ProjectGallery = ({ images: initialImages = [], mainImage, title }) => {
               {preloadedImages.map((img, index) => (
                 <motion.div
                   key={index}
+                  ref={(el) => (thumbsRef.current[index] = el)}
                   className={`thumbnail ${currentIndex === index ? 'active' : ''} ${img.isFeatured ? 'featured' : ''}`}
                   onClick={() => goToImage(index)}
+                  tabIndex={0}
                   aria-label={`View image ${index + 1}`}
+                  aria-current={currentIndex === index}
+                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); goToImage(index); } }}
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ 
                     opacity: 1, 
@@ -363,9 +564,14 @@ const ProjectGallery = ({ images: initialImages = [], mainImage, title }) => {
           >
             <motion.div 
               className="viewer-content" 
+              ref={viewerRef}
               onClick={e => e.stopPropagation()}
               onMouseDown={handleMouseDown}
+              onTouchStart={(e) => { handleTouchStart(e); }}
+              onTouchMove={(e) => { handleTouchMove(e); }}
+              onTouchEnd={(e) => { handleTouchEnd(e); }}
               style={{ cursor: scale > 1 ? (dragState.current.isDragging ? 'grabbing' : 'grab') : 'default' }}
+              data-touch-zoomed={isTouchDevice && isViewerOpen && scale > 1}
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ 
                 scale: 1,
@@ -380,9 +586,14 @@ const ProjectGallery = ({ images: initialImages = [], mainImage, title }) => {
             >
               <motion.div 
                 className="image-container"
+                data-loaded={mainLoaded}
                 style={{
                   transform: `scale(${scale}) translate(${position.x}px, ${position.y}px)`,
-                  transformOrigin: 'center center',
+                  transformOrigin: transformOrigin,
+                  backgroundImage: currentImage?.thumbnail ? `url(${currentImage.thumbnail})` : undefined,
+                  ['--bg-image']: currentImage?.thumbnail ? `url(${currentImage.thumbnail})` : undefined,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
                   maxWidth: '90vw',
                   maxHeight: '90vh',
                   position: 'relative'
@@ -396,7 +607,7 @@ const ProjectGallery = ({ images: initialImages = [], mainImage, title }) => {
                   onError={(e) => {
                     e.target.src = '/images/placeholder.jpg';
                   }}
-                  onLoad={() => {}}
+                  onLoad={() => setMainLoaded(true)}
                   draggable={false}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -406,54 +617,7 @@ const ProjectGallery = ({ images: initialImages = [], mainImage, title }) => {
                 />
               </motion.div>
               
-              <motion.div 
-                className="viewer-controls"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ 
-                  opacity: 1,
-                  y: 0,
-                  transition: { delay: 0.3 }
-                }}
-                exit={{ opacity: 0, y: 20 }}
-              >
-                <motion.button 
-                  className="zoom-control" 
-                  onClick={zoomIn}
-                  aria-label="Zoom in"
-                  whileHover={{ scale: 1.1, backgroundColor: 'rgba(0, 0, 0, 0.7)' }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <FiZoomIn size={24} />
-                </motion.button>
-                <motion.button 
-                  className="zoom-control" 
-                  onClick={zoomOut}
-                  aria-label="Zoom out"
-                  disabled={scale <= 1}
-                  whileHover={{ 
-                    scale: scale > 1 ? 1.1 : 1,
-                    backgroundColor: scale > 1 ? 'rgba(0, 0, 0, 0.7)' : 'rgba(0, 0, 0, 0.3)'
-                  }}
-                  whileTap={{ scale: scale > 1 ? 0.95 : 1 }}
-                  style={{ opacity: scale > 1 ? 1 : 0.6, cursor: scale > 1 ? 'pointer' : 'not-allowed' }}
-                >
-                  <FiZoomOut size={24} />
-                </motion.button>
-                <motion.button 
-                  className="zoom-control" 
-                  onClick={resetZoom}
-                  aria-label="Reset zoom"
-                  disabled={scale === 1}
-                  whileHover={{ 
-                    scale: scale !== 1 ? 1.1 : 1,
-                    backgroundColor: scale !== 1 ? 'rgba(0, 0, 0, 0.7)' : 'rgba(0, 0, 0, 0.3)'
-                  }}
-                  whileTap={{ scale: scale !== 1 ? 0.95 : 1 }}
-                  style={{ opacity: scale !== 1 ? 1 : 0.6, cursor: scale !== 1 ? 'pointer' : 'not-allowed' }}
-                >
-                  <FiMaximize size={24} />
-                </motion.button>
-              </motion.div>
+              <ViewerControls hidden={isTouchDevice && scale > 1} />
               
               <motion.button 
                 className="close-button" 

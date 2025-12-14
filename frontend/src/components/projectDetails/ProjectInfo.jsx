@@ -56,6 +56,14 @@ const ProjectInfo = ({ project, currentLanguage }) => {
             </motion.li>
           ))}
         </ul>
+
+        {/* <button 
+          type="button" 
+          className="btn btn-outline mt-3 view-comments" 
+          onClick={() => document.getElementById('project-comments')?.scrollIntoView({ behavior: 'smooth' })}
+        >
+          {t('projects.viewComments', 'View comments')}
+        </button> */}
       </div>
     </motion.div>
   );
