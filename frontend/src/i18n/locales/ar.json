@@ -267,6 +267,7 @@
     "dashboard": "لوحة التحكم",
     "adminPanel": "لوحة التحكم الإدارية",
     "projects": "المشاريع",
+    "featuredProjects": "المشاريع المميزة",
     "projectSubtitle": "إدارة المشاريع بالمنصه",
     "users": "المستخدمون",
     "login": "تسجيل دخول المدير",
@@ -338,6 +339,11 @@
       "passwordConfirm": "تأكيد كلمة المرور"
     },
     "manageCategories": "إنشاء وتعديل وحذف التصنيفات",
+    "categoriesList": {
+      "allCategories": "جميع التصنيفات",
+      "searchPlaceholder": "ابحث في التصنيفات...",
+      "noCategories": "لم يتم العثور على تصنيفات"
+    },
     "editCategory": "تعديل التصنيف",
     "nameAr": "الاسم بالعربية",
     "actions": "الإجراءات",
@@ -516,7 +522,9 @@
     "backToHome": "العودة إلى الرئيسية",
     "back": "العودة إلى المشاريع",
     "expand": "توسيع",
-    "collapse": "طي"
+    "collapse": "طي",
+    "previous": "السابق",
+    "next": "التالي"
   },
   "testimonials": {
     "title": "التعليقات",
@@ -638,10 +646,10 @@
       "professionalBackgroundDesc": "شارك دورك، خبرتك والأدوات التي تستخدمها."
     },
     "positions": {
-      "graphic_designer": "مصمم جرافيك",
-      "motion_designer": "مصمم حركة",
-      "content_creator": "منشئ محتوى",
-      "media_buyer": "مشتري إعلانات"
+      "graphic_designer": "Graphic Designer",
+      "motion_designer": "Motion Designer",
+      "content_creator": "Content Creator",
+      "media_buyer": "Media Buyer"
     },
     "success": "تم إرسال طلبك بنجاح! سنراجعه ونعود إليك قريباً.",
     "error": "فشل إرسال الطلب. يرجى المحاولة مرة أخرى."

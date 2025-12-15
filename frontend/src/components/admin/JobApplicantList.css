@@ -1,5 +1,16 @@
 .job-applications-page {
   width: 100%;
+  background: var(--bg-secondary-light);
+  color: var(--text-primary-light);
+  border: 1px solid transparent;
+  border-radius: var(--radius-xl);
+  padding: var(--radius-xl);
+
+}
+
+.dark-mode .job-applications-page  {
+  background: var(--bg-secondary-dark);
+  color: var(--text-primary-dark); 
 }
 
 .page-header {
@@ -7,6 +18,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 1.5rem ;
 }
 
 .page-header h1 {
@@ -49,24 +61,23 @@
 .list-card {
   border: none;
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
-  background: var(--bg-primary-light);
+  box-shadow: 0 5px 15px var(--shadow-light);
   overflow: hidden;
+  background: var(--bg-primary-light);
 }
 
 .dark-mode .list-card {
-  background: var(--bg-secondary-dark);
-  box-shadow: var(--shadow-dark);
+  background: var(--bg-primary-dark);
+  box-shadow: 0 5px 15px var(--shadow-dark);
 }
 
 .list-card .card-header {
-  background: var(--bg-secondary-light);
+  background-color: transparent;
   border-bottom: 1px solid var(--border-light);
-  padding: 1.25rem;
+  padding: 1.25rem 1.5rem;
 }
 
 .dark-mode .list-card .card-header {
-  background: var(--bg-primary-dark);
   border-bottom-color: var(--border-dark);
 }
 
@@ -80,25 +91,28 @@
 }
 
 .search-input {
-  background: var(--bg-overlay-light);
+  border-radius: var(--radius-md);
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border-light);
+  background: var(--bg-primary-light);
   color: var(--text-primary-light);
-  border-color: var(--border-light);
+  transition: all 0.3s ease;
 }
 
 .dark-mode .search-input {
-  background: var(--bg-overlay-dark);
-  color: var(--text-primary-dark);
+  background: var(--bg-secondary-dark);
   border-color: var(--border-dark);
+  color: var(--text-primary-dark);
 }
 
 .search-input::placeholder {
   color: var(--text-secondary-light);
-  opacity: 0.7;
+  opacity: 0.9;
 }
 
 .dark-mode .search-input::placeholder {
   color: var(--text-secondary-dark);
-  opacity: 0.7;
+  opacity: 0.85;
 }
 
 .search-input:focus {
@@ -109,10 +123,8 @@
 }
 
 .dark-mode .search-input:focus {
-  background: var(--bg-overlay-dark);
-  color: var(--text-primary-dark);
-  border-color: var(--accent);
-  box-shadow: 0 0 0 0.2rem rgba(var(--accent-rgb), 0.25);
+  box-shadow: 0 0 0 0.25rem var(--overlay-light);
+  border-color: var(--main);
 }
 
 /* Table styles */
@@ -179,15 +191,8 @@
   justify-content: flex-end;
 }
 
-.action-btn {
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--radius-md);
-}
+/* action button visuals are centralized in src/styles/theme.css (.action-btn)
+   - Use modifier classes (e.g. .action-btn--compact) for page-specific sizing if needed */
 
 /* Application Details Modal */
 .application-details {
@@ -286,8 +291,6 @@
     flex-direction: column;
   }
 
-  .action-btn {
-    width: 100%;
-    padding: 0.5rem;
-  }
+  /* If you want action buttons to expand on mobile, add a modifier
+     like `.action-btn--full { width: 100%; padding: 0.5rem; }` */
 }

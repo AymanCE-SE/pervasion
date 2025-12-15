@@ -209,19 +209,19 @@ const JobApplicationsList = () => {
                           <div className="action-buttons">
                             <Button
                               variant="outline-info"
-                              className="action-btn"
+                              className="action-btn text-info"
                               onClick={() => handleViewDetails(app)}
                               title={t('admin.jobApplicationsList.details.title')}
                             >
-                              <FaEye size={16} />
+                              <FaEye  />
                             </Button>
                             <Button
                               variant="outline-danger"
-                              className="action-btn"
+                              className="action-btn text-danger"
                               onClick={() => handleDeleteClick(app)}
                               title={t('admin.jobApplicationsList.delete')}
                             >
-                              <FaTrash size={16} />
+                              <FaTrash />
                             </Button>
                           </div>
                         </td>

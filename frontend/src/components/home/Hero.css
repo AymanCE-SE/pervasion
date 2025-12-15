@@ -161,7 +161,8 @@
 }
 
 .cta-secondary:hover {
-  background: var(--main);
+  background: var(--main) ;
+  border: 2px solid var(--main);
   color: white;
 }
 
@@ -270,7 +271,7 @@
 }
 
 .dark-mode .cta-secondary {
-  border-color: var(--main-light);
+  border-color: var(--main-light) !important;
   color: var(--main-light);
 }
 
@@ -327,6 +328,9 @@
 
   .hero-badge {
     margin: 0 auto 1.5rem;
+  }
+  .cta-secondary {
+    text-align: center;   
   }
 }
 

@@ -51,19 +51,38 @@ const App = () => {
   
   // Initialize app settings
   useEffect(() => {
-    // Set initial theme
+    // Set initial theme (respect Vite env defaults and optional force flag)
+    const envDefaultTheme = (import.meta && import.meta.env && import.meta.env.VITE_DEFAULT_THEME)
+      ? String(import.meta.env.VITE_DEFAULT_THEME).toLowerCase()
+      : null;
+    const forceTheme = (import.meta && import.meta.env && String(import.meta.env.VITE_FORCE_DEFAULT_THEME).toLowerCase() === 'true');
+
     const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
+    if (savedTheme && !forceTheme) {
       dispatch(setDarkMode(savedTheme === 'dark'));
+    } else if (envDefaultTheme) {
+      dispatch(setDarkMode(envDefaultTheme === 'dark'));
+      if (forceTheme) {
+        localStorage.setItem('theme', envDefaultTheme);
+      }
     } else {
       const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
       dispatch(setDarkMode(prefersDark));
     }
-    
-    // Set initial language
-    const savedLang = localStorage.getItem('i18nextLng');
-    if (savedLang) {
+
+    // Set initial language (respect Vite env defaults and optional force flag)
+    const envDefaultLang = (import.meta && import.meta.env && import.meta.env.VITE_DEFAULT_LANGUAGE) || null;
+    const forceLang = (import.meta && import.meta.env && String(import.meta.env.VITE_FORCE_DEFAULT_LANGUAGE).toLowerCase() === 'true');
+
+    const savedLang = localStorage.getItem('language') || localStorage.getItem('i18nextLng');
+    if (savedLang && !forceLang) {
       dispatch(setLanguage(savedLang));
+    } else if (envDefaultLang) {
+      dispatch(setLanguage(envDefaultLang));
+      if (forceLang) {
+        localStorage.setItem('language', envDefaultLang);
+        localStorage.setItem('i18nextLng', envDefaultLang);
+      }
     } else {
       const browserLang = navigator.language.split('-')[0];
       const defaultLang = ['en', 'ar'].includes(browserLang) ? browserLang : 'en';

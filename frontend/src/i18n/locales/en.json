@@ -268,6 +268,7 @@
   "admin": {
     "dashboard": "Dashboard",
     "projects": "Projects",
+    "featuredProjects": "Featured Projects",
     "projectSubtitle": "Manage platform projects",
     "users": "Users",
     "userSubtitle": "Manage platform users",
@@ -342,6 +343,11 @@
       "role": "Role"
     },
     "manageCategories": "Create, edit and delete categories",
+    "categoriesList": {
+      "allCategories": "All Categories",
+      "searchPlaceholder": "Search categories...",
+      "noCategories": "No categories found"
+    },
     "editCategory": "Edit Category",
     "nameAr": "Arabic Name",
     "actions": "Actions",
@@ -520,7 +526,9 @@
     "backToHome": "Back to Home",
     "back": "Back to Projects",
     "expand": "Expand",
-    "collapse": "Collapse"
+    "collapse": "Collapse",
+    "previous": "Previous",
+    "next": "Next"
   },
   "testimonials": {
     "title": "Testimonials",

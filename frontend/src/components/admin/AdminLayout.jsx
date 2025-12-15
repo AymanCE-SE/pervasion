@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectIsAuthenticated, logout } from '../../redux/slices/authSlice';
 import { selectDarkMode, toggleTheme } from '../../redux/slices/themeSlice';
+import { useAppSettings } from '../../hooks/useAppSettings';
 import { selectLanguage, toggleLanguage } from '../../redux/slices/languageSlice';
 import { FaTachometerAlt, FaImages, FaUsers, FaSignOutAlt, FaHome, FaTags, FaEnvelope, FaFileAlt, FaMoon, FaSun, FaGlobe } from 'react-icons/fa';
 import { ToastContainer } from 'react-toastify';
@@ -19,6 +20,7 @@ const AdminLayout = () => {
   const isAuthenticated = useSelector(selectIsAuthenticated);
   const darkMode = useSelector(selectDarkMode);
   const language = useSelector(selectLanguage);
+  const { isRTL } = useAppSettings();
   
   // Check if user is authenticated
   useEffect(() => {
@@ -57,6 +59,9 @@ const AdminLayout = () => {
 
   // Toggle theme
   const handleToggleTheme = () => {
+    // dispatching the redux action will update state; calling the
+    // `useAppSettings` hook ensures the document/body classes are
+    // updated as a side-effect so the visual theme changes immediately
     dispatch(toggleTheme());
   };
 
@@ -73,7 +78,7 @@ const AdminLayout = () => {
   }
 
   return (
-    <div className={`admin-layout ${darkMode ? 'dark-mode' : ''}`}>
+    <div className={`admin-layout ${darkMode ? 'dark-mode' : ''}`}  >
       <ToastContainer 
         position="top-right"
         autoClose={3000}

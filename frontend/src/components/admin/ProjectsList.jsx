@@ -203,7 +203,7 @@ const ProjectsList = () => {
                               as={Link}
                               to={`/projects/${project.id}`}
                               variant="outline-info" 
-                              className="action-btn"
+                              className="action-btn text-info"
                               title={t('admin.projectsList.view')}
                             >
                               <FaEye />
@@ -212,14 +212,14 @@ const ProjectsList = () => {
                               as={Link}
                               to={`/admin/projects/edit/${project.id}`}
                               variant="outline-primary" 
-                              className="action-btn"
+                              className="action-btn text-primary"
                               title={t('admin.projectsList.edit')}
                             >
                               <FaEdit />
                             </Button>
                             <Button 
                               variant="outline-danger" 
-                              className="action-btn"
+                              className="action-btn text-danger"
                               title={t('admin.projectsList.delete')}
                               onClick={() => confirmDelete(project)}
                             >

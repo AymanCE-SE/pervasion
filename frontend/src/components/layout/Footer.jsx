@@ -36,6 +36,9 @@ const Footer = () => {
               <li>
                 <Link to="/contact">{t('nav.contact')}</Link>
               </li>
+              <li>
+                <Link to="/join-us">{t('nav.joinUs')}</Link>
+              </li>
             </ul>
           </Col>
           

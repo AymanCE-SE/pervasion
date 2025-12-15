@@ -114,7 +114,7 @@ const LoginPage = () => {
                 transition={{ duration: 0.5 }}
               >
                 <Card className={`auth-card ${darkMode ? 'dark-mode' : ''}`}>
-                  <Card.Body className="p-4 p-md-5">
+                  <Card.Body className="auth-card-body">
                     <div className="text-center mb-4">
                       <motion.div
                         initial={{ scale: 0.9 }}

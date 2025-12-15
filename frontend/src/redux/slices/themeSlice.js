@@ -3,10 +3,20 @@ import { createSlice } from '@reduxjs/toolkit';
 // Get theme preference from localStorage or system preference
 const getInitialTheme = () => {
   const savedTheme = localStorage.getItem('darkMode');
-  if (savedTheme !== null) {
+
+  // Env-driven defaults
+  const envDefault = (import.meta && import.meta.env && import.meta.env.VITE_DEFAULT_THEME)
+    ? String(import.meta.env.VITE_DEFAULT_THEME).toLowerCase()
+    : null;
+  const forceEnv = (import.meta && import.meta.env && String(import.meta.env.VITE_FORCE_DEFAULT_THEME).toLowerCase() === 'true');
+
+  if (savedTheme !== null && !forceEnv) {
     return savedTheme === 'true';
   }
-  
+
+  if (envDefault === 'dark') return true;
+  if (envDefault === 'light') return false;
+
   // Check system preference
   return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
 };

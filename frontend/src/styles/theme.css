@@ -65,8 +65,19 @@
   --radius-sm: 0.25rem;
   --radius-md: 0.5rem;
   --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
+  --radius-xl: 1.5rem;
   --radius-full: 9999px;
+
+  /* Action button token defaults (used across admin lists) */
+  --action-btn-size: 36px;
+  --action-btn-radius: var(--radius-full);
+  --action-btn-border-color: var(--border-light);
+  --action-btn-bg: var(--bg-overlay-light);
+  --action-btn-color: var(--text-primary-light);
+  --action-btn-hover-bg: var(--bg-overlay-light);
+  --action-btn-dark-border-color: var(--border-dark);
+  --action-btn-dark-bg: var(--bg-overlay-dark);
+  --action-btn-dark-color: var(--text-primary-dark);
 
   /* Font Sizes */
   --text-xs: 0.75rem;
@@ -218,6 +229,50 @@ button {
 
 .dark-mode .btn-outline:hover {
   background-color: var(--main-dark);
+}
+
+/* Action button (small circular buttons used in admin lists) */
+.action-btn {
+  width: var(--action-btn-size);
+  height: var(--action-btn-size);
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--action-btn-radius);
+  border: 1px solid var(--action-btn-border-color);
+  background: var(--action-btn-bg);
+  color: var(--action-btn-color);
+  transition: all var(--transition-fast);
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+  background: var(--action-btn-hover-bg);
+}
+
+.action-btn svg {
+  fill: currentColor;
+  stroke: currentColor;
+}
+
+.dark-mode .action-btn {
+  border-color: var(--action-btn-dark-border-color);
+  background: var(--action-btn-dark-bg);
+  color: var(--action-btn-dark-color);
+}
+
+.dark-mode .action-btn:hover {
+  background: var(--action-btn-dark-bg);
+}
+
+/* Keep Bootstrap outline variants from interfering with our compact buttons */
+.action-btn.btn-outline-secondary,
+.action-btn.btn-outline-danger {
+  background: transparent;
+  color: inherit;
+  border-color: currentColor;
+  padding: 0;
 }
 
 /* Glass Effect */

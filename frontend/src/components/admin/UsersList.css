@@ -2,6 +2,10 @@
   width: 100%;
   background: var(--bg-secondary-light);
   color: var(--text-primary-light);
+  border-top: 1px solid transparent;
+  border-radius: var(--radius-xl);
+  padding: var(--radius-xl);
+
 }
 
 .dark-mode .users-list-page {
@@ -10,10 +14,10 @@
 }
 
 .page-header {
-  margin-bottom: 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 1.5rem ;
 }
 
 .page-header h1 {
@@ -101,6 +105,16 @@
   color: var(--text-primary-dark);
 }
 
+/* Improve placeholder visibility in dark mode */
+.search-input::placeholder {
+  color: var(--text-secondary-light);
+  opacity: 0.9;
+}
+.dark-mode .search-input::placeholder {
+  color: var(--text-secondary-dark);
+  opacity: 0.85;
+}
+
 .search-input:focus {
   box-shadow: 0 0 0 0.25rem var(--overlay-light);
   border-color: var(--main);
@@ -146,6 +160,24 @@
   border-color: var(--border-dark);
 }
 
+/* Make table background solid in dark mode for better contrast */
+.dark-mode .table, .list-card.dark-mode .table {
+  background: var(--bg-primary-dark);
+}
+.dark-mode .table td {
+  background: var(--bg-primary-dark);
+}
+
+/* Ensure role badges have sufficient contrast in dark mode */
+.dark-mode .role-badge.bg-primary {
+  background: var(--main-gradient) !important;
+  color: #fff !important;
+}
+.dark-mode .role-badge.bg-secondary {
+  background: var(--secondary-gradient) !important;
+  color: #fff !important;
+}
+
 .role-badge {
   padding: 0.35em 0.65em;
   font-size: 0.75rem;
@@ -170,15 +202,7 @@
   gap: 0.5rem;
 }
 
-.action-btn {
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--radius-md);
-}
+/* action button visuals are centralized in src/styles/theme.css (.action-btn) */
 
 /* Modal Dark Mode */
 .modal.dark-mode .modal-content {

@@ -2,6 +2,10 @@
   width: 100%;
   background: var(--bg-secondary-light);
   color: var(--text-primary-light);
+  border: 1px solid transparent;
+  border-radius: var(--radius-xl);
+  padding: var(--radius-xl);
+
 }
 
 .dark-mode .projects-list-page {
@@ -14,6 +18,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 1.5rem ;
 }
 
 .page-header h1 {
@@ -101,6 +106,16 @@
   color: var(--text-primary-dark);
 }
 
+/* Improve placeholder visibility in dark mode */
+.search-input::placeholder {
+  color: var(--text-secondary-light);
+  opacity: 0.9;
+}
+.dark-mode .search-input::placeholder {
+  color: var(--text-secondary-dark);
+  opacity: 0.85;
+}
+
 .search-input:focus {
   box-shadow: 0 0 0 0.25rem var(--overlay-light);
   border-color: var(--main);
@@ -126,7 +141,13 @@
   background: transparent;
   min-width: 800px;
 }
+.dark-mode .table, .list-card.dark-mode .table {
+  background: var(--bg-primary-dark);
+}
 
+.dark-mode .table td {
+  background: var(--bg-primary-dark);
+}
 .dark-mode .table {
   color: var(--text-primary-dark);
 }
@@ -181,15 +202,7 @@
   gap: 0.5rem;
 }
 
-.action-btn {
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--radius-md);
-}
+/* action button visuals are centralized in src/styles/theme.css (.action-btn) */
 
 /* Modal Dark Mode */
 .modal.dark-mode .modal-content {

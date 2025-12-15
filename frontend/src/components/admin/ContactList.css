@@ -1,7 +1,8 @@
 .contacts-list-page {
-  padding: 1.5rem;
+  padding: var(--radius-xl);
   background: var(--bg-secondary-light);
   color: var(--text-primary-light);
+  border-radius: var(--radius-xl);
 }
 
 .dark-mode .contacts-list-page {
@@ -170,9 +171,6 @@
   color: var(--text-primary-dark);
 }
 
-.action-btn {
-  padding: 0.25rem 0.5rem;
-}
 
 .badge svg {
   margin-right: 0.25rem;

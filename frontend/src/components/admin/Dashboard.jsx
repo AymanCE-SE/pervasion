@@ -150,7 +150,7 @@ const Dashboard = () => {
                         <FaStar />
                       </div>
                       <h3 className="stat-value">{featuredProjects}</h3>
-                      <p className="stat-label">Featured Projects</p>
+                      <p className="stat-label">{t('admin.featuredProjects')}</p>
                     </Card.Body>
                   </Card>
                 </Link>

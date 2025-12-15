@@ -215,14 +215,14 @@ const UsersList = () => {
                               as={Link}
                               to={`/admin/users/edit/${user.id}`}
                               variant="outline-primary" 
-                              className="action-btn"
+                              className="action-btn text-primary"
                               title={t('admin.usersList.edit')}
                             >
                               <FaEdit />
                             </Button>
                             <Button 
                               variant="outline-danger" 
-                              className="action-btn"
+                              className="action-btn text-danger"
                               title={t('admin.usersList.delete')}
                               onClick={() => confirmDelete(user)}
                               disabled={user.role === 'admin' && users.filter(u => u.role === 'admin').length === 1}

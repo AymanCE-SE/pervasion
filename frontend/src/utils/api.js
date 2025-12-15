@@ -2,9 +2,11 @@ import axios from 'axios';
 import { store } from '../redux/store';
 
 // Use Vite env first, fallback to older REACT env, then localhost
+// Use env-specified API in dev or when separate backend is used; otherwise
+// default to a relative `/api` path so the client and API use same origin
 const BASE = (import.meta && import.meta.env && import.meta.env.VITE_API_URL)
   || process.env.REACT_APP_API_URL
-  || 'http://localhost:8000/api';
+  || '/api';
 
 const api = axios.create({
   baseURL: BASE,
@@ -14,7 +16,8 @@ const api = axios.create({
     'Cache-Control': 'no-cache',
     'Pragma': 'no-cache'
   },
-  withCredentials: false,
+  // allow cookies/auth to be sent when needed; backend allows credentials
+  withCredentials: true,
 });
 
 // Request interceptor: auth + no-cache + cache-bust for GET

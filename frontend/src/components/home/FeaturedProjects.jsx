@@ -30,6 +30,8 @@ const FeaturedProjects = () => {
   
   // State to track which images have failed to load
   const [failedImages, setFailedImages] = useState({});
+  // Show navigation on very small screens even if there's only one slide
+  const [showNavOnSmall, setShowNavOnSmall] = useState(() => typeof window !== 'undefined' && window.innerWidth <= 575.98);
   
   // Handle image load errors
   const handleImageError = (projectId) => {
@@ -44,6 +46,12 @@ const FeaturedProjects = () => {
       dispatch(fetchProjects());
     }
   }, [status, dispatch]);
+
+  useEffect(() => {
+    const onResize = () => setShowNavOnSmall(window.innerWidth <= 575.98);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
 
   // Animation variants
   const fadeInUp = {
@@ -87,13 +95,19 @@ const FeaturedProjects = () => {
               loop={false} // Disable loop mode completely to avoid warnings
               autoplay={featuredProjects.length >= 2 ? { delay: 3500, disableOnInteraction: false } : false}
               pagination={{ clickable: true }}
-              navigation={featuredProjects.length >= 2}
+              navigation={
+                featuredProjects.length >= 2 || (featuredProjects.length === 1 && showNavOnSmall)
+                  ? { nextEl: '.fp-next', prevEl: '.fp-prev' }
+                  : false
+              }
               breakpoints={{
                 576: { slidesPerView: 1 },
                 768: { slidesPerView: Math.min(2, featuredProjects.length) },
                 1200: { slidesPerView: Math.min(3, featuredProjects.length) },
               }}
-              watchOverflow={true} // Disable navigation/pagination when not enough slides
+              // When we want to show navigation for a single card on small screens we disable the
+              // automatic overflow hiding so our custom buttons remain enabled.
+              watchOverflow={!(featuredProjects.length === 1 && showNavOnSmall)}
               simulateTouch={featuredProjects.length > 1}
               style={{ paddingBottom: '3rem' }}
             >
@@ -136,6 +150,20 @@ const FeaturedProjects = () => {
                 </SwiperSlide>
               ))}
             </Swiper>
+
+            {/* Custom navigation buttons so we can show controls on very small screens */}
+            {/* <div className={`fp-nav ${showNavOnSmall ? 'small-visible' : ''}`} aria-hidden={!(featuredProjects.length >= 2 || (featuredProjects.length === 1 && showNavOnSmall))}>
+              <button className="fp-prev" aria-label={t('common.previous')}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                  <path d="M15 18l-6-6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+              <button className="fp-next" aria-label={t('common.next')}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                  <path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+            </div> */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}

@@ -245,6 +245,80 @@
   color: #fff;
 }
 
+/* Custom navigation wrapper for the featured projects slider */
+.fp-nav {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none; /* allow disabling when hidden */
+  z-index: 12;
+  padding: 0 1rem;
+}
+
+.fp-nav button {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  border-radius: 50%;
+  background: var(--bg-primary-light);
+  color: var(--main);
+  border: none;
+  box-shadow: 0 6px 18px rgba(5, 15, 30, 0.12);
+  transition: transform 0.12s ease, background 0.12s ease, color 0.12s ease;
+}
+
+.fp-nav button svg {
+  width: 22px;
+  height: 22px;
+}
+
+.fp-nav button:hover,
+.fp-nav button:focus-visible {
+  background: var(--main);
+  color: #fff;
+  transform: translateY(-2px);
+  outline: none;
+}
+
+.fp-nav button:active { transform: translateY(0); }
+
+/* Disabled state (applies when Swiper adds .swiper-button-disabled) */
+.fp-nav .swiper-button-disabled {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+/* On small screens only show the nav when explicitly requested via .small-visible */
+@media (max-width: 575.98px) {
+  .fp-nav { display: none; }
+  .fp-nav.small-visible { display: flex; }
+  .fp-nav button { width: 56px; height: 56px; min-width: 56px; min-height: 56px; }
+  .fp-nav button svg { width: 26px; height: 26px; }
+}
+
+/* Make buttons easier to reach on slightly larger phones */
+@media (max-width: 767.98px) and (min-width: 576px) {
+  .fp-nav button { width: 52px; height: 52px; }
+}
+
+/* RTL support: flip nav placement */
+[dir="rtl"] .fp-nav { direction: rtl; }
+[dir="rtl"] .fp-nav .fp-prev { order: 2; }
+[dir="rtl"] .fp-nav .fp-next { order: 1; }
+
+/* Ensure visible focus outline for accessibility */
+.fp-nav button:focus-visible { box-shadow: 0 0 0 4px color-mix(in srgb, var(--main) 12%, transparent); }
+
 .featured-projects-slider .swiper-slide {
   display: flex;
   justify-content: center;

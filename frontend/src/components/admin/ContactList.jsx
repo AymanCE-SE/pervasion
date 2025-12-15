@@ -192,7 +192,7 @@ const ContactList = () => {
                         <td>
                           <Button
                             variant="outline-danger"
-                            className="action-btn"
+                            className="action-btn text-danger"
                             onClick={(e) => handleDelete(contact, e)}
                             title={t('admin.contactsList.delete')}
                           >

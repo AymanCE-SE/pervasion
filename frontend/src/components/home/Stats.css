@@ -59,9 +59,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 72px;
-  height: 72px;
-  margin: 0 auto 1.2rem;
+  width: 3rem;
+  height: 3rem;
+  margin: 0 auto 0.5rem;
   border-radius: 50%;
   background: var(--bg-overlay-light);
   color: var(--main-light);
@@ -93,7 +93,7 @@
 }
 
 .stats-grid-value {
-  font-size: 2.8rem;
+  font-size: 2.3rem;
   font-weight: 800;
   margin-bottom: 0.3rem;
   color: var(--main);
@@ -148,15 +148,17 @@
   }
   .stats-grid-value {
     font-size: 1.7rem;
+    width: 5rem;
   }
   .stats-grid-label {
     font-size: 0.98rem;
+    width: 20rem;
   }
   .stats-grid-icon {
     font-size: 1.5rem;
     width: 44px;
     height: 44px;
-    margin-bottom: 0.7rem;
+    margin: 0.7rem;
   }
 }
 

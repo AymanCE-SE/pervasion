@@ -1,14 +1,25 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-// Get language from localStorage or browser language
+// Environment-driven defaults
+const DEFAULT_LANGUAGE = (import.meta && import.meta.env && import.meta.env.VITE_DEFAULT_LANGUAGE) || null;
+const FORCE_DEFAULT_LANGUAGE = (import.meta && import.meta.env && String(import.meta.env.VITE_FORCE_DEFAULT_LANGUAGE).toLowerCase() === 'true');
+
+// Get language from localStorage, i18next storage, env default, or browser language
 const getInitialLanguage = () => {
-  const savedLang = localStorage.getItem('language');
-  if (savedLang) {
+  const savedLang = localStorage.getItem('language') || localStorage.getItem('i18nextLng');
+  if (savedLang && !FORCE_DEFAULT_LANGUAGE) {
     return savedLang;
   }
-  
-  // Default to browser language if available, otherwise 'en'
-  const browserLang = navigator.language.split('-')[0];
+
+  if (DEFAULT_LANGUAGE) {
+    if (FORCE_DEFAULT_LANGUAGE) {
+      localStorage.setItem('language', DEFAULT_LANGUAGE);
+      localStorage.setItem('i18nextLng', DEFAULT_LANGUAGE);
+    }
+    return DEFAULT_LANGUAGE;
+  }
+
+  const browserLang = (navigator && navigator.language) ? navigator.language.split('-')[0] : 'en';
   return ['ar', 'en'].includes(browserLang) ? browserLang : 'en';
 };
 
@@ -25,6 +36,7 @@ export const languageSlice = createSlice({
       if (['ar', 'en'].includes(newLang)) {
         state.language = newLang;
         localStorage.setItem('language', newLang);
+        localStorage.setItem('i18nextLng', newLang);
       }
     },
     toggleLanguage: (state) => {

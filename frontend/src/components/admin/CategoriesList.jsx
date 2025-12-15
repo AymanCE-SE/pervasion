@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 import './CategoriesList.css';
-import { Table, Button, Modal, Form, Alert } from 'react-bootstrap';
+import { Table, Button, Modal, Form, Alert, Card, Row, Col } from 'react-bootstrap';
 import { FaPlus, FaEdit, FaTrash, FaSave } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -25,6 +27,9 @@ const CategoriesList = () => {
   const status = useSelector(selectCategoriesStatus);
   const error = useSelector(selectCategoriesError);
 
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredCategories, setFilteredCategories] = useState([]);
+
   const [showModal, setShowModal] = useState(false);
   const [editing, setEditing] = useState(null); // category being edited
   const [form, setForm] = useState({ name: '', name_ar: '' });
@@ -36,6 +41,15 @@ const CategoriesList = () => {
       dispatch(fetchCategories());
     }
   }, [dispatch, status, categories.length]);
+
+  useEffect(() => {
+    if (Array.isArray(categories)) {
+      const q = String(searchTerm || '').toLowerCase();
+      setFilteredCategories(categories.filter(c => (c.name || '').toLowerCase().includes(q) || (c.name_ar || '').toLowerCase().includes(q)));
+    } else {
+      setFilteredCategories([]);
+    }
+  }, [categories, searchTerm]);
 
   const openCreate = () => {
     setEditing(null);
@@ -82,66 +96,104 @@ const CategoriesList = () => {
   };
 
   return (
-    <div className={`admin-categories ${darkMode ? 'dark-mode' : ''}`}>  
-      <div className="categories-card">
-        <div className="page-header d-flex justify-content-between align-items-center mb-3">
-          <div>
-            <h2 className="categories-title">{t('admin.categories')}</h2>
-            <p className="text-muted">{t('admin.manageCategories')}</p>
-          </div>
-          <div>
-            <Button onClick={openCreate} variant="primary" className="d-flex align-items-center gap-2">
-              <FaPlus /> {t('admin.addNew')}
-            </Button>
-          </div>
+    <>
+      <Helmet>
+        <title>{t('app.title')} - {t('admin.categories')}</title>
+      </Helmet>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className={`admin-categories ${darkMode ? 'dark-mode' : ''}`}>
+      <div className="page-header mb-3">
+        <div>
+          <h2 className="categories-title">{t('admin.categories')}</h2>
+          <p className="text-muted">{t('admin.manageCategories')}</p>
         </div>
+      </div>
+
+      <Card className={`list-card list-card-categories ${darkMode ? 'dark-mode' : ''}`}>
+        <Card.Header>
+          <Row className="align-items-center">
+            <Col md={6}>
+              <h5 className="mb-0">{t('admin.categoriesList.allCategories') || t('admin.categories')}</h5>
+            </Col>
+            <Col md={6}>
+              <div className="d-flex justify-content-end gap-2">
+                <Form.Control
+                  type="text"
+                  placeholder={t('admin.categoriesList.searchPlaceholder') || t('admin.search')}
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="search-input"
+                  style={{ maxWidth: 300 }}
+                />
+                <Button onClick={openCreate} variant="primary" className="add-btn d-flex align-items-center gap-2">
+                  <FaPlus aria-hidden="true" /> <span>{t('admin.addNew')}</span>
+                </Button>
+              </div>
+            </Col>
+          </Row>
+        </Card.Header>
 
         {error && <Alert variant="danger">{typeof error === 'string' ? error : JSON.stringify(error)}</Alert>}
 
-        <div className="table-responsive">
-          <Table className="categories-table" hover>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>{t('admin.categoryName')}</th>
-                <th>{t('admin.categoryNameAr')}</th>
-                <th>{t('admin.actions')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {categories.map(cat => (
-                <tr key={cat.id}>
-                  <td>{cat.id}</td>
-                  <td>{cat.name}</td>
-                  <td>{cat.name_ar}</td>
-                  <td>
-                    <div className="action-buttons">
-                      <Button 
-                        size="sm" 
-                        variant="outline-secondary" 
-                        className="d-flex align-items-center gap-1" 
-                        onClick={() => openEdit(cat)}
-                      >
-                        <FaEdit size={14} /> {t('admin.edit')}
-                      </Button>
-                      <Button 
-                        size="sm" 
-                        variant="outline-danger" 
-                        className="d-flex align-items-center gap-1" 
-                        onClick={() => confirmDelete(cat.id)}
-                      >
-                        <FaTrash size={14} /> {t('admin.delete')}
-                      </Button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        </div>
+        <Card.Body>
+          {status === 'loading' ? (
+            <div className="text-center py-5">
+              <div className="spinner-border" role="status"><span className="visually-hidden">{t('common.loading')}</span></div>
+            </div>
+          ) : (
+            <div className="table-responsive">
+              <Table hover className="categories-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>{t('admin.categoryName')}</th>
+                    <th>{t('admin.categoryNameAr')}</th>
+                    <th>{t('admin.actions')}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {(filteredCategories || []).map(cat => (
+                    <tr key={cat.id} onClick={() => openEdit(cat)} className="cursor-pointer">
+                      <td>{cat.id}</td>
+                      <td>{cat.name}</td>
+                      <td>{cat.name_ar}</td>
+                      <td>
+                        <div className="action-buttons">
+                          <Button
+                            variant="outline-primary"
+                            className="action-btn text-primary"
+                            onClick={(e) => { e.stopPropagation(); openEdit(cat); }}
+                            title={t('admin.edit')}
+                            aria-label={t('admin.edit')}
+                          >
+                            <FaEdit aria-hidden="true" />
+                          </Button>
+                          <Button
+                            variant="outline-danger"
+                            className="action-btn text-danger"
+                            onClick={(e) => { e.stopPropagation(); confirmDelete(cat.id); }}
+                            title={t('admin.delete')}
+                            aria-label={t('admin.delete')}
+                          >
+                            <FaTrash aria-hidden="true" />
+                          </Button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+              {(!filteredCategories || filteredCategories.length === 0) && (
+                <div className="text-center py-4">
+                  <p className="mb-0">{t('admin.categoriesList.noCategories') || t('admin.noItems')}</p>
+                </div>
+              )}
+            </div>
+          )}
+        </Card.Body>
+      </Card>
 
         {/* Create / Edit Modal */}
-        <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+        <Modal show={showModal} onHide={() => setShowModal(false)} centered className={darkMode ? 'dark-mode' : ''}>
           <Form onSubmit={submit}>
             <Modal.Header closeButton>
               <Modal.Title>
@@ -199,7 +251,7 @@ const CategoriesList = () => {
         </Modal>
 
         {/* Delete Confirmation */}
-        <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered>
+        <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered className={darkMode ? 'dark-mode' : ''}>
           <Modal.Header closeButton>
             <Modal.Title>{t('admin.confirmDelete')}</Modal.Title>
           </Modal.Header>
@@ -211,8 +263,8 @@ const CategoriesList = () => {
             <Button variant="danger" onClick={handleDelete}>{t('admin.delete')}</Button>
           </Modal.Footer>
         </Modal>
-      </div>
-    </div>
+      </motion.div>
+    </>
   );
 };
 

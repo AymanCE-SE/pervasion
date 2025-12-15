@@ -74,9 +74,9 @@ const Hero = () => {
                 {t('hero.cta')}
                 <BsArrowRight className={isRTL ? 'icon-rtl' : 'ms-2'} />
               </Button>
-              <Button as={Link} to="/contact" className="cta-secondary">
+              <Link to="/contact" className="cta-secondary" role="button" aria-label={t('hero.ctaSecondary')}>
                 {t('hero.ctaSecondary')}
-              </Button>
+              </Link>
             </div>
           </Col>
         </Row>

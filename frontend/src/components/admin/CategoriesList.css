@@ -2,16 +2,16 @@
 .admin-categories {
   background: var(--bg-secondary-light);
   color: var(--text-primary-light);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-xl);
   box-shadow: var(--shadow-md);
-  padding: var(--spacing-xl);
+  padding: var(--radius-xl);
   margin-top: var(--spacing-xl);
   transition: background var(--transition-normal), color var(--transition-normal);
 }
-.dark-mode .admin-categories {
+.admin-categories.dark-mode, .dark-mode .admin-categories {
   background: var(--bg-secondary-dark);
   color: var(--text-primary-dark);
-  box-shadow: var(--shadow-dark);
+  box-shadow: 0 5px 15px var(--shadow-dark);;
 }
 
 .admin-categories .page-header {
@@ -32,7 +32,8 @@
   color: var(--text-secondary-dark) !important;
 }
 
-.admin-categories .btn-primary {
+.admin-categories .btn-primary,
+.list-card.list-card-categories .btn-primary {
   background: var(--main-gradient);
   border: none;
   color: #fff;
@@ -46,7 +47,8 @@
 }
 
 /* Table improvements */
-.admin-categories .table {
+.admin-categories .table,
+.list-card.list-card-categories .table {
   background: var(--bg-primary-light);
   border-radius: var(--radius-md);
   overflow: hidden;
@@ -54,18 +56,34 @@
   margin-bottom: 0;
 }
 
-.admin-categories .table th {
+/* Dark mode: ensure the table and cells use a solid background for contrast */
+.admin-categories.dark-mode .table,
+.dark-mode .admin-categories .table,
+.list-card.list-card-categories.dark-mode .table,
+.dark-mode .list-card.list-card-categories .table {
+  background: var(--bg-primary-dark);
+}
+
+.dark-mode .admin-categories .table td,
+.dark-mode .list-card.list-card-categories .table td {
+  background: var(--bg-primary-dark);
+  color: var(--text-primary-dark);
+}
+
+.admin-categories .table th,
+.list-card.list-card-categories .table th {
   background: var(--bg-secondary-light);
   color: var(--text-primary-light);
   font-weight: 600;
   border: none;
   padding: 1rem;
 }
-.dark-mode .admin-categories .table th {
+.admin-categories.dark-mode .table th, .dark-mode .admin-categories .table th {
   background: var(--bg-overlay-dark);
   color: var(--text-primary-dark);
 }
-.admin-categories .table td {
+.admin-categories .table td,
+.list-card.list-card-categories .table td {
   vertical-align: middle;
   padding: 1rem;
   border-color: var(--border-light);
@@ -76,11 +94,112 @@
 }
 
 /* Action buttons in table */
-.admin-categories .action-buttons {
+.admin-categories .action-buttons,
+.list-card.list-card-categories .action-buttons {
   display: flex;
   gap: 0.5rem;
-  justify-content: flex-end;
+  justify-content: center;
 }
+
+/* Reuse list-card styling in the admin categories page */
+.list-card.list-card-categories {
+  border: none;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  background: var(--bg-primary-light);
+}
+
+.list-card.list-card-categories.dark-mode, .dark-mode .list-card.list-card-categories, .admin-categories.dark-mode .list-card.list-card-categories {
+  background: var(--bg-primary-dark);
+  box-shadow: var(--shadow-dark);
+}
+
+.list-card.list-card-categories .card-header {
+  background: var(--bg-secondary-light);
+  border-bottom: 1px solid var(--border-light);
+  padding: 1.25rem 1.5rem;
+}
+
+.list-card.list-card-categories .card-header h5 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary-light);
+}
+.dark-mode .list-card.list-card-categories .card-header h5 { color: var(--text-primary-dark); }
+
+.list-card.list-card-categories .card-header .search-input { max-width: 320px; }
+.list-card.list-card-categories .card-header .add-btn { white-space: nowrap; }
+
+.dark-mode .list-card.list-card-categories .card-header {
+  border-bottom-color: var(--border-dark);
+  background: var(--bg-primary-dark);
+
+}
+
+.list-card.list-card-categories .page-header {
+  background: var(--bg-secondary-light);
+  border-bottom: 1px solid var(--border-light);
+  padding: 1.25rem 1.5rem;
+}
+
+.dark-mode .list-card.list-card-categories .page-header {
+  border-bottom-color: var(--border-dark);
+}
+
+.add-btn {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-full);
+  background: var(--main-gradient);
+  border: none;
+  box-shadow: var(--shadow-md);
+  color: #fff;
+  transition: var(--transition-normal);
+}
+
+.add-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px var(--shadow-md);
+  background: var(--primary-gradient);
+}
+
+/* action button visuals are centralized in src/styles/theme.css (.action-btn) */
+
+
+
+.admin-categories.dark-mode .list-card.list-card-categories .card-header,
+.admin-categories.dark-mode .list-card.list-card-categories .page-header,
+.dark-mode .list-card.list-card-categories .card-header,
+.dark-mode .list-card.list-card-categories .page-header {
+  background: var(--bg-primary-dark);
+  border-bottom-color: var(--border-dark);
+}
+
+/* theme handles dark-mode visuals for .action-btn */
+
+/* hover visuals are centralized in theme.css */
+
+/* action button visuals moved to theme.css */
+
+/* hover visuals are in theme.css */
+
+/* svg visuals for .action-btn are handled globally */
+
+/* Enforce our preferred look even when Bootstrap outline classes exist */
+.admin-categories .action-btn.btn-outline-secondary, .list-card.list-card-categories .action-btn.btn-outline-secondary,
+.admin-categories .action-btn.btn-outline-danger, .list-card.list-card-categories .action-btn.btn-outline-danger {
+  background: transparent;
+  color: inherit;
+  border-color: currentColor;
+  padding: 0;
+}
+
+/* action button visuals centralized in theme.css */
+
+
+
 
 /* Form submit button improvements */
 .admin-categories .modal-footer .btn-primary {
@@ -99,11 +218,11 @@
   transform: translateY(-2px);
 }
 
-.dark-mode .admin-categories .modal-footer .btn-primary {
+.admin-categories.dark-mode .modal-footer .btn-primary, .dark-mode .admin-categories .modal-footer .btn-primary {
   opacity: 0.95;
 }
 
-.dark-mode .admin-categories .modal-footer .btn-primary:hover:not(:disabled) {
+.admin-categories.dark-mode .modal-footer .btn-primary:hover:not(:disabled), .dark-mode .admin-categories .modal-footer .btn-primary:hover:not(:disabled) {
   opacity: 1;
 }
 
@@ -157,6 +276,19 @@
   border-bottom-color: var(--border-dark);
 }
 
+/* Modal content background and close button color in dark mode */
+.admin-categories .modal.dark-mode .modal-content,
+.admin-categories .modal.dark-mode .modal-dialog .modal-content,
+.dark-mode .admin-categories .modal .modal-content {
+  background-color: var(--bg-secondary-dark);
+  color: var(--text-primary-dark);
+}
+
+.admin-categories .modal.dark-mode .btn-close,
+.dark-mode .admin-categories .modal .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
+}
+
 .admin-categories .modal-footer {
   border-top-color: var(--border-light);
 }
@@ -179,6 +311,22 @@
 /* RTL Support for Arabic inputs */
 .admin-categories [dir="rtl"].form-control {
   text-align: right;
+}
+
+/* Make the save/create modal button more prominent and consistent across themes */
+.save-btn {
+  background: var(--main-gradient) !important;
+  border: none !important;
+  color: #fff !important;
+  padding: 0.6rem 1.25rem !important;
+}
+.save-btn:hover:not(:disabled) {
+  background: var(--primary-gradient) !important;
+  transform: translateY(-2px);
+}
+.dark-mode .save-btn, .admin-categories.dark-mode .save-btn {
+  opacity: 1 !important;
+  background: var(--main-gradient) !important;
 }
 
 /* Focus state improvements */
