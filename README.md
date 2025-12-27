@@ -10,19 +10,21 @@ A modern platform application showcasing creative design works, deployed at [jum
 
 
 ## Technology Stack
-- React with Vite
+- React with Vite (client-side rendering)
 - Redux Toolkit for state management
 - i18next for Arabic/English localization
 - Framer Motion for animations
 - Bootstrap 5 for responsive layout
 
+**Rendering:** Client-side rendering (CSR) powered by Vite — this project does not use SSR.
+
 - **Backend**:
-- Django REST Framework
-- PostgreSQL database
-- JWT Authentication
-- Custom user model
-- Media file handling
-- Multi-language support
+  - Django & Django REST Framework
+  - PostgreSQL (recommended for production)
+  - JWT Authentication (simplejwt)
+  - Custom user model
+  - Media file handling
+  - Multilingual support
 
 ## Features
 - Responsive design with dark/light theme
@@ -152,16 +154,17 @@ The admin dashboard provides an intuitive interface for uploading and managing i
 
 ```env
 # Django
-DEBUG=True
-SECRET_KEY=your-secret-key
+DEBUG=True                # Set to False in production
+SECRET_KEY=your-secret-key  # NEVER commit this to version control
 ALLOWED_HOSTS=localhost,127.0.0.1
 
 # Database
+# For development you can use SQLite, but set a proper DATABASE_URL for production
 DATABASE_URL=sqlite:///db.sqlite3  # For development
 # DATABASE_URL=postgres://user:password@localhost:5432/dbname  # For production
 
-# CORS
-CORS_ALLOW_ALL_ORIGINS=True  # For development
+# CORS (development convenience -> tighten in production)
+CORS_ALLOW_ALL_ORIGINS=True  # OK for local dev only
 # CORS_ALLOWED_ORIGINS=http://localhost:5173,http://127.0.0.1:5173
 
 # Media files
@@ -169,14 +172,28 @@ MEDIA_URL=/media/
 MEDIA_ROOT=media/
 ```
 
+**Security notes:**
+- Do **not** commit `SECRET_KEY`, `DATABASE_URL` with plaintext credentials, or other secrets.
+- In production: `DEBUG=False`, a secure `SECRET_KEY`, explicit `ALLOWED_HOSTS`, and explicit `CORS_ALLOWED_ORIGINS` are required.
+
 ### Frontend (`.env` in `frontend/`)
 
 ```env
-VITE_API_URL=http://localhost:8000/api
+# Base API URL used by the frontend client. Prefer a relative value in production.
+VITE_API_URL=/api          # recommended for same-origin deployments
+# For local development when backend runs separately:
+# VITE_API_URL=http://localhost:8000/api
 VITE_APP_NAME=Portfolio
 VITE_APP_DESCRIPTION=A modern portfolio application
 VITE_DEFAULT_LANGUAGE=en
 ```
+
+**Notes & Troubleshooting:**
+- If you use Vite dev server with a proxy, make sure the backend `ALLOWED_HOSTS` includes your dev host (e.g., `localhost:5173`) or configure the proxy to set an appropriate `Host` header.
+- If you see caching issues during development, use DevTools "Disable cache" while testing or rely on the API cache-busting `_t` param added by the client.
+
+**CI & Testing:**
+- Add tests (backend `pytest`, frontend tests) and configure a CI pipeline to run tests & linters on PRs (e.g., GitHub Actions). Commit your lockfiles (`package-lock.json`, `requirements.txt` or a pinned lock) for reproducible builds.
 
 ## Testing
 

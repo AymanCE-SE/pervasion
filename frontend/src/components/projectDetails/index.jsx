@@ -181,6 +181,7 @@ const ProjectDetails = () => {
             <RelatedProjects 
               projects={allProjects}
               currentProjectId={projectData.id}
+              currentCategory={projectData.category}
               currentLanguage={currentLanguage}
             />
           </motion.div>

@@ -3,8 +3,12 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import ProjectCard from '../projects/ProjectCard';
 
-const RelatedProjects = ({ projects, currentProjectId, currentLanguage }) => {
+const RelatedProjects = ({ projects, currentProjectId, currentCategory, currentLanguage }) => {
   if (!projects || projects.length === 0) return null;
+
+  // Prefer projects in the same category (exclude current), fall back to any other projects
+  const sameCategory = projects.filter(p => p.id !== currentProjectId && p.category === currentCategory);
+  const candidates = sameCategory.length > 0 ? sameCategory : projects.filter(p => p.id !== currentProjectId);
 
   return (
     <motion.div 
@@ -17,8 +21,7 @@ const RelatedProjects = ({ projects, currentProjectId, currentLanguage }) => {
         {currentLanguage === 'ar' ? 'مشاريع مشابهة' : 'Related Projects'}
       </h4>
       <div className="row g-4">
-        {projects
-          .filter(project => project.id !== currentProjectId)
+        {candidates
           .slice(0, 3)
           .map((project) => (
             <div key={project.id} className="col-md-4">

@@ -1,23 +1,25 @@
-# Pervasion Portfolio Backend
+# Jumooh Platform Backend
 
-This is the backend API for the Pervasion Portfolio project. It's built with Django and Django REST Framework, providing a robust and scalable API for the frontend application.
+This is the backend API for the Jumooh Platform project. It's built with Django and Django REST Framework, providing a robust and scalable API for the frontend application.
 
 ## Features
 
-- RESTful API with Django REST Framework
-- JWT Authentication
-- PostgreSQL database integration
-- Image upload and management
+- Django + Django REST Framework API
+- JWT Authentication (using `rest_framework_simplejwt`)
+- Configurable database (PostgreSQL recommended; uses `DATABASE_URL`)
+- Project & category management with image upload support
 - Multilingual support (English/Arabic)
-- Admin dashboard for content management
+- Admin interface for content management
 
 ## Project Structure
 
 - **api/** - API routing and configuration
-- **projects/** - Project and category models and views
+- **projects/** - Projects, categories and image models / views
 - **users/** - Custom user model and authentication
 - **contact/** - Contact form submissions
+- **jobapplicant/** - Job application handling
 - **pervasion/** - Main project settings
+- **backend/** - Django project root and management files (where applicable)  
 
 ## Requirements
 
@@ -121,6 +123,27 @@ The API will be available at http://localhost:8000/api/
 ## Admin Interface
 
 The Django admin interface is available at http://localhost:8000/admin/
+
+## Security & Environment notes
+
+- **Keep secrets out of version control.** Set `SECRET_KEY` and `JWT_SIGNING_KEY` in your local `.env` and never commit them.
+- **Production configuration:** ensure `DEBUG=False`, set `ALLOWED_HOSTS` to your production host(s), and do not use development defaults with plaintext credentials.
+- **CORS in prod:** avoid `CORS_ALLOW_ALL_ORIGINS=True` with `CORS_ALLOW_CREDENTIALS=True` in production — prefer explicit `CORS_ALLOWED_ORIGINS`.
+- **Dev proxy:** when using Vite's proxy, ensure your dev host (e.g. `localhost:5173`) is included in `ALLOWED_HOSTS` or configure the proxy to send a matching `Host` header.
+
+## Testing & CI
+
+- Add and run tests with `pytest` from the `backend/` folder:
+  ```bash
+  cd backend
+  pytest
+  ```
+- Add a CI workflow (example: `.github/workflows/ci.yml`) to run tests and linters on PRs and merges.
+
+## Troubleshooting
+
+- If the frontend receives **Bad Request (400)** when proxied from Vite, either add the dev host (e.g., `localhost:5173`) to `ALLOWED_HOSTS` or configure Vite to set the Host header to `127.0.0.1:8000`.
+- If you observe `304 Not Modified` / caching while developing, disable cache in DevTools or ensure the frontend cache-busts GETs (the client already appends `_t`).
 
 ## License
 

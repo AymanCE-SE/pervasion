@@ -9,13 +9,12 @@
 
 ## SEO Features
 
-- Server-side rendering for critical pages
-- Meta tags for social sharing
-- Structured data for projects
-- Sitemap generation
-- Robots.txt configuration
-- Language-specific URLs
-- Image optimization
+- SEO-friendly meta tags via `react-helmet-async` and social sharing meta
+- Structured data for projects (JSON-LD)
+- Sitemap generation and `robots.txt` configuration
+- Language-specific URLs for Arabic/English
+
+> Note: this project uses client-side rendering (Vite + React). There is no server-side rendering (SSR) in the current setup — SEO is handled with meta tags and static sitemap generation.
 
 ## Performance Optimizations
 
@@ -52,3 +51,12 @@ export default defineConfig({
     cssMinify: true
   }
 })
+
+## Planned improvements & To‑Do
+
+- **CI & Tests:** Add GitHub Actions to run backend `pytest` and frontend tests on PRs; increase test coverage for API endpoints, serializers, and image uploads.
+- **Centralize HTTP client:** Consolidate axios instances into a single `src/services/api.js` client for consistent auth, error handling, and base URL usage.
+- **Image optimization:** Serve responsive images with `srcset` and modern formats (WebP/AVIF), and add server-side caching/CDN headers for media.
+- **Accessibility audit:** Improve keyboard navigation, focus management, and ensure `alt` text on images; test with keyboard-only flows and screen readers.
+- **Lockfiles & dependency hygiene:** Commit `package-lock.json` and use a Python locking tool (pip-compile/poetry) for reproducible installs.
+- **Cache & Service Worker:** Evaluate service worker usage and caching strategy; avoid unexpected `304` responses during dev by using cache-busting where needed.

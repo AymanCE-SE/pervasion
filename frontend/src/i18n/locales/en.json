@@ -1,6 +1,6 @@
 {
   "app": {
-    "title": "Jumooh",
+    "title": "Jumooh Media",
     "description": "A modern graphic design portfolio showcasing creative work"
   },
   "nav": {
@@ -35,6 +35,7 @@
   "projects": {
     "title": "Projects",
     "subtitle": "Explore my featured work",
+    "MetaDescribtion": "latest designs from Jumooh Media",
     "projectInfo": "Project Information",
     "viewDetails": "view details",
     "completed": "Completed Projects",
@@ -73,6 +74,7 @@
   "about": {
     "title": "About Us",
     "subtitle": "Passionate about design and creativity",
+    "MetaDescribtion": "Jumooh Media Digital Marketing Company",
     "bio": "Jamouh is a limited liability digital marketing company registered with Sharjah Media City under license number 2538951. We provide integrated solutions aimed at empowering brands to stand out in the market and build a strong and bold digital presence.",
     "skills": {
       "title": "Skills",

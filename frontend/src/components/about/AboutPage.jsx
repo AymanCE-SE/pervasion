@@ -111,7 +111,7 @@ const AboutPage = () => {
     <>
       <Helmet>
         <title>{t('app.title')} - {t('nav.about')}</title>
-        <meta name="description" content={t('about.subtitle')} />
+        <meta name="description" content={t('about.MetaDescribtion')} />
       </Helmet>
 
       <section className={`about-page ${darkMode ? 'dark-mode' : ''}`}>

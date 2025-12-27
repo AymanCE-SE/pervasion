@@ -93,6 +93,7 @@ const ProjectsList = () => {
     <>
       <Helmet>
         <title>{t('app.title')} - {t('admin.projects')}</title>
+        <meta name="description" content={t('projects.MetaDescribtion')} />
       </Helmet>
 
       <motion.div

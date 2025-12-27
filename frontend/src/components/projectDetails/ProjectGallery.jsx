@@ -66,11 +66,22 @@ const ProjectGallery = ({ images: initialImages = [], mainImage, title }) => {
           ? [{ image: mainImage, isFeatured: true }, ...initialImages]
           : initialImages;
 
-        if (!allImages || allImages.length === 0) return;
+        // Deduplicate images by source to avoid showing the same image multiple times
+        const getSrc = (i) => i?.image || i?.url || i;
+        const seen = new Set();
+        const uniqueImages = [];
+        for (const img of allImages) {
+          const src = getSrc(img);
+          if (!src || seen.has(src)) continue;
+          seen.add(src);
+          uniqueImages.push(img);
+        }
+
+        if (!uniqueImages || uniqueImages.length === 0) return;
 
         const processed = await Promise.all(
-          allImages.map(async (img) => {
-            const src = img?.image || img?.url || img;
+          uniqueImages.map(async (img) => {
+            const src = getSrc(img);
             try {
               if (typeof src === 'string') {
                 await preloadImage(src);
@@ -416,7 +427,6 @@ const ProjectGallery = ({ images: initialImages = [], mainImage, title }) => {
             data-loaded={mainLoaded}
             data-touch-zoomed={isTouchDevice && isViewerOpen && scale > 1}
             style={{
-              backgroundImage: currentImage?.thumbnail ? `url(${currentImage.thumbnail})` : undefined,
               ['--bg-image']: currentImage?.thumbnail ? `url(${currentImage.thumbnail})` : undefined
             }}
             key={`image-${currentIndex}`}
@@ -590,7 +600,6 @@ const ProjectGallery = ({ images: initialImages = [], mainImage, title }) => {
                 style={{
                   transform: `scale(${scale}) translate(${position.x}px, ${position.y}px)`,
                   transformOrigin: transformOrigin,
-                  backgroundImage: currentImage?.thumbnail ? `url(${currentImage.thumbnail})` : undefined,
                   ['--bg-image']: currentImage?.thumbnail ? `url(${currentImage.thumbnail})` : undefined,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
