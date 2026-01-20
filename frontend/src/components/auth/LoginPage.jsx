@@ -122,12 +122,29 @@ const LoginPage = () => {
                         transition={{ duration: 0.5 }}
                       >
                         <div className="auth-icon mb-3">
-                          <FaSignInAlt size={40} className="icon-gradient" />
+                          <FaSignInAlt size={40} />
                         </div>
                         <h2 className="auth-title">{t('auth.login')}</h2>
                         <p className="auth-subtitle">{t('auth.welcomeBack')}</p>
                       </motion.div>
                     </div>
+
+                    {/* Continue as Guest / View Portfolio Button */}
+                    <motion.div 
+                      className="text-center mb-4"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.3, duration: 0.5 }}
+                    >
+                      <Button
+                        variant="outline-secondary"
+                        className="guest-button"
+                        onClick={() => navigate('/')}
+                      >
+                        <FaUser className="me-2" />
+                        {t('auth.continueAsGuest') || 'View Home Page'}
+                      </Button>
+                    </motion.div>
                     
                     {error && (
                       <motion.div

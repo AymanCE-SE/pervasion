@@ -17,6 +17,18 @@
     "joinUs": "Join us"
 
   },
+  "profile": {
+    "title": "My Profile",
+    "username": "Username",
+    "email": "Email",
+    "fullName": "Full Name",
+    "accountType": "Account Type",
+    "superuser": "Superuser",
+    "staff": "Staff",
+    "user": "User",
+    "notLoggedIn": "Not Logged In",
+    "pleaseLogin": "Please log in to view your profile."
+  },
   "hero": {
     "titleStart": "Creative Design Solutions",
     "subtitle": "Bringing ideas to life through visual storytelling",
@@ -220,6 +232,7 @@
   },
   "auth": {
     "login": "Login",
+    "continueAsGuest": "Continue as Guest",
     "register": "Register",
     "signup": "Sign Up",
     "logout": "Logout",
@@ -403,7 +416,8 @@
         "toolsAndSoftware": "Tools & Software",
         "aboutYou": "About You",
         "applied": "Applied",
-        "close": "Close"
+        "close": "Close",
+        "print": "Print Application"
       },
       "confirmDelete": "Confirm Delete",
       "deleteMessage": "Are you sure you want to delete the application from",

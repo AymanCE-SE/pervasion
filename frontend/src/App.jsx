@@ -40,6 +40,7 @@ const UserForm = React.lazy(() => import('./components/admin/UserForm'));
 const ContactList = React.lazy(() => import('./components/admin/ContactList'));
 const VerifyEmail = React.lazy(() => import('./components/auth/VerifyEmail'));
 const JobApplicationsList = React.lazy(() => import('./components/admin/JobApplicantList'));
+const ProfilePage = React.lazy(() => import('./components/profile/ProfilePage'));
 
 import NotFound from './components/common/NotFound';
 import CategoriesList from './components/admin/CategoriesList';
@@ -110,13 +111,13 @@ const App = () => {
   };
 
   // Protected route component for authenticated users
-  // const ProtectedRoute = ({ children }) => {
-  //   const location = useLocation();
-  //   if (!isAuthenticated) {
-  //     return <Navigate to="/login" replace state={{ from: location }} />;
-  //   }
-  //   return children;
-  // };
+  const ProtectedRoute = ({ children }) => {
+    const location = useLocation();
+    if (!isAuthenticated) {
+      return <Navigate to="/login" replace state={{ from: location }} />;
+    }
+    return children;
+  };
 
   // Loading component for suspense fallback
   const LoadingFallback = () => (
@@ -138,6 +139,11 @@ const App = () => {
                   <Route path="projects/:id" element={<ProjectDetails />} />
                   <Route path="about" element={<AboutPage />} />
                   <Route path="contact" element={<ContactPage />} />
+                  <Route path="profile" element={
+                    <ProtectedRoute>
+                      <ProfilePage />
+                    </ProtectedRoute>
+                  } />
                   <Route path="/join-us" element={<JobApplicantPage />} />
                 </Route>
 

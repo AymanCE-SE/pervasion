@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { Card, Button, Form, Row, Col, Table, Badge, Modal } from 'react-bootstrap';
-import { FaPlus, FaEye, FaTrash, FaDownload, FaSearch } from 'react-icons/fa';
+import { FaPlus, FaEye, FaTrash, FaDownload, FaSearch, FaPrint } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import './JobApplicantList.css';
 import { selectDarkMode } from '../../redux/slices/themeSlice';
@@ -329,6 +329,10 @@ const JobApplicationsList = () => {
           )}
         </Modal.Body>
         <Modal.Footer>
+          <Button variant="primary" onClick={() => window.print()}>
+            <FaPrint className="me-2" />
+            {t('admin.jobApplicationsList.details.print')}
+          </Button>
           <Button variant="secondary" onClick={() => setShowModal(false)}>
             {t('admin.jobApplicationsList.details.close')}
           </Button>

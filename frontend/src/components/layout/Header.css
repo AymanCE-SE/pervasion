@@ -191,6 +191,12 @@
   border-bottom: 1px solid var(--border-light);
 }
 
+.dropdown-item:hover {
+  background: var(--bg-overlay-light);
+  color: var(--text-primary-light);
+  transform: translateY(-1px);
+}
+
 .dropdown-item.logout {
   color: #dc3545;
 }
@@ -347,6 +353,11 @@
 
 .dark-mode .dropdown-item:not(:last-child) {
   border-bottom-color: var(--border-dark);
+}
+
+.dark-mode .dropdown-item:hover {
+  background: var(--bg-overlay-dark);
+  color: var(--text-primary-dark);
 }
 
 .dark-mode .dropdown-item.logout {

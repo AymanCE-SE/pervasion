@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Nav, Button } from 'react-bootstrap';
 import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -7,7 +7,7 @@ import { selectIsAuthenticated, logout } from '../../redux/slices/authSlice';
 import { selectDarkMode, toggleTheme } from '../../redux/slices/themeSlice';
 import { useAppSettings } from '../../hooks/useAppSettings';
 import { selectLanguage, toggleLanguage } from '../../redux/slices/languageSlice';
-import { FaTachometerAlt, FaImages, FaUsers, FaSignOutAlt, FaHome, FaTags, FaEnvelope, FaFileAlt, FaMoon, FaSun, FaGlobe } from 'react-icons/fa';
+import { FaTachometerAlt, FaImages, FaUsers, FaSignOutAlt, FaHome, FaTags, FaEnvelope, FaFileAlt, FaMoon, FaSun, FaGlobe, FaBars } from 'react-icons/fa';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './AdminLayout.css';
@@ -21,6 +21,7 @@ const AdminLayout = () => {
   const darkMode = useSelector(selectDarkMode);
   const language = useSelector(selectLanguage);
   const { isRTL } = useAppSettings();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   
   // Check if user is authenticated
   useEffect(() => {
@@ -73,6 +74,11 @@ const AdminLayout = () => {
     document.documentElement.dir = newLanguage === 'ar' ? 'rtl' : 'ltr';
   };
 
+  // Toggle sidebar
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
+
   if (!isAuthenticated) {
     return null; // Don't render anything while redirecting
   }
@@ -93,7 +99,7 @@ const AdminLayout = () => {
       <Container fluid>
         <Row>
           {/* Sidebar */}
-          <Col md={3} lg={2} className="admin-sidebar">
+          <Col md={3} lg={2} className={`admin-sidebar ${sidebarOpen ? 'sidebar-open' : ''}`}>
             <div className="sidebar-header">
               <h3>{t('admin.dashboard')}</h3>
               <p>{t('admin.adminPanel')}</p>
@@ -126,6 +132,7 @@ const AdminLayout = () => {
               <Nav.Link 
                 as={Link} 
                 to="/" 
+                onClick={() => setSidebarOpen(false)}
               >
                 <FaHome className="nav-icon" />
                 <span>{t('admin.Home')}</span>
@@ -134,6 +141,7 @@ const AdminLayout = () => {
                 as={Link} 
                 to="/admin" 
                 className={isActive('/admin') ? 'active' : ''}
+                onClick={() => setSidebarOpen(false)}
               >
                 <FaTachometerAlt className="nav-icon" />
                 <span>{t('admin.dashboard')}</span>
@@ -143,6 +151,7 @@ const AdminLayout = () => {
                 as={Link} 
                 to="/admin/projects" 
                 className={location.pathname.includes('/admin/projects') ? 'active' : ''}
+                onClick={() => setSidebarOpen(false)}
               >
                 <FaImages className="nav-icon" />
                 <span>{t('admin.projects')}</span>
@@ -152,6 +161,7 @@ const AdminLayout = () => {
                 as={Link} 
                 to="/admin/categories" 
                 className={location.pathname.includes('/admin/categories') ? 'active' : ''}
+                onClick={() => setSidebarOpen(false)}
               >
                 <FaTags className="nav-icon" />
                 <span>{t('admin.categories') || 'Categories'}</span>
@@ -161,6 +171,7 @@ const AdminLayout = () => {
                 as={Link} 
                 to="/admin/users" 
                 className={location.pathname.includes('/admin/users') ? 'active' : ''}
+                onClick={() => setSidebarOpen(false)}
               >
                 <FaUsers className="nav-icon" />
                 <span>{t('admin.users')}</span>
@@ -170,6 +181,7 @@ const AdminLayout = () => {
                 as={Link} 
                 to="/admin/contacts" 
                 className={location.pathname.includes('/admin/contacts') ? 'active' : ''}
+                onClick={() => setSidebarOpen(false)}
               >
                 <FaEnvelope className="nav-icon" />
                 <span>{t('admin.contacts')}</span>
@@ -179,6 +191,7 @@ const AdminLayout = () => {
                 as={Link} 
                 to="/admin/job-applications" 
                 className={isActive('/admin/job-applications') ? 'active' : ''}
+                onClick={() => setSidebarOpen(false)}
               >
                 <FaFileAlt className="nav-icon" />
                 <span>{t('admin.jobApplications')}</span>
@@ -186,7 +199,7 @@ const AdminLayout = () => {
 
               <Nav.Link 
                 as="button"
-                onClick={handleLogout}
+                onClick={() => { handleLogout(); setSidebarOpen(false); }}
                 className="logout-link"
                 style={{ background: 'none', border: 'none', textAlign: 'left' }}
               >
@@ -196,8 +209,21 @@ const AdminLayout = () => {
             </Nav>
           </Col>
           
+          {/* Sidebar Overlay for Mobile */}
+          {sidebarOpen && <div className="sidebar-overlay" onClick={toggleSidebar}></div>}
+          
           {/* Main Content */}
           <Col md={9} lg={10} className="admin-content">
+            <div className="content-header">
+              <Button
+                variant="outline-secondary"
+                className="sidebar-toggle d-md-none"
+                onClick={toggleSidebar}
+                aria-label="Toggle sidebar"
+              >
+                <FaBars />
+              </Button>
+            </div>
             <div className="content-wrapper">
               <Outlet />
             </div>

@@ -167,7 +167,7 @@ const RegisterPage = () => {
       <section className={`auth-page ${darkMode ? 'dark-mode' : ''}`}>
         <Container>
           <Row className="justify-content-center">
-            <Col md={8} lg={6}>
+            <Col md={10} lg={7} xl={6}>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -182,7 +182,7 @@ const RegisterPage = () => {
                         transition={{ duration: 0.5 }}
                       >
                         <div className="auth-icon mb-3">
-                          <FaUserPlus size={40} className="icon-gradient" />
+                          <FaUserPlus size={40} />
                         </div>
                         <h2 className="auth-title">{t('auth.register')}</h2>
                         <p className="auth-subtitle">{t('auth.createAccount')}</p>
@@ -224,49 +224,47 @@ const RegisterPage = () => {
                     )}
                     
                     <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                      <Row>
-                        <Col md={6}>
-                          <Form.Group className="mb-4" controlId="registerUsername">
-                            <Form.Label>{t('auth.username')}</Form.Label>
-                            <div className="input-group">
-                              <span className="input-group-text"><FaUser /></span>
-                              <Form.Control
-                                type="text"
-                                name="username"
-                                value={formData.username}
-                                onChange={handleInputChange}
-                                placeholder={t('auth.usernamePlaceholder')}
-                                required
-                                minLength="3"
-                              />
-                              <Form.Control.Feedback type="invalid">
-                                {t('auth.usernameRequired')}
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
-                        <Col md={6}>
-                          <Form.Group className="mb-4" controlId="registerEmail">
-                            <Form.Label>{t('auth.email')}</Form.Label>
-                            <div className="input-group">
-                              <span className="input-group-text"><FaEnvelope /></span>
-                              <Form.Control
-                                type="email"
-                                name="email"
-                                value={formData.email}
-                                onChange={handleInputChange}
-                                placeholder={t('auth.emailPlaceholder')}
-                                required
-                              />
-                              <Form.Control.Feedback type="invalid">
-                                {t('auth.validEmailRequired')}
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
-                      </Row>
-                      
-                      <Form.Group className="mb-4" controlId="registerName">
+                      {/* Username Field */}
+                      <Form.Group className="mb-3 mb-lg-4" controlId="registerUsername">
+                        <Form.Label>{t('auth.username')}</Form.Label>
+                        <div className="input-group">
+                          <span className="input-group-text"><FaUser /></span>
+                          <Form.Control
+                            type="text"
+                            name="username"
+                            value={formData.username}
+                            onChange={handleInputChange}
+                            placeholder={t('auth.usernamePlaceholder')}
+                            required
+                            minLength="3"
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {t('auth.usernameRequired')}
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+
+                      {/* Email Field */}
+                      <Form.Group className="mb-3 mb-lg-4" controlId="registerEmail">
+                        <Form.Label>{t('auth.email')}</Form.Label>
+                        <div className="input-group">
+                          <span className="input-group-text"><FaEnvelope /></span>
+                          <Form.Control
+                            type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleInputChange}
+                            placeholder={t('auth.emailPlaceholder')}
+                            required
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {t('auth.validEmailRequired')}
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+
+                      {/* Name Field */}
+                      <Form.Group className="mb-3 mb-lg-4" controlId="registerName">
                         <Form.Label>{t('auth.name')}</Form.Label>
                         <Form.Control
                           type="text"
@@ -280,49 +278,46 @@ const RegisterPage = () => {
                           {t('auth.nameRequired')}
                         </Form.Control.Feedback>
                       </Form.Group>
-                      
-                      <Row>
-                        <Col md={6}>
-                          <Form.Group className="mb-4" controlId="registerPassword">
-                            <Form.Label>{t('auth.password')}</Form.Label>
-                            <div className="input-group">
-                              <span className="input-group-text"><FaLock /></span>
-                              <Form.Control
-                                type="password"
-                                name="password"
-                                value={formData.password}
-                                onChange={handleInputChange}
-                                placeholder={t('auth.passwordPlaceholder')}
-                                required
-                                minLength="8"
-                              />
-                              <Form.Control.Feedback type="invalid">
-                                {t('auth.passwordRequirements')}
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
-                        <Col md={6}>
-                          <Form.Group className="mb-4" controlId="registerConfirmPassword">
-                            <Form.Label>{t('auth.confirmPassword')}</Form.Label>
-                            <div className="input-group">
-                              <span className="input-group-text"><FaLock /></span>
-                              <Form.Control
-                                type="password"
-                                name="password_confirm"
-                                value={formData.password_confirm}
-                                onChange={handleInputChange}
-                                placeholder={t('auth.confirmPasswordPlaceholder')}
-                                required
-                                isInvalid={validated && !passwordsMatch}
-                              />
-                              <Form.Control.Feedback type="invalid">
-                                {t('auth.passwordsMustMatch')}
-                              </Form.Control.Feedback>
-                            </div>
-                          </Form.Group>
-                        </Col>
-                      </Row>
+
+                      {/* Password Field */}
+                      <Form.Group className="mb-3 mb-lg-4" controlId="registerPassword">
+                        <Form.Label>{t('auth.password')}</Form.Label>
+                        <div className="input-group">
+                          <span className="input-group-text"><FaLock /></span>
+                          <Form.Control
+                            type="password"
+                            name="password"
+                            value={formData.password}
+                            onChange={handleInputChange}
+                            placeholder={t('auth.passwordPlaceholder')}
+                            required
+                            minLength="8"
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {t('auth.passwordRequirements')}
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
+
+                      {/* Confirm Password Field */}
+                      <Form.Group className="mb-3 mb-lg-4" controlId="registerConfirmPassword">
+                        <Form.Label>{t('auth.confirmPassword')}</Form.Label>
+                        <div className="input-group">
+                          <span className="input-group-text"><FaLock /></span>
+                          <Form.Control
+                            type="password"
+                            name="password_confirm"
+                            value={formData.password_confirm}
+                            onChange={handleInputChange}
+                            placeholder={t('auth.confirmPasswordPlaceholder')}
+                            required
+                            isInvalid={validated && !passwordsMatch}
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {t('auth.passwordsMustMatch')}
+                          </Form.Control.Feedback>
+                        </div>
+                      </Form.Group>
                       
                       <div className="d-grid gap-2 mt-4">
                         <Button 
